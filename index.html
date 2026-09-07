@@ -1,3145 +1,904 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MY STEAM — Herná Platforma</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+<title>MY STEAM</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #171a21;
+    color: #ffffff;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    height: 70px;
+    background: #171a21;
+    border-bottom: 1px solid #2a2f38;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: #66c0f4;
+    letter-spacing: 1px;
+}
+
+nav {
+    display: flex;
+    gap: 28px;
+}
+
+nav a {
+    color: #d6d7d8;
+    text-decoration: none;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+nav a:hover {
+    color: #66c0f4;
+}
+
+.search {
+    background: #2a2f38;
+    border: 1px solid #3a414c;
+    color: white;
+
+    padding: 10px 15px;
+    width: 220px;
+
+    outline: none;
+}
+
+.search::placeholder {
+    color: #8f98a3;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 320px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 50px 8%;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(23,26,33,1) 0%,
+            rgba(23,26,33,.9) 45%,
+            rgba(23,26,33,.3) 100%
+        ),
+        radial-gradient(
+            circle at right,
+            #1b4b68,
+            #171a21 60%
+        );
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    max-width: 600px;
+    color: #c7d5e0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.container {
+    width: 86%;
+    max-width: 1400px;
+    margin: 40px auto;
+}
+
+.section-title {
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   GAME GRID
+========================= */
+
+.games {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(260px, 1fr));
+
+    gap: 25px;
+}
+
+/* =========================
+   GAME CARD
+========================= */
+
+.game-card {
+    background: #1e232b;
+
+    border: 1px solid #303641;
+
+    transition:
+        transform .2s,
+        box-shadow .2s,
+        border-color .2s;
+
+    overflow: hidden;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #66c0f4;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.4);
+}
+
+.game-image {
+    width: 100%;
+    height: 160px;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #101217;
+}
+
+.game-content {
+    padding: 18px;
+}
+
+.game-name {
+    font-size: 19px;
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+.game-description {
+    color: #9ca8b5;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    min-height: 42px;
+
+    margin-bottom: 18px;
+}
+
+.play-button {
+    display: block;
+
+    width: 100%;
+
+    padding: 12px;
+
+    border: none;
+
+    background: linear-gradient(
+        90deg,
+        #75c8f5,
+        #4aa3d8
+    );
+
+    color: #ffffff;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    text-align: center;
+
+    text-decoration: none;
+}
+
+.play-button:hover {
+    background: linear-gradient(
+        90deg,
+        #8bd2f7,
+        #5ab1e2
+    );
+}
+
+/* =========================
+   EMPTY SEARCH
+========================= */
+
+.no-results {
+    display: none;
+
+    text-align: center;
+
+    color: #8f98a3;
+
+    padding: 50px;
+
+    font-size: 18px;
+}
+
+/* =========================
+   GAME PLAYER
+========================= */
+
+.player {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: #0e1116;
+
+    z-index: 1000;
+
+    flex-direction: column;
+}
+
+.player-header {
+    height: 60px;
+
+    background: #171a21;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    border-bottom: 1px solid #303641;
+}
+
+.player-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.close-player {
+    background: #2a2f38;
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 18px;
+
+    cursor: pointer;
+}
+
+.close-player:hover {
+    background: #c0392b;
+}
+
+.game-frame {
+    flex: 1;
+
+    width: 100%;
+
+    border: none;
+
+    background: white;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    margin-top: 80px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    border-top: 1px solid #2a2f38;
+
+    color: #687380;
+
+    font-size: 14px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    header {
+        height: auto;
+
+        padding: 18px 5%;
+
+        flex-wrap: wrap;
+
+        gap: 15px;
     }
-
-    :root {
-      --bg-primary: #0e141b;
-      --bg-secondary: #1b2838;
-      --bg-card: #16202d;
-      --bg-hover: #1e3a52;
-      --accent: #66c0f4;
-      --accent-hover: #4192c0;
-      --text-primary: #c7d5e0;
-      --text-secondary: #8f98a0;
-      --border: #2a475e;
-      --success: #5c7e10;
-      --success-hover: #76a11e;
-      --danger: #c0392b;
-      --shadow: rgba(0,0,0,0.6);
-      --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* =========================
-       LOADING
-    ========================= */
-
-    #loading-screen {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: var(--bg-primary);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      transition: opacity .6s ease;
-    }
-
-    #loading-screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .loader {
-      width: 60px;
-      height: 60px;
-      border: 4px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .loader-text {
-      margin-top: 20px;
-      color: var(--accent);
-      font-size: 1.2rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    /* =========================
-       NAVIGATION
-    ========================= */
 
     nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: linear-gradient(
-        180deg,
-        #171a21 0%,
-        var(--bg-secondary) 100%
-      );
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 4px 20px var(--shadow);
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
     }
 
-    .nav-container {
-      max-width: 1400px;
-      margin: auto;
-      padding: 0 24px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+    .search {
+        width: 170px;
     }
 
-    .logo {
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      cursor: pointer;
-      white-space: nowrap;
+    .hero h1 {
+        font-size: 35px;
     }
-
-    .nav-links {
-      display: flex;
-      gap: 8px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      font-size: .9rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: var(--text-primary);
-      background: var(--bg-hover);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .search-box {
-      background: var(--bg-primary);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 8px 16px;
-      color: var(--text-primary);
-      width: 200px;
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .search-box:focus {
-      border-color: var(--accent);
-      width: 260px;
-    }
-
-    .btn-icon {
-      background: none;
-      border: none;
-      color: var(--text-secondary);
-      font-size: 1.2rem;
-      cursor: pointer;
-      padding: 8px;
-      border-radius: 50%;
-      transition: var(--transition);
-    }
-
-    .btn-icon:hover {
-      color: var(--accent);
-      background: var(--bg-hover);
-    }
-
-    /* =========================
-       CONTAINER
-    ========================= */
 
     .container {
-      max-width: 1400px;
-      margin: auto;
-      padding: 24px;
+        width: 92%;
     }
 
-    .section-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
+    .games {
+        grid-template-columns:
+            repeat(auto-fill, minmax(220px, 1fr));
     }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      position: relative;
-      min-height: 400px;
-      border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 32px;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: flex-end;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      filter: brightness(.4);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      padding: 40px;
-      background: linear-gradient(
-        to top,
-        var(--bg-primary) 0%,
-        transparent 100%
-      );
-    }
-
-    .hero-title {
-      font-size: 3rem;
-      font-weight: 800;
-      margin-bottom: 12px;
-      text-shadow: 0 4px 20px var(--shadow);
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .hero-meta span {
-      color: var(--text-secondary);
-      font-size: .9rem;
-    }
-
-    .hero-meta strong {
-      color: var(--text-primary);
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* =========================
-       BUTTONS
-    ========================= */
-
-    .btn {
-      padding: 12px 28px;
-      border-radius: 8px;
-      border: none;
-      font-size: .95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(
-        135deg,
-        var(--success),
-        var(--success-hover)
-      );
-      color: white;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(92,126,16,.4);
-    }
-
-    .btn-secondary {
-      background: var(--bg-hover);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      background: var(--border);
-      border-color: var(--accent);
-    }
-
-    .btn-accent {
-      background: var(--accent);
-      color: var(--bg-primary);
-    }
-
-    .btn-accent:hover {
-      background: var(--accent-hover);
-    }
-
-    .btn-danger {
-      background: var(--danger);
-      color: white;
-    }
-
-    /* =========================
-       GAME GRID
-    ========================= */
-
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fill,
-        minmax(280px, 1fr)
-      );
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    /* =========================
-       GAME CARD
-    ========================= */
-
-    .game-card {
-      background: var(--bg-card);
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      transition: var(--transition);
-      cursor: pointer;
-      position: relative;
-      box-shadow: 0 4px 12px var(--shadow);
-    }
-
-    .game-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: var(--accent);
-      box-shadow: 0 12px 40px rgba(102,192,244,.15);
-    }
-
-    .card-image-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 10;
-    }
-
-    .card-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .4s ease;
-    }
-
-    .game-card:hover .card-image {
-      transform: scale(1.08);
-    }
-
-    .card-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(11,16,22,.95),
-        transparent 60%
-      );
-      opacity: 0;
-      transition: opacity .3s ease;
-      display: flex;
-      align-items: flex-end;
-      padding: 16px;
-    }
-
-    .game-card:hover .card-overlay {
-      opacity: 1;
-    }
-
-    .card-play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%) scale(.8);
-      background: var(--success);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 64px;
-      height: 64px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      opacity: 0;
-      transition: all .3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 5;
-    }
-
-    .game-card:hover .card-play-btn {
-      opacity: 1;
-      transform: translate(-50%,-50%) scale(1);
-    }
-
-    .card-play-btn:hover {
-      background: var(--success-hover);
-      transform: translate(-50%,-50%) scale(1.1) !important;
-    }
-
-    .card-info {
-      padding: 16px;
-    }
-
-    .card-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .card-desc {
-      color: var(--text-secondary);
-      font-size: .85rem;
-      line-height: 1.4;
-      margin-bottom: 12px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .card-meta {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .badge {
-      font-size: .7rem;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-weight: 700;
-      text-transform: uppercase;
-    }
-
-    .badge-genre {
-      background: var(--bg-hover);
-      color: var(--accent);
-    }
-
-    .badge-type {
-      background: rgba(92,126,16,.2);
-      color: #a4d007;
-    }
-
-    .badge-fav {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 10;
-      background: rgba(192,57,43,.9);
-      color: white;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .play-link {
-      margin-left: auto;
-      padding: 7px 12px;
-      background: var(--success);
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: .75rem;
-      font-weight: 800;
-    }
-
-    .play-link:hover {
-      background: var(--success-hover);
-    }
-
-    /* =========================
-       DETAIL
-    ========================= */
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 32px;
-    }
-
-    .detail-main {
-      line-height: 1.7;
-      color: var(--text-secondary);
-    }
-
-    .detail-main h3 {
-      color: var(--text-primary);
-      margin: 24px 0 12px;
-    }
-
-    .detail-sidebar {
-      background: var(--bg-card);
-      border-radius: 12px;
-      padding: 24px;
-      border: 1px solid var(--border);
-      height: fit-content;
-    }
-
-    .detail-sidebar h4 {
-      color: var(--accent);
-      margin-bottom: 16px;
-      text-transform: uppercase;
-    }
-
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--border);
-      font-size: .9rem;
-    }
-
-    .info-label {
-      color: var(--text-secondary);
-    }
-
-    .info-value {
-      color: var(--text-primary);
-      font-weight: 600;
-      text-align: right;
-    }
-
-    /* =========================
-       SCREENSHOTS
-    ========================= */
-
-    .screenshot-grid {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fill,
-        minmax(200px,1fr)
-      );
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .screenshot-thumb {
-      border-radius: 8px;
-      overflow: hidden;
-      aspect-ratio: 16/10;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: var(--transition);
-    }
-
-    .screenshot-thumb:hover {
-      border-color: var(--accent);
-      transform: scale(1.03);
-    }
-
-    .screenshot-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* =========================
-       FILTERS
-    ========================= */
-
-    .filters {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      padding: 8px 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      color: var(--text-secondary);
-      border-radius: 20px;
-      cursor: pointer;
-    }
-
-    .filter-btn.active,
-    .filter-btn:hover {
-      background: var(--accent);
-      color: var(--bg-primary);
-      border-color: var(--accent);
-    }
-
-    /* =========================
-       EMPTY
-    ========================= */
-
-    .empty-state {
-      text-align: center;
-      padding: 70px 20px;
-      color: var(--text-secondary);
-    }
-
-    .empty-state-icon {
-      font-size: 4rem;
-      margin-bottom: 20px;
-      opacity: .5;
-    }
-
-    /* =========================
-       GAME PLAYER
-    ========================= */
-
-    #game-player {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: var(--bg-primary);
-      display: none;
-      flex-direction: column;
-    }
-
-    #game-player.active {
-      display: flex;
-    }
-
-    .player-toolbar {
-      min-height: 56px;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
-      gap: 15px;
-    }
-
-    .player-title {
-      font-weight: 700;
-    }
-
-    .player-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .player-frame {
-      flex: 1;
-      background: #000;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .player-frame iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #000;
-    }
-
-    /* =========================
-       LIGHTBOX
-    ========================= */
-
-    #lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(0,0,0,.95);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #lightbox.active {
-      display: flex;
-    }
-
-    #lightbox-img {
-      max-width: 90vw;
-      max-height: 90vh;
-      object-fit: contain;
-    }
-
-    .lightbox-close,
-    .lightbox-nav {
-      position: absolute;
-      z-index: 5;
-      background: rgba(255,255,255,.1);
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    .lightbox-close {
-      top: 20px;
-      right: 20px;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      font-size: 1.5rem;
-    }
-
-    .lightbox-nav {
-      top: 50%;
-      transform: translateY(-50%);
-      width: 50px;
-      height: 80px;
-      font-size: 2rem;
-      border-radius: 8px;
-    }
-
-    .lightbox-prev {
-      left: 20px;
-    }
-
-    .lightbox-next {
-      right: 20px;
-    }
-
-    /* =========================
-       SETTINGS
-    ========================= */
-
-    #settings-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 600;
-      background: rgba(0,0,0,.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #settings-modal.active {
-      display: flex;
-    }
-
-    .settings-panel {
-      width: 90%;
-      max-width: 500px;
-      max-height: 80vh;
-      overflow-y: auto;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-    }
-
-    .settings-header {
-      padding: 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .settings-body {
-      padding: 24px;
-    }
-
-    .setting-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 16px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .setting-label {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .setting-label small {
-      color: var(--text-secondary);
-    }
-
-    .toggle {
-      width: 48px;
-      height: 26px;
-      background: var(--border);
-      border-radius: 20px;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .toggle.active {
-      background: var(--accent);
-    }
-
-    .toggle::after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      top: 3px;
-      left: 3px;
-      background: white;
-      border-radius: 50%;
-      transition: .2s;
-    }
-
-    .toggle.active::after {
-      left: 25px;
-    }
-
-    /* =========================
-       TOAST
-    ========================= */
-
-    .toast {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
-      z-index: 2000;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: white;
-      padding: 16px 24px;
-      border-radius: 12px;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: .3s;
-    }
-
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    /* =========================
-       ANIMATION
-    ========================= */
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .fade-in {
-      animation: fadeIn .5s ease forwards;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media(max-width:1024px) {
-      .detail-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-title {
-        font-size: 2rem;
-      }
-    }
-
-    @media(max-width:768px) {
-      .nav-links {
-        display: none;
-      }
-
-      .search-box {
-        width: 140px;
-      }
-
-      .search-box:focus {
-        width: 180px;
-      }
-
-      .game-grid {
-        grid-template-columns: repeat(
-          auto-fill,
-          minmax(220px,1fr)
-        );
-      }
-
-      .hero {
-        min-height: 300px;
-      }
-
-      .hero-content {
-        padding: 24px;
-      }
-    }
-
-    @media(max-width:480px) {
-      .container {
-        padding: 16px;
-      }
-
-      .game-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .player-toolbar {
-        flex-direction: column;
-        padding: 10px;
-      }
-
-      .player-actions {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .player-actions .btn {
-        padding: 8px 12px;
-        font-size: .7rem;
-      }
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-<!-- ============================================================
-     LOADING SCREEN
-============================================================ -->
 
-<div id="loading-screen">
-  <div class="loader"></div>
-  <div class="loader-text">
-    Načítavam platformu...
-  </div>
-</div>
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-<!-- ============================================================
-     NAVIGATION
-============================================================ -->
+<header>
 
-<nav>
-  <div class="nav-container">
+    <div class="logo">
+        MY STEAM
+    </div>
 
-    <a class="logo" onclick="router.navigate('home')">
-      🎮 MY STEAM
-    </a>
+    <nav>
+        <a onclick="scrollToGames()">Hry</a>
+        <a onclick="showFavorites()">⭐ Obľúbené</a>
+    </nav>
 
-    <ul class="nav-links">
-      <li>
-        <a id="nav-home"
-           class="active"
-           onclick="router.navigate('home')">
-          Home
-        </a>
-      </li>
-
-      <li>
-        <a id="nav-games"
-           onclick="router.navigate('games')">
-          Games
-        </a>
-      </li>
-
-      <li>
-        <a id="nav-favorites"
-           onclick="router.navigate('favorites')">
-          Favorites
-        </a>
-      </li>
-
-      <li>
-        <a id="nav-recent"
-           onclick="router.navigate('recent')">
-          Recent
-        </a>
-      </li>
-    </ul>
-
-    <div class="nav-right">
-
-      <input
+    <input
+        id="search"
+        class="search"
         type="text"
-        id="global-search"
-        class="search-box"
         placeholder="🔍 Hľadať hry..."
-        oninput="handleSearch(this.value)"
-      >
+        oninput="searchGames()"
+    >
 
-      <button
-        class="btn-icon"
-        onclick="toggleSettings()"
-        title="Nastavenia">
-        ⚙
-      </button>
+</header>
 
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <h1>Objav nové hry</h1>
+
+    <p>
+        Vitaj na MY STEAM.
+        Vyber si hru a začni hrať.
+    </p>
+
+</section>
+
+
+<!-- =====================================================
+     GAMES
+===================================================== -->
+
+<main class="container">
+
+    <h2 class="section-title">
+        Hry
+    </h2>
+
+    <div id="games" class="games"></div>
+
+    <div id="noResults" class="no-results">
+        Žiadna hra nebola nájdená.
     </div>
-  </div>
-</nav>
 
-<!-- ============================================================
-     APP
-============================================================ -->
+</main>
 
-<div id="app" class="container"></div>
 
-<!-- ============================================================
+<!-- =====================================================
      GAME PLAYER
-============================================================ -->
+===================================================== -->
 
-<div id="game-player">
+<div id="player" class="player">
 
-  <div class="player-toolbar">
+    <div class="player-header">
 
-    <div class="player-title" id="player-title">
-      Hra
-    </div>
-
-    <div class="player-actions">
-
-      <button
-        class="btn btn-secondary"
-        onclick="openCurrentGameExternally()">
-        ↗ Otvoriť
-      </button>
-
-      <button
-        class="btn btn-accent"
-        onclick="toggleFullscreen()">
-        ⛶ Fullscreen
-      </button>
-
-      <button
-        class="btn btn-danger"
-        onclick="exitGame()">
-        ✕ Zavrieť
-      </button>
-
-    </div>
-  </div>
-
-  <div class="player-frame">
-
-    <iframe
-      id="game-iframe"
-      title="Herný prehrávač"
-      allow="fullscreen; gamepad; pointer-lock; autoplay"
-      allowfullscreen>
-    </iframe>
-
-  </div>
-</div>
-
-<!-- ============================================================
-     LIGHTBOX
-============================================================ -->
-
-<div id="lightbox"
-     onclick="closeLightboxOnBg(event)">
-
-  <button
-    class="lightbox-close"
-    onclick="closeLightbox()">
-    ✕
-  </button>
-
-  <button
-    class="lightbox-nav lightbox-prev"
-    onclick="changeImage(-1)">
-    ‹
-  </button>
-
-  <img
-    id="lightbox-img"
-    src=""
-    alt="Screenshot">
-
-  <button
-    class="lightbox-nav lightbox-next"
-    onclick="changeImage(1)">
-    ›
-  </button>
-
-</div>
-
-<!-- ============================================================
-     SETTINGS
-============================================================ -->
-
-<div id="settings-modal"
-     onclick="closeSettingsOnBg(event)">
-
-  <div class="settings-panel">
-
-    <div class="settings-header">
-
-      <h2>⚙ Nastavenia</h2>
-
-      <button
-        class="btn-icon"
-        onclick="toggleSettings()">
-        ✕
-      </button>
-
-    </div>
-
-    <div class="settings-body">
-
-      <div class="setting-row">
-
-        <div class="setting-label">
-          <strong>Hlasitosť</strong>
-          <small>Celková hlasitosť</small>
-        </div>
-
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value="80"
-          id="set-volume"
-          oninput="saveSetting('volume',this.value)"
-        >
-
-      </div>
-
-      <div class="setting-row">
-
-        <div class="setting-label">
-          <strong>Hudba</strong>
-          <small>Hudba v pozadí</small>
-        </div>
-
-        <div
-          class="toggle active"
-          id="toggle-music"
-          onclick="toggleBoolSetting('music')">
-        </div>
-
-      </div>
-
-      <div class="setting-row">
-
-        <div class="setting-label">
-          <strong>Zvukové efekty</strong>
-          <small>UI efekty</small>
-        </div>
-
-        <div
-          class="toggle active"
-          id="toggle-sfx"
-          onclick="toggleBoolSetting('sfx')">
-        </div>
-
-      </div>
-
-      <div class="setting-row">
-
-        <div class="setting-label">
-          <strong>Automatický fullscreen</strong>
-          <small>Fullscreen po spustení hry</small>
-        </div>
-
-        <div
-          class="toggle"
-          id="toggle-fullscreen"
-          onclick="toggleBoolSetting('fullscreen')">
-        </div>
-
-      </div>
-
-      <div class="setting-row">
-
-        <div class="setting-label">
-          <strong>Resetovať dáta</strong>
-          <small>Obľúbené a história</small>
+        <div id="playerTitle" class="player-title">
+            Hra
         </div>
 
         <button
-          class="btn btn-danger"
-          onclick="resetAllData()">
-          RESET
+            class="close-player"
+            onclick="closeGame()"
+        >
+            ✕ Zavrieť
         </button>
 
-      </div>
-
     </div>
-  </div>
+
+    <iframe
+        id="gameFrame"
+        class="game-frame"
+        allowfullscreen
+    ></iframe>
+
 </div>
 
-<!-- ============================================================
-     TOAST
-============================================================ -->
 
-<div id="toast" class="toast"></div>
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    MY STEAM © 2026
+
+</footer>
+
 
 <script>
 
-/* ============================================================
-   🎮 MY STEAM
-   JEDNODUCHÝ SYSTÉM PRIDÁVANIA HIER
-============================================================
+/* ========================================================
+   HRY
+========================================================
 
-   PRI PRIDANÍ HRY VYPLNÍŠ:
+   1 BLOK = 1 HRA
 
-   1. ID
-   2. NÁZOV
-   3. OBRÁZOK
-   4. LINK NA HRU
-   5. POPIS
+   Skopíruj celý blok a zmeň:
 
-   POTOM SA AUTOMATICKY VYTVORÍ KARTA.
+   name        = názov hry
+   description = popis
+   image       = link na obrázok
+   link        = link na HTML hru
 
-============================================================ */
+======================================================== */
 
 
-/* ============================================================
-   DATA
-============================================================ */
+/* ========================================================
+   SLOT 1
+======================================================== */
 
-const gamesData = [];
+addGame({
 
-
-/* ============================================================
-   POMOCNÉ FUNKCIE
-============================================================ */
-
-function escapeHTML(value) {
-
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-/*
-   Ak nezadáš obrázok,
-   automaticky sa vytvorí jednoduchý obrázok.
-*/
-
-function makeDefaultThumbnail(name) {
-
-  const safe = String(name || "GAME")
-    .replace(/[&<>"']/g, "");
-
-  const svg = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="800"
-         height="500">
-
-      <rect
-        width="100%"
-        height="100%"
-        fill="#16202d"/>
-
-      <text
-        x="50%"
-        y="50%"
-        fill="#66c0f4"
-        font-size="42"
-        text-anchor="middle"
-        dominant-baseline="middle"
-        font-family="Arial">
-        ${safe}
-      </text>
-
-    </svg>
-  `;
-
-  return "data:image/svg+xml;charset=UTF-8,"
-    + encodeURIComponent(svg);
-}
-
-
-/* ============================================================
-   ➕ HLAVNÁ FUNKCIA PRE PRIDANIE HRY
-============================================================ */
-
-function addGame(
-  id,
-  name,
-  imageUrl,
-  gameUrl,
-  description,
-  options = {}
-) {
-
-  /*
-     Prázdny slot sa ignoruje.
-  */
-
-  if (!id || !name) {
-    return;
-  }
-
-  id = String(id).trim();
-
-  /*
-     Kontrola duplicitného ID.
-  */
-
-  if (gamesData.some(game => game.id === id)) {
-
-    console.error(
-      "Duplicitné ID hry:",
-      id
-    );
-
-    return;
-  }
-
-  const game = {
-
-    id: id,
-
-    name: String(name),
-
-    thumbnail:
-      imageUrl && imageUrl.trim()
-        ? imageUrl.trim()
-        : makeDefaultThumbnail(name),
-
-    gameUrl:
-      gameUrl && gameUrl.trim()
-        ? gameUrl.trim()
-        : "",
+    name: "Space Adventure",
 
     description:
-      description || "Bez popisu.",
+        "Vydaj sa na vesmírne dobrodružstvo.",
 
-    longDescription:
-      options.longDescription ||
-      description ||
-      "Bez podrobného popisu.",
+    image:
+        "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?auto=format&fit=crop&w=900&q=80",
 
-    genre:
-      options.genre || "Other",
+    link:
+        "https://example.com/game.html"
 
-    type:
-      options.type || "Web",
-
-    version:
-      options.version || "1.0",
-
-    releaseDate:
-      options.releaseDate ||
-      new Date().toISOString().slice(0,10),
-
-    author:
-      options.author || "Neznámy autor",
-
-    screenshots:
-      options.screenshots || [],
-
-    controls:
-      options.controls || [],
-
-    sysRequirements:
-      options.sysRequirements || null
-
-  };
-
-  gamesData.push(game);
-
-}
+});
 
 
-/* ============================================================
-   🎮 HRY
-   ============================================================
+/* ========================================================
+   SLOT 2
+======================================================== */
 
-   SKOPÍRUJ JEDEN CELÝ BLOK A VYTVORÍŠ ĎALŠIU HRU.
+addGame({
 
-============================================================ */
+    name: "Racing Game",
 
+    description:
+        "Sadni do auta a vyhraj preteky.",
 
-/* ============================================================
-   🟢 HRA 1
-============================================================ */
+    image:
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=80",
 
-addGame(
+    link:
+        "https://example.com/racing.html"
 
-  "super-mario",
-
-  "Super Mario",
-
-  "https://images.unsplash.com/photo-1600861195091-690c92f1d2cc?auto=format&fit=crop&w=1200&q=80",
-
-  "https://example.com/hra.html",
-
-  "Klasická plošinovka plná dobrodružstva.",
-
-  {
-    genre: "Adventure",
-    type: "Web",
-    version: "1.0",
-    author: "Nintendo",
-
-    longDescription:
-      "Super Mario je dobrodružná plošinovka. Preskakuj prekážky, zbieraj predmety a dostaň sa až na koniec úrovne.",
-
-    screenshots: [
-      "https://images.unsplash.com/photo-1600861195091-690c92f1d2cc?auto=format&fit=crop&w=1200&q=80"
-    ],
-
-    controls: [
-      {
-        key: "A / D",
-        description: "Pohyb doľava a doprava"
-      },
-      {
-        key: "SPACE",
-        description: "Skok"
-      }
-    ]
-  }
-
-);
+});
 
 
-/* ============================================================
-   🟢 HRA 2
-============================================================ */
+/* ========================================================
+   SLOT 3
+======================================================== */
 
-addGame(
+addGame({
 
-  "moja-hra-2",
+    name: "Zombie Attack",
 
-  "Moja druhá hra",
+    description:
+        "Preži útok zombie a zostaň nažive.",
 
-  "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+    image:
+        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=900&q=80",
 
-  "https://example.com/game2.html",
+    link:
+        "https://example.com/zombie.html"
 
-  "Druhá ukážková hra.",
-
-  {
-    genre: "Action",
-    type: "Web",
-    version: "1.0",
-    author: "Môj autor"
-  }
-
-);
+});
 
 
-/* ============================================================
-   🟢 HRA 3
-============================================================ */
+/* ========================================================
+   TEMPLATE
+========================================================
 
-addGame(
+   SKOPÍRUJ TENTO CELÝ BLOK PRE NOVÚ HRU
 
-  "moja-hra-3",
-
-  "Moja tretia hra",
-
-  "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
-
-  "https://example.com/game3.html",
-
-  "Tretia ukážková hra.",
-
-  {
-    genre: "Arcade",
-    type: "Web",
-    version: "1.0"
-  }
-
-);
-
-
-/* ============================================================
-   ➕ ŠABLÓNA PRE ĎALŠIU HRU
-============================================================
-
-   TENTO BLOK SKOPÍRUJ.
-
-   Potom zmeň:
-
-   "id-hry"
-   "Názov hry"
-   "LINK NA OBRÁZOK"
-   "LINK NA HRU"
-   "POPIS"
-
-============================================================ */
+======================================================== */
 
 
 /*
 
-addGame(
+addGame({
 
-  "id-hry",
+    name: "NÁZOV HRY",
 
-  "Názov hry",
+    description:
+        "POPIS HRY",
 
-  "https://example.com/obrazok.jpg",
+    image:
+        "LINK NA OBRÁZOK",
 
-  "https://example.com/hra.html",
+    link:
+        "LINK NA HRU"
 
-  "Krátky popis hry.",
-
-  {
-    genre: "Action",
-    type: "Web",
-    version: "1.0",
-    author: "Tvoje meno",
-
-    longDescription:
-      "Dlhší popis hry.",
-
-    screenshots: [
-      "https://example.com/screenshot1.jpg",
-      "https://example.com/screenshot2.jpg"
-    ],
-
-    controls: [
-      {
-        key: "WASD",
-        description: "Pohyb"
-      },
-      {
-        key: "SPACE",
-        description: "Skok"
-      }
-    ]
-  }
-
-);
+});
 
 */
 
 
-/* ============================================================
-   ĎALŠIA HRA
-   ============================================================
+/* ========================================================
+   GAME SYSTEM
+======================================================== */
 
-   PRÍKLAD:
+const games = [];
 
-addGame(
-  "minecraft",
-  "Minecraft",
-  "https://example.com/minecraft.jpg",
-  "https://example.com/minecraft.html",
-  "Postav vlastný svet.",
-  {
-    genre: "Sandbox",
-    type: "Web",
-    version: "1.0",
-    author: "Mojang"
-  }
-);
+const favorites = new Set();
 
-*/
 
+function addGame(game) {
 
-/* ============================================================
-   STATE
-============================================================ */
+    if (!game) return;
 
-const state = {
+    if (!game.name) return;
 
-  favorites:
-    JSON.parse(
-      localStorage.getItem("favorites") || "[]"
-    ),
+    games.push({
 
-  recent:
-    JSON.parse(
-      localStorage.getItem("recent") || "[]"
-    ),
+        name:
+            game.name,
 
-  lastPlayed:
-    JSON.parse(
-      localStorage.getItem("lastPlayed") || "[]"
-    ),
+        description:
+            game.description || "",
 
-  currentFilter: "all",
+        image:
+            game.image || "",
 
-  searchQuery: "",
+        link:
+            game.link || ""
 
-  currentGame: null,
-
-  lightboxImages: [],
-
-  lightboxIndex: 0,
-
-  settings:
-    JSON.parse(
-      localStorage.getItem("gameSettings") ||
-      JSON.stringify({
-        volume: 80,
-        music: true,
-        sfx: true,
-        fullscreen: false
-      })
-    )
-
-};
-
-
-/* ============================================================
-   ROUTER
-============================================================ */
-
-const router = {
-
-  current: "home",
-
-  navigate(page, params = "") {
-
-    this.current = page;
-
-    window.location.hash =
-      params
-        ? `${page}/${params}`
-        : page;
-
-    this.updateNav();
-
-    this.render();
-
-    window.scrollTo(0,0);
-
-  },
-
-  updateNav() {
-
-    document
-      .querySelectorAll(".nav-links a")
-      .forEach(a =>
-        a.classList.remove("active")
-      );
-
-    const active =
-      document.getElementById(
-        `nav-${this.current}`
-      );
-
-    if (active) {
-      active.classList.add("active");
-    }
-
-  },
-
-  render() {
-
-    const hash =
-      window.location.hash.slice(1) ||
-      "home";
-
-    const parts = hash.split("/");
-
-    const page = parts[0];
-
-    const param = parts[1];
-
-    const app =
-      document.getElementById("app");
-
-    switch(page) {
-
-      case "home":
-        app.innerHTML = renderHome();
-        break;
-
-      case "games":
-        app.innerHTML = renderGames();
-        break;
-
-      case "detail":
-        app.innerHTML = renderDetail(param);
-        break;
-
-      case "favorites":
-        app.innerHTML = renderFavorites();
-        break;
-
-      case "recent":
-        app.innerHTML = renderRecent();
-        break;
-
-      default:
-        app.innerHTML = renderHome();
-
-    }
-
-    this.updateNav();
-
-  }
-
-};
-
-
-/* ============================================================
-   HOME
-============================================================ */
-
-function renderHome() {
-
-  const continueGames =
-    state.lastPlayed
-      .map(id =>
-        gamesData.find(g => g.id === id)
-      )
-      .filter(Boolean)
-      .slice(0,4);
-
-  const featured =
-    gamesData.slice(0,4);
-
-  return `
-
-    ${
-      continueGames.length
-      ? `
-
-      <section
-        class="fade-in"
-        style="margin-bottom:40px;">
-
-        <h2 class="section-title">
-          ▶ Pokračovať v hre
-        </h2>
-
-        <div class="game-grid">
-
-          ${
-            continueGames
-              .map(g => renderGameCard(g))
-              .join("")
-          }
-
-        </div>
-
-      </section>
-
-      `
-      : ""
-    }
-
-
-    <section class="fade-in">
-
-      <h2 class="section-title">
-        ⭐ Odporúčané hry
-      </h2>
-
-      <div class="game-grid">
-
-        ${
-          featured
-            .map(g => renderGameCard(g))
-            .join("")
-        }
-
-      </div>
-
-    </section>
-
-
-    <section class="fade-in">
-
-      <h2 class="section-title">
-        🎮 Všetky hry
-      </h2>
-
-      <div class="game-grid">
-
-        ${
-          gamesData
-            .map(g => renderGameCard(g))
-            .join("")
-        }
-
-      </div>
-
-    </section>
-
-  `;
+    });
 
 }
 
 
-/* ============================================================
-   GAMES
-============================================================ */
+/* ========================================================
+   VYKRESLENIE HIER
+======================================================== */
 
-function renderGames() {
+function renderGames(list = games) {
 
-  const genres = [
-    "all",
-    ...new Set(
-      gamesData.map(g => g.genre)
-    )
-  ];
+    const container =
+        document.getElementById("games");
 
-  const filtered = filterGames();
+    const noResults =
+        document.getElementById("noResults");
 
-  return `
+    container.innerHTML = "";
 
-    <div class="fade-in">
+    if (list.length === 0) {
 
-      <h2 class="section-title">
-        🎮 Všetky hry
-      </h2>
+        noResults.style.display = "block";
 
-      <div class="filters">
+        return;
 
-        ${
-          genres
-            .map(g => `
+    }
 
-              <button
-                class="filter-btn ${
-                  state.currentFilter === g
-                    ? "active"
-                    : ""
-                }"
-                onclick="setFilter('${escapeHTML(g)}')">
-
-                ${
-                  g === "all"
-                    ? "Všetky"
-                    : escapeHTML(g)
-                }
-
-              </button>
-
-            `)
-            .join("")
-        }
-
-      </div>
+    noResults.style.display = "none";
 
 
-      ${
-        filtered.length
+    list.forEach((game, index) => {
 
-        ? `
+        const card =
+            document.createElement("div");
 
-          <div class="game-grid">
+        card.className =
+            "game-card";
 
-            ${
-              filtered
-                .map(g => renderGameCard(g))
-                .join("")
-            }
 
-          </div>
+        const image =
+            game.image ||
+            createPlaceholder(game.name);
 
-        `
 
-        : `
+        card.innerHTML = `
 
-          <div class="empty-state">
+            <img
+                class="game-image"
+                src="${escapeAttribute(image)}"
+                alt="${escapeAttribute(game.name)}"
+                onerror="this.src='${createPlaceholder(game.name)}'"
+            >
 
-            <div class="empty-state-icon">
-              🔍
+            <div class="game-content">
+
+                <div class="game-name">
+                    ${escapeHtml(game.name)}
+                </div>
+
+                <div class="game-description">
+                    ${escapeHtml(game.description)}
+                </div>
+
+                <a
+                    class="play-button"
+                    href="#"
+                    onclick="openGame(${index}); return false;"
+                >
+                    ▶ HRAŤ
+                </a>
+
             </div>
 
-            <h3>
-              Žiadne hry neboli nájdené
-            </h3>
+        `;
 
-            <p>
-              Skús zmeniť vyhľadávanie.
-            </p>
+        container.appendChild(card);
 
-          </div>
-
-        `
-      }
-
-    </div>
-
-  `;
+    });
 
 }
 
 
-/* ============================================================
-   GAME CARD
-============================================================ */
+/* ========================================================
+   OTVORENIE HRY
+======================================================== */
 
-function renderGameCard(game) {
+function openGame(index) {
 
-  const isFav =
-    state.favorites.includes(game.id);
+    const game =
+        games[index];
 
-  return `
-
-    <div
-      class="game-card"
-      onclick="router.navigate('detail','${encodeURIComponent(game.id)}')">
-
-      ${
-        isFav
-        ? `<div class="badge-fav">♥</div>`
-        : ""
-      }
+    if (!game) return;
 
 
-      <div class="card-image-wrap">
+    /*
+       Hra sa otvorí priamo v iframe.
+    */
 
-        <img
-          class="card-image"
-          src="${escapeHTML(game.thumbnail)}"
-          alt="${escapeHTML(game.name)}"
-          loading="lazy"
-          onerror="this.src=makeDefaultThumbnail('${escapeHTML(game.name)}')">
+    if (!game.link) {
 
+        alert("Táto hra nemá nastavený link.");
 
-        <button
-          class="card-play-btn"
-          onclick="event.stopPropagation(); launchGame('${escapeHTML(game.id)}')">
+        return;
 
-          ▶
-
-        </button>
+    }
 
 
-        <div class="card-overlay">
-
-          <div style="
-            color:white;
-            font-size:.85rem;
-          ">
-
-            ${escapeHTML(game.description)}
-
-          </div>
-
-        </div>
-
-      </div>
+    document.getElementById("playerTitle")
+        .textContent = game.name;
 
 
-      <div class="card-info">
-
-        <div class="card-title">
-
-          ${escapeHTML(game.name)}
-
-        </div>
+    document.getElementById("gameFrame")
+        .src = game.link;
 
 
-        <div class="card-desc">
-
-          ${escapeHTML(game.longDescription)}
-
-        </div>
-
-
-        <div class="card-meta">
-
-          <span class="badge badge-genre">
-
-            ${escapeHTML(game.genre)}
-
-          </span>
-
-          <span class="badge badge-type">
-
-            ${escapeHTML(game.type)}
-
-          </span>
-
-
-          ${
-            game.gameUrl
-
-            ? `
-
-              <a
-                class="play-link"
-                href="${escapeHTML(game.gameUrl)}"
-                target="_blank"
-                rel="noopener"
-                onclick="event.stopPropagation()">
-
-                HRAŤ
-
-              </a>
-
-            `
-            : ""
-          }
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
+    document.getElementById("player")
+        .style.display = "flex";
 
 }
 
 
-/* ============================================================
-   DETAIL
-============================================================ */
+/* ========================================================
+   ZATVORENIE HRY
+======================================================== */
 
-function renderDetail(gameId) {
+function closeGame() {
 
-  gameId =
-    decodeURIComponent(gameId || "");
+    document.getElementById("player")
+        .style.display = "none";
 
-  const game =
-    gamesData.find(g => g.id === gameId);
 
-  if (!game) {
+    document.getElementById("gameFrame")
+        .src = "";
+
+}
+
+
+/* ========================================================
+   VYHĽADÁVANIE
+======================================================== */
+
+function searchGames() {
+
+    const search =
+        document.getElementById("search")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    if (!search) {
+
+        renderGames(games);
+
+        return;
+
+    }
+
+
+    const filtered =
+        games.filter(game =>
+
+            game.name
+                .toLowerCase()
+                .includes(search)
+
+            ||
+
+            game.description
+                .toLowerCase()
+                .includes(search)
+
+        );
+
+
+    renderGames(filtered);
+
+}
+
+
+/* ========================================================
+   OBLÚBENÉ
+======================================================== */
+
+function showFavorites() {
+
+    alert(
+        "Obľúbené hry môžeme doplniť v ďalšej verzii."
+    );
+
+}
+
+
+/* ========================================================
+   SCROLL NA HRY
+======================================================== */
+
+function scrollToGames() {
+
+    document.querySelector(".container")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+
+}
+
+
+/* ========================================================
+   PLACEHOLDER OBRÁZOK
+======================================================== */
+
+function createPlaceholder(name) {
+
+    const text =
+        encodeURIComponent(name);
 
     return `
-
-      <div class="empty-state">
-
-        <div class="empty-state-icon">
-          ❌
-        </div>
-
-        <h2>
-          Hra nebola nájdená
-        </h2>
-
-        <button
-          class="btn btn-secondary"
-          onclick="router.navigate('games')">
-
-          ← Späť
-
-        </button>
-
-      </div>
-
-    `;
-
-  }
-
-  addRecent(gameId);
-
-  const isFav =
-    state.favorites.includes(gameId);
-
-  return `
-
-    <div class="fade-in">
-
-
-      <div class="hero">
-
-        <div
-          class="hero-bg"
-          style="
-            background-image:url('${escapeHTML(game.thumbnail)}')
-          ">
-        </div>
-
-
-        <div class="hero-content">
-
-          <div class="hero-title">
-
-            ${escapeHTML(game.name)}
-
-          </div>
-
-
-          <div class="hero-meta">
-
-            <span>
-              Žáner:
-              <strong>
-                ${escapeHTML(game.genre)}
-              </strong>
-            </span>
-
-            <span>
-              Typ:
-              <strong>
-                ${escapeHTML(game.type)}
-              </strong>
-            </span>
-
-            <span>
-              Verzia:
-              <strong>
-                ${escapeHTML(game.version)}
-              </strong>
-            </span>
-
-            <span>
-              Autor:
-              <strong>
-                ${escapeHTML(game.author)}
-              </strong>
-            </span>
-
-          </div>
-
-
-          <div class="hero-actions">
-
-            <button
-              class="btn btn-primary"
-              onclick="launchGame('${escapeHTML(game.id)}')">
-
-              ▶ PLAY
-
-            </button>
-
-
-            ${
-              game.gameUrl
-
-              ? `
-
-                <a
-                  class="btn btn-accent"
-                  href="${escapeHTML(game.gameUrl)}"
-                  target="_blank"
-                  rel="noopener">
-
-                  ↗ OTVORIŤ HRU
-
-                </a>
-
-              `
-              : ""
-            }
-
-
-            <button
-              class="btn ${
-                isFav
-                  ? "btn-danger"
-                  : "btn-secondary"
-              }"
-              onclick="toggleFavorite('${escapeHTML(game.id)}')">
-
-              ${
-                isFav
-                  ? "♥ OBĽÚBENÉ"
-                  : "♡ PRIDAŤ DO OBĽÚBENÝCH"
-              }
-
-            </button>
-
-
-            <button
-              class="btn btn-secondary"
-              onclick="router.navigate('games')">
-
-              ← SPÄŤ
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="detail-grid">
-
-
-        <div class="detail-main">
-
-          <h3>
-            O hre
-          </h3>
-
-          <p>
-            ${escapeHTML(game.longDescription)}
-          </p>
-
-
-          ${
-            game.screenshots.length
-
-            ? `
-
-              <h3>
-                📸 Screenshoty
-              </h3>
-
-              <div class="screenshot-grid">
-
-                ${
-                  game.screenshots
-                    .map((src,index) => `
-
-                      <div
-                        class="screenshot-thumb"
-                        onclick="openLightbox('${escapeHTML(game.id)}',${index})">
-
-                        <img
-                          src="${escapeHTML(src)}"
-                          alt="Screenshot">
-
-                      </div>
-
-                    `)
-                    .join("")
-                }
-
-              </div>
-
-            `
-
-            : ""
-          }
-
-
-          ${
-            game.controls.length
-
-            ? `
-
-              <h3>
-                🎮 Ovládanie
-              </h3>
-
-              ${
-                game.controls
-                  .map(c => `
-
-                    <div style="
-                      display:flex;
-                      gap:15px;
-                      margin-bottom:10px;
-                      padding:12px;
-                      background:var(--bg-card);
-                      border:1px solid var(--border);
-                      border-radius:8px;
-                    ">
-
-                      <strong
-                        style="
-                          color:var(--accent);
-                          min-width:100px;
-                        ">
-
-                        ${escapeHTML(c.key)}
-
-                      </strong>
-
-                      <span>
-                        ${escapeHTML(c.description)}
-                      </span>
-
-                    </div>
-
-                  `)
-                  .join("")
-              }
-
-            `
-
-            : ""
-          }
-
-        </div>
-
-
-        <div class="detail-sidebar">
-
-          <h4>
-            Informácie
-          </h4>
-
-
-          ${infoRow("Názov", game.name)}
-
-          ${infoRow("Žáner", game.genre)}
-
-          ${infoRow("Typ", game.type)}
-
-          ${infoRow("Verzia", game.version)}
-
-          ${infoRow("Vydanie", game.releaseDate)}
-
-          ${infoRow("Autor", game.author)}
-
-
-          ${
-            game.gameUrl
-
-            ? `
-
-              <div style="margin-top:20px;">
-
-                <a
-                  href="${escapeHTML(game.gameUrl)}"
-                  target="_blank"
-                  rel="noopener"
-                  class="btn btn-primary"
-                  style="
-                    width:100%;
-                    justify-content:center;
-                    text-decoration:none;
-                  ">
-
-                  ▶ HRAŤ HRU
-
-                </a>
-
-              </div>
-
-            `
-
-            : ""
-          }
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
+        data:image/svg+xml;charset=UTF-8,
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="900"
+             height="500">
+
+            <rect
+                width="100%"
+                height="100%"
+                fill="%231e232b"/>
+
+            <text
+                x="50%"
+                y="50%"
+                fill="%2366c0f4"
+                font-size="42"
+                font-family="Arial"
+                text-anchor="middle"
+                dominant-baseline="middle">
+
+                ${text}
+
+            </text>
+
+        </svg>
+    `.replace(/\s+/g, " ");
 
 }
 
 
-function infoRow(label,value) {
+/* ========================================================
+   OCHRANA HTML
+======================================================== */
 
-  return `
+function escapeHtml(value) {
 
-    <div class="info-row">
-
-      <span class="info-label">
-        ${escapeHTML(label)}
-      </span>
-
-      <span class="info-value">
-        ${escapeHTML(value)}
-      </span>
-
-    </div>
-
-  `;
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }
 
 
-/* ============================================================
-   FAVORITES
-============================================================ */
+function escapeAttribute(value) {
 
-function renderFavorites() {
-
-  const games =
-    gamesData.filter(g =>
-      state.favorites.includes(g.id)
-    );
-
-  return `
-
-    <div class="fade-in">
-
-      <h2 class="section-title">
-        ❤️ Obľúbené hry
-      </h2>
-
-
-      ${
-        games.length
-
-        ? `
-
-          <div class="game-grid">
-
-            ${
-              games
-                .map(g => renderGameCard(g))
-                .join("")
-            }
-
-          </div>
-
-        `
-
-        : `
-
-          <div class="empty-state">
-
-            <div class="empty-state-icon">
-              💔
-            </div>
-
-            <h3>
-              Zatiaľ nemáš obľúbené hry
-            </h3>
-
-            <p>
-              Klikni na obľúbené pri hre.
-            </p>
-
-          </div>
-
-        `
-      }
-
-    </div>
-
-  `;
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
 
 }
 
 
-/* ============================================================
-   RECENT
-============================================================ */
-
-function renderRecent() {
-
-  const games =
-    state.recent
-      .map(id =>
-        gamesData.find(g => g.id === id)
-      )
-      .filter(Boolean);
-
-  return `
-
-    <div class="fade-in">
-
-      <h2 class="section-title">
-        🕐 Nedávno hrané
-      </h2>
-
-
-      ${
-        games.length
-
-        ? `
-
-          <div class="game-grid">
-
-            ${
-              games
-                .map(g => renderGameCard(g))
-                .join("")
-            }
-
-          </div>
-
-        `
-
-        : `
-
-          <div class="empty-state">
-
-            <div class="empty-state-icon">
-              🎮
-            </div>
-
-            <h3>
-              Zatiaľ si nehral žiadnu hru
-            </h3>
-
-            <p>
-              Spusť hru a objaví sa tu.
-            </p>
-
-          </div>
-
-        `
-      }
-
-    </div>
-
-  `;
-
-}
-
-
-/* ============================================================
-   FILTER
-============================================================ */
-
-function filterGames() {
-
-  let result = gamesData;
-
-  if (state.currentFilter !== "all") {
-
-    result =
-      result.filter(
-        g =>
-          g.genre === state.currentFilter
-      );
-
-  }
-
-  if (state.searchQuery) {
-
-    const q =
-      state.searchQuery.toLowerCase();
-
-    result =
-      result.filter(g =>
-
-        g.name
-          .toLowerCase()
-          .includes(q)
-
-        ||
-
-        g.genre
-          .toLowerCase()
-          .includes(q)
-
-        ||
-
-        g.description
-          .toLowerCase()
-          .includes(q)
-
-      );
-
-  }
-
-  return result;
-
-}
-
-
-function setFilter(genre) {
-
-  state.currentFilter = genre;
-
-  router.render();
-
-}
-
-
-function handleSearch(query) {
-
-  state.searchQuery = query;
-
-  if (router.current !== "games") {
-
-    router.navigate("games");
-
-  } else {
-
-    router.render();
-
-  }
-
-}
-
-
-/* ============================================================
-   FAVORITES
-============================================================ */
-
-function toggleFavorite(gameId) {
-
-  const index =
-    state.favorites.indexOf(gameId);
-
-  if (index >= 0) {
-
-    state.favorites.splice(index,1);
-
-    showToast(
-      "Odstránené z obľúbených"
-    );
-
-  } else {
-
-    state.favorites.push(gameId);
-
-    showToast(
-      "Pridané do obľúbených"
-    );
-
-  }
-
-  localStorage.setItem(
-    "favorites",
-    JSON.stringify(state.favorites)
-  );
-
-  router.render();
-
-}
-
-
-/* ============================================================
-   RECENT
-============================================================ */
-
-function addRecent(gameId) {
-
-  state.recent =
-    state.recent.filter(
-      id => id !== gameId
-    );
-
-  state.recent.unshift(gameId);
-
-  if (state.recent.length > 10) {
-
-    state.recent.pop();
-
-  }
-
-  localStorage.setItem(
-    "recent",
-    JSON.stringify(state.recent)
-  );
-
-}
-
-
-/* ============================================================
-   SPUSTENIE HRY
-============================================================ */
-
-function launchGame(gameId) {
-
-  const game =
-    gamesData.find(
-      g => g.id === gameId
-    );
-
-  if (!game) return;
-
-
-  state.currentGame = gameId;
-
-
-  state.lastPlayed =
-    state.lastPlayed.filter(
-      id => id !== gameId
-    );
-
-  state.lastPlayed.unshift(gameId);
-
-  if (state.lastPlayed.length > 10) {
-    state.lastPlayed.pop();
-  }
-
-  localStorage.setItem(
-    "lastPlayed",
-    JSON.stringify(state.lastPlayed)
-  );
-
-
-  addRecent(gameId);
-
-
-  /*
-     Ak má hra link,
-     načítame ju do herného okna.
-  */
-
-  if (!game.gameUrl) {
-
-    showToast(
-      "Táto hra nemá nastavený link."
-    );
-
-    return;
-
-  }
-
-
-  const player =
-    document.getElementById(
-      "game-player"
-    );
-
-  const iframe =
-    document.getElementById(
-      "game-iframe"
-    );
-
-  document.getElementById(
-    "player-title"
-  ).textContent = game.name;
-
-
-  iframe.src = game.gameUrl;
-
-  player.classList.add("active");
-
-  document.body.style.overflow = "hidden";
-
-
-  if (state.settings.fullscreen) {
-
-    setTimeout(
-      () => toggleFullscreen(),
-      500
-    );
-
-  }
-
-}
-
-
-/* ============================================================
-   OTVORIŤ HRU V NOVOM OKNE
-============================================================ */
-
-function openCurrentGameExternally() {
-
-  if (!state.currentGame) return;
-
-  const game =
-    gamesData.find(
-      g => g.id === state.currentGame
-    );
-
-  if (!game || !game.gameUrl) return;
-
-  window.open(
-    game.gameUrl,
-    "_blank",
-    "noopener"
-  );
-
-}
-
-
-/* ============================================================
-   EXIT GAME
-============================================================ */
-
-function exitGame() {
-
-  const player =
-    document.getElementById(
-      "game-player"
-    );
-
-  const iframe =
-    document.getElementById(
-      "game-iframe"
-    );
-
-  player.classList.remove("active");
-
-  iframe.src = "";
-
-  document.body.style.overflow = "";
-
-  if (document.fullscreenElement) {
-
-    document.exitFullscreen()
-      .catch(() => {});
-
-  }
-
-}
-
-
-/* ============================================================
-   FULLSCREEN
-============================================================ */
-
-function toggleFullscreen() {
-
-  const player =
-    document.getElementById(
-      "game-player"
-    );
-
-  if (!document.fullscreenElement) {
-
-    player.requestFullscreen()
-      .catch(err =>
-        console.log(
-          "Fullscreen chyba:",
-          err
-        )
-      );
-
-  } else {
-
-    document.exitFullscreen();
-
-  }
-
-}
-
-
-/* ============================================================
-   LIGHTBOX
-============================================================ */
-
-function openLightbox(gameId,index) {
-
-  const game =
-    gamesData.find(
-      g => g.id === gameId
-    );
-
-  if (!game || !game.screenshots.length) {
-    return;
-  }
-
-  state.lightboxImages =
-    game.screenshots;
-
-  state.lightboxIndex =
-    index;
-
-  updateLightboxImage();
-
-  document
-    .getElementById("lightbox")
-    .classList.add("active");
-
-  document.body.style.overflow = "hidden";
-
-}
-
-
-function updateLightboxImage() {
-
-  const img =
-    document.getElementById(
-      "lightbox-img"
-    );
-
-  img.src =
-    state.lightboxImages[
-      state.lightboxIndex
-    ];
-
-}
-
-
-function changeImage(dir) {
-
-  state.lightboxIndex += dir;
-
-  if (
-    state.lightboxIndex < 0
-  ) {
-
-    state.lightboxIndex =
-      state.lightboxImages.length - 1;
-
-  }
-
-  if (
-    state.lightboxIndex >=
-    state.lightboxImages.length
-  ) {
-
-    state.lightboxIndex = 0;
-
-  }
-
-  updateLightboxImage();
-
-}
-
-
-function closeLightbox() {
-
-  document
-    .getElementById("lightbox")
-    .classList.remove("active");
-
-  document.body.style.overflow = "";
-
-}
-
-
-function closeLightboxOnBg(e) {
-
-  if (e.target.id === "lightbox") {
-
-    closeLightbox();
-
-  }
-
-}
-
-
-/* ============================================================
-   SETTINGS
-============================================================ */
-
-function toggleSettings() {
-
-  const modal =
-    document.getElementById(
-      "settings-modal"
-    );
-
-  modal.classList.toggle("active");
-
-  loadSettingsUI();
-
-}
-
-
-function closeSettingsOnBg(e) {
-
-  if (
-    e.target.id === "settings-modal"
-  ) {
-
-    toggleSettings();
-
-  }
-
-}
-
-
-function loadSettingsUI() {
-
-  const s = state.settings;
-
-  document.getElementById(
-    "set-volume"
-  ).value = s.volume;
-
-  document
-    .getElementById("toggle-music")
-    .classList.toggle(
-      "active",
-      s.music
-    );
-
-  document
-    .getElementById("toggle-sfx")
-    .classList.toggle(
-      "active",
-      s.sfx
-    );
-
-  document
-    .getElementById("toggle-fullscreen")
-    .classList.toggle(
-      "active",
-      s.fullscreen
-    );
-
-}
-
-
-function saveSetting(key,value) {
-
-  state.settings[key] = value;
-
-  localStorage.setItem(
-    "gameSettings",
-    JSON.stringify(state.settings)
-  );
-
-}
-
-
-function toggleBoolSetting(key) {
-
-  state.settings[key] =
-    !state.settings[key];
-
-  localStorage.setItem(
-    "gameSettings",
-    JSON.stringify(state.settings)
-  );
-
-  loadSettingsUI();
-
-}
-
-
-/* ============================================================
-   RESET
-============================================================ */
-
-function resetAllData() {
-
-  if (
-    !confirm(
-      "Naozaj chceš vymazať uložené dáta?"
-    )
-  ) {
-    return;
-  }
-
-  localStorage.removeItem("favorites");
-  localStorage.removeItem("recent");
-  localStorage.removeItem("lastPlayed");
-  localStorage.removeItem("gameSettings");
-
-  state.favorites = [];
-  state.recent = [];
-  state.lastPlayed = [];
-
-  state.settings = {
-    volume: 80,
-    music: true,
-    sfx: true,
-    fullscreen: false
-  };
-
-  loadSettingsUI();
-
-  router.render();
-
-  showToast(
-    "Dáta boli resetované."
-  );
-
-}
-
-
-/* ============================================================
-   TOAST
-============================================================ */
-
-function showToast(message) {
-
-  const toast =
-    document.getElementById(
-      "toast"
-    );
-
-  toast.textContent = message;
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-
-    toast.classList.remove("show");
-
-  },3000);
-
-}
-
-
-/* ============================================================
-   KEYBOARD
-============================================================ */
-
-document.addEventListener(
-  "keydown",
-  e => {
-
-    const lightbox =
-      document.getElementById(
-        "lightbox"
-      );
-
-    if (
-      !lightbox.classList.contains(
-        "active"
-      )
-    ) {
-      return;
-    }
-
-    if (e.key === "Escape") {
-      closeLightbox();
-    }
-
-    if (e.key === "ArrowLeft") {
-      changeImage(-1);
-    }
-
-    if (e.key === "ArrowRight") {
-      changeImage(1);
-    }
-
-  }
-);
-
-
-/* ============================================================
-   HASH
-============================================================ */
-
-window.addEventListener(
-  "hashchange",
-  () => router.render()
-);
-
-
-/* ============================================================
-   START
-============================================================ */
-
-window.addEventListener(
-  "load",
-  () => {
-
-    setTimeout(() => {
-
-      document
-        .getElementById(
-          "loading-screen"
-        )
-        .classList.add("hidden");
-
-    },800);
-
-    router.render();
-
-    loadSettingsUI();
-
-  }
-);
+/* ========================================================
+   SPUSTENIE
+======================================================== */
+
+renderGames();
 
 </script>
 
