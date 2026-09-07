@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Hub</title>
+
+<style>
+:root {
+    --games-per-row: 5;
+    --card-gap: 12px;
+    --featured-height: 430px;
+
+    --bg: #1b2838;
+    --panel: #16202d;
+    --panel2: #223448;
+    --blue: #1a9fff;
+    --text: #d6d7d8;
+    --white: #fff;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background:
+        radial-gradient(circle at top, #223b52, #1b2838 45%, #101820);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* HEADER */
+
+.header {
+    height: 70px;
+    background: linear-gradient(#1b2838, #171d25);
+    border-bottom: 1px solid #000;
+    box-shadow: 0 2px 10px #000;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    margin-right: 35px;
+}
+
+.logo span {
+    color: var(--blue);
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
+.nav a {
+    color: #d6d7d8;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+.spacer {
+    flex: 1;
+}
+
+.status {
+    color: #66c0f4;
+    font-size: 12px;
+}
+
+/* MAIN */
+
+.container {
+    width: 94%;
+    max-width: 1400px;
+    margin: 25px auto 60px;
+}
+
+.section-title {
+    color: white;
+    font-size: 22px;
+    font-weight: normal;
+    margin: 30px 0 14px;
+}
+
+/* FEATURED */
+
+.featured {
+    height: var(--featured-height);
+    position: relative;
+    overflow: hidden;
+    background: #0d141c;
+    border: 1px solid #000;
+    box-shadow: 0 5px 20px rgba(0,0,0,.6);
+}
+
+.featured-slide {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.featured-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.featured-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 90px 35px 30px;
+    background: linear-gradient(
+        transparent,
+        rgba(0,0,0,.95)
+    );
+}
+
+.featured-category {
+    color: var(--blue);
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.featured-title {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 7px 0;
+}
+
+.featured-description {
+    max-width: 750px;
+    font-size: 15px;
+}
+
+.play-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 9px 22px;
+    background: linear-gradient(#75b022, #588a16);
+    color: white;
+    font-weight: bold;
+}
+
+/* ARROWS */
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 90px;
+    border: 0;
+    background: rgba(0,0,0,.45);
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.slider-arrow:hover {
+    background: rgba(26,159,255,.65);
+}
+
+.slider-prev {
+    left: 0;
+}
+
+.slider-next {
+    right: 0;
+}
+
+/* DOTS */
+
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    background: #555;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.slider-dot.active {
+    background: var(--blue);
+}
+
+/* SEARCH */
+
+.search-box {
+    margin: 25px 0;
+    background: #0d151e;
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+}
+
+.search-box input::placeholder {
+    color: #71808f;
+}
+
+/* GAMES */
+
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--games-per-row), minmax(0,1fr));
+    gap: var(--card-gap);
+}
+
+.game-card {
+    background: linear-gradient(#223448, #182533);
+    border: 1px solid #0a1016;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .18s;
+}
+
+.game-card:hover {
+    transform: translateY(-3px);
+    background: #263b50;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+
+.game-image-wrap {
+    aspect-ratio: 16/9;
+    background: #101820;
+    overflow: hidden;
+}
+
+.game-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.game-info {
+    padding: 11px;
+}
+
+.game-title {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-category {
+    color: var(--blue);
+    font-size: 11px;
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+.game-description {
+    color: #9ca6ae;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 6px;
+    min-height: 34px;
+}
+
+.game-play {
+    display: inline-block;
+    margin-top: 9px;
+    padding: 7px 12px;
+    background: linear-gradient(#75b022, #588a16);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    background: var(--panel);
+}
+
+.footer {
+    text-align: center;
+    color: #66727e;
+    padding: 30px;
+    border-top: 1px solid #172331;
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width:1100px) {
+    :root {
+        --games-per-row: 4;
+    }
+}
+
+@media(max-width:800px) {
+    :root {
+        --games-per-row: 3;
+    }
+
+    .nav {
+        display: none;
+    }
+}
+
+@media(max-width:600px) {
+    :root {
+        --games-per-row: 2;
+    }
+
+    .featured {
+        height: 330px;
+    }
+
+    .featured-title {
+        font-size: 23px;
+    }
+
+    .featured-overlay {
+        padding: 50px 18px 20px;
+    }
+}
+
+@media(max-width:400px) {
+    :root {
+        --games-per-row: 1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        GAME<span>HUB</span>
+    </div>
+
+    <nav class="nav">
+        <a href="#home">OBCHOD</a>
+        <a href="#best">NAJLEPŠIE HRY</a>
+        <a href="#newest">NAJNOVŠIE</a>
+        <a href="#all">VŠETKY HRY</a>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <div class="status">
+        CLASSIC MODE
+    </div>
+
+</header>
+
+
+<main class="container" id="home">
+
+    <h2 class="section-title">
+        Odporúčané hry
+    </h2>
+
+    <div class="featured">
+
+        <button
+            class="slider-arrow slider-prev"
+            id="prevButton">
+            ‹
+        </button>
+
+        <div
+            class="featured-slide"
+            id="featuredSlide">
+
+            <img
+                id="featuredImage"
+                alt="Featured game">
+
+            <div class="featured-overlay">
+
+                <div
+                    class="featured-category"
+                    id="featuredCategory">
+                </div>
+
+                <div
+                    class="featured-title"
+                    id="featuredTitle">
+                </div>
+
+                <div
+                    class="featured-description"
+                    id="featuredDescription">
+                </div>
+
+                <div class="play-button">
+                    HRAŤ
+                </div>
+
+            </div>
+        </div>
+
+        <button
+            class="slider-arrow slider-next"
+            id="nextButton">
+            ›
+        </button>
+
+        <div
+            class="slider-dots"
+            id="sliderDots">
+        </div>
+
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Hľadať hry..."
+            autocomplete="off">
+
+    </div>
+
+
+    <section id="best">
+
+        <h2 class="section-title">
+            Najlepšie hry
+        </h2>
+
+        <div
+            class="game-grid"
+            id="bestGames">
+        </div>
+
+    </section>
+
+
+    <section id="newest">
+
+        <h2 class="section-title">
+            Najnovšie hry
+        </h2>
+
+        <div
+            class="game-grid"
+            id="newestGames">
+        </div>
+
+    </section>
+
+
+    <section id="all">
+
+        <h2 class="section-title">
+            Všetky hry
+        </h2>
+
+        <div
+            class="game-grid"
+            id="allGames">
+        </div>
+
+        <div
+            class="no-results"
+            id="noResults">
+            Žiadna hra nebola nájdená.
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer">
+    GAME HUB • CLASSIC EDITION
+</footer>
+
+
+<script>
+
+/* ============================================================
+                        ⚙️ SETTINGS
+============================================================ */
+
+const SETTINGS = {
+
+    GAMES_PER_ROW: 5,
+    // Počet hier v jednom riadku.
+    // Odporúčané: 3-6
+
+
+    BEST_GAMES_COUNT: 10,
+    // Počet hier v "Najlepšie hry".
+    // 0-200
+
+
+    NEWEST_GAMES_COUNT: 10,
+    // Počet hier v "Najnovšie hry".
+    // 0-200
+
+
+    AUTO_SLIDER: true,
+    // true = slider sa automaticky mení
+    // false = slider stojí
+
+
+    SLIDER_SPEED: 5000,
+    // Čas medzi zmenami.
+    // 3000 = 3 sekundy
+    // 5000 = 5 sekúnd
+    // 10000 = 10 sekúnd
+
+
+    ANIMATION_SPEED: 400,
+    // Rýchlosť animácie.
+    // Odporúčané: 100-1500
+
+
+    RANDOM_FEATURED: true,
+    // true = náhodné featured hry
+    // false = hry idú podľa poradia
+
+
+    NO_REPEAT_RANDOM: true,
+    // true = tá istá hra sa nezopakuje
+    // false = môže sa zopakovať
+
+
+    FEATURED_WINDOWS: 6,
+    // Počet hier v slideri.
+    // Odporúčané: 3-20
+
+
+    SHOW_ARROWS: true,
+    // true = zobrazí šípky
+    // false = skryje šípky
+
+
+    SHOW_DOTS: true,
+    // true = zobrazí bodky
+    // false = skryje bodky
+
+
+    FEATURED_HEIGHT: 430,
+    // Výška veľkého slidera.
+    // Odporúčané: 300-700
+
+
+    CARD_GAP: 12,
+    // Medzera medzi kartami.
+    // Odporúčané: 5-30
+
+
+    OPEN_GAME_IN_NEW_TAB: false,
+    // true = hra sa otvorí v novej karte
+    // false = hra sa otvorí v rovnakej karte
+
+
+    SEARCH_TITLE: true,
+    // Vyhľadávať v názve
+
+
+    SEARCH_DESCRIPTION: true,
+    // Vyhľadávať v popise
+
+
+    SEARCH_CATEGORY: true,
+    // Vyhľadávať v kategórii
+
+
+    SHOW_BEST_SECTION: true,
+    // true = zobrazí Najlepšie hry
+
+
+    SHOW_NEWEST_SECTION: true,
+    // true = zobrazí Najnovšie hry
+
+
+    SHOW_ALL_SECTION: true
+    // true = zobrazí Všetky hry
+
+};
+
+
+/* ============================================================
+                     🎮 GAME SLOTS
+============================================================ */
+
+/*
+
+==============================================================
+                 AKO PRIDAŤ OBRÁZOK
+==============================================================
+
+Stačí:
+
+imageURL: "https://mojweb.sk/obrazok.jpg"
+
+Môžeš použiť:
+
+.jpg
+.png
+.webp
+.gif
+
+alebo lokálny súbor:
+
+imageURL: "images/hra1.jpg"
+
+==============================================================
+
+AK NEMÁŠ OBRÁZOK:
+
+imageURL: ""
+
+Stránka automaticky použije vlastný tmavý obrázok
+"BEZ OBRÁZKU".
+
+==============================================================
+
+GAME URL:
+
+gameURL: "games/hra1/index.html"
+
+alebo napríklad:
+
+gameURL: "https://mojweb.sk/hra.html"
+
+==============================================================
+
+featured:
+true = hra môže byť vo veľkom slideri
+false = nebude tam
+
+best:
+true = Najlepšie hry
+false = nebude tam
+
+newest:
+true = Najnovšie hry
+false = nebude tam
+
+==============================================================
+*/
+
+
+const GAMES = [
+
+/* ================= HRA 1 ================= */
+
+{
+    title: "Hra 1",
+    description: "Moja prvá hra.",
+    category: "Akčná",
+    imageURL: "",
+    gameURL: "games/hra1/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 2 ================= */
+
+{
+    title: "Hra 2",
+    description: "Moja druhá hra.",
+    category: "Puzzle",
+    imageURL: "",
+    gameURL: "games/hra2/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 3 ================= */
+
+{
+    title: "Hra 3",
+    description: "Moja tretia hra.",
+    category: "Arcade",
+    imageURL: "",
+    gameURL: "games/hra3/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 4 ================= */
+
+{
+    title: "Hra 4",
+    description: "Moja štvrtá hra.",
+    category: "Závodná",
+    imageURL: "",
+    gameURL: "games/hra4/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 5 ================= */
+
+{
+    title: "Hra 5",
+    description: "Moja piata hra.",
+    category: "Strategická",
+    imageURL: "",
+    gameURL: "games/hra5/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 6 ================= */
+
+{
+    title: "Hra 6",
+    description: "Moja šiesta hra.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra6/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 7 ================= */
+
+{
+    title: "Hra 7",
+    description: "Popis hry 7.",
+    category: "Akčná",
+    imageURL: "",
+    gameURL: "games/hra7/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 8 ================= */
+
+{
+    title: "Hra 8",
+    description: "Popis hry 8.",
+    category: "Puzzle",
+    imageURL: "",
+    gameURL: "games/hra8/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 9 ================= */
+
+{
+    title: "Hra 9",
+    description: "Popis hry 9.",
+    category: "Arcade",
+    imageURL: "",
+    gameURL: "games/hra9/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 10 ================= */
+
+{
+    title: "Hra 10",
+    description: "Popis hry 10.",
+    category: "RPG",
+    imageURL: "",
+    gameURL: "games/hra10/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ==========================================================
+                     HRY 11-200
+========================================================== */
+
+/* HRA 11 */
+{
+    title: "Hra 11",
+    description: "Popis hry 11.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra11/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 12 */
+{
+    title: "Hra 12",
+    description: "Popis hry 12.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra12/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 13 */
+{
+    title: "Hra 13",
+    description: "Popis hry 13.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra13/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 14 */
+{
+    title: "Hra 14",
+    description: "Popis hry 14.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra14/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 15 */
+{
+    title: "Hra 15",
+    description: "Popis hry 15.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra15/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 16 */
+{
+    title: "Hra 16",
+    description: "Popis hry 16.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra16/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 17 */
+{
+    title: "Hra 17",
+    description: "Popis hry 17.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra17/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 18 */
+{
+    title: "Hra 18",
+    description: "Popis hry 18.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra18/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 19 */
+{
+    title: "Hra 19",
+    description: "Popis hry 19.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra19/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 20 */
+{
+    title: "Hra 20",
+    description: "Popis hry 20.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra20/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/*
+==============================================================
+                    HRY 21-200
+==============================================================
+
+Dôležité:
+Tieto sloty sú pripravené ako samostatné hry.
+Ak ich chceš používať, zmeň iba údaje.
+
+==============================================================
+*/
+
+{
+    title: "Hra 21",
+    description: "Popis hry 21.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra21/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 22",
+    description: "Popis hry 22.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra22/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 23",
+    description: "Popis hry 23.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra23/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 24",
+    description: "Popis hry 24.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra24/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 25",
+    description: "Popis hry 25.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra25/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 26",
+    description: "Popis hry 26.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra26/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 27",
+    description: "Popis hry 27.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra27/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 28",
+    description: "Popis hry 28.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra28/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 29",
+    description: "Popis hry 29.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra29/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 30",
+    description: "Popis hry 30.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra30/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 31",
+    description: "Popis hry 31.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra31/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 32",
+    description: "Popis hry 32.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra32/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 33",
+    description: "Popis hry 33.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra33/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 34",
+    description: "Popis hry 34.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra34/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 35",
+    description: "Popis hry 35.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra35/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 36",
+    description: "Popis hry 36.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra36/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 37",
+    description: "Popis hry 37.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra37/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 38",
+    description: "Popis hry 38.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra38/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 39",
+    description: "Popis hry 39.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra39/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 40",
+    description: "Popis hry 40.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra40/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+/*
+--------------------------------------------------------------
+Od tejto chvíle môžeš používať ďalšie sloty.
+--------------------------------------------------------------
+*/
+
+{
+    title: "Hra 41",
+    description: "Popis hry 41.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra41/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 42",
+    description: "Popis hry 42.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra42/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 43",
+    description: "Popis hry 43.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra43/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 44",
+    description: "Popis hry 44.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra44/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 45",
+    description: "Popis hry 45.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra45/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 46",
+    description: "Popis hry 46.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra46/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 47",
+    description: "Popis hry 47.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra47/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 48",
+    description: "Popis hry 48.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra48/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 49",
+    description: "Popis hry 49.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra49/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 50",
+    description: "Popis hry 50.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra50/index.html",
+    featured: false,
+    best: false,
+    newest: false
+}
+
+];
+
+
+/* ============================================================
+                  VÝCHOZÍ OBRÁZOK
+============================================================ */
+
+function defaultImage(text) {
+
+    const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="800"
+         height="450">
+
+        <rect width="100%"
+              height="100%"
+              fill="#1b2838"/>
+
+        <text x="50%"
+              y="50%"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              fill="#66c0f4"
+              font-size="32"
+              font-family="Arial">
+            ${text}
+        </text>
+
+    </svg>
+    `;
+
+    return "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(svg);
+}
+
+
+function getGameImage(game) {
+
+    if (
+        game.imageURL &&
+        game.imageURL.trim() !== ""
+    ) {
+        return game.imageURL;
+    }
+
+    return defaultImage("BEZ OBRÁZKU");
+}
+
+
+/* ============================================================
+                      OTVORENIE HRY
+============================================================ */
+
+function openGame(game) {
+
+    if (
+        !game.gameURL ||
+        game.gameURL === "#"
+    ) {
+        alert("Táto hra ešte nemá nastavený gameURL.");
+        return;
+    }
+
+    if (SETTINGS.OPEN_GAME_IN_NEW_TAB) {
+
+        window.open(
+            game.gameURL,
+            "_blank"
+        );
+
+    } else {
+
+        window.location.href =
+            game.gameURL;
+
+    }
+}
+
+
+/* ============================================================
+                       KARTY HIER
+============================================================ */
+
+function createGameCard(game) {
+
+    const card =
+        document.createElement("div");
+
+    card.className =
+        "game-card";
+
+
+    card.innerHTML = `
+
+        <div class="game-image-wrap">
+
+            <img
+                class="game-image"
+                src="${getGameImage(game)}"
+                alt="${game.title}">
+
+        </div>
+
+        <div class="game-info">
+
+            <div class="game-title">
+                ${game.title}
+            </div>
+
+            <div class="game-category">
+                ${game.category}
+            </div>
+
+            <div class="game-description">
+                ${game.description}
+            </div>
+
+            <div class="game-play">
+                HRAŤ
+            </div>
+
+        </div>
+
+    `;
+
+
+    const image =
+        card.querySelector(".game-image");
+
+
+    image.onerror = function() {
+
+        this.onerror = null;
+
+        this.src =
+            defaultImage("CHYBA OBRÁZKU");
+
+    };
+
+
+    card.addEventListener(
+        "click",
+        () => openGame(game)
+    );
+
+
+    return card;
+}
+
+
+/* ============================================================
+                     VYKRESLENIE HIER
+============================================================ */
+
+function renderGames() {
+
+    const best =
+        document.getElementById("bestGames");
+
+    const newest =
+        document.getElementById("newestGames");
+
+    const all =
+        document.getElementById("allGames");
+
+
+    best.innerHTML = "";
+    newest.innerHTML = "";
+    all.innerHTML = "";
+
+
+    GAMES
+        .filter(game => game.best)
+        .slice(0, SETTINGS.BEST_GAMES_COUNT)
+        .forEach(game => {
+
+            best.appendChild(
+                createGameCard(game)
+            );
+
+        });
+
+
+    GAMES
+        .filter(game => game.newest)
+        .slice(0, SETTINGS.NEWEST_GAMES_COUNT)
+        .forEach(game => {
+
+            newest.appendChild(
+                createGameCard(game)
+            );
+
+        });
+
+
+    GAMES.forEach(game => {
+
+        all.appendChild(
+            createGameCard(game)
+        );
+
+    });
+
+}
+
+
+renderGames();
+
+
+/* ============================================================
+                     SKRYTIE SEKCÍ
+============================================================ */
+
+if (!SETTINGS.SHOW_BEST_SECTION) {
+
+    document.getElementById("best")
+        .style.display = "none";
+
+}
+
+if (!SETTINGS.SHOW_NEWEST_SECTION) {
+
+    document.getElementById("newest")
+        .style.display = "none";
+
+}
+
+if (!SETTINGS.SHOW_ALL_SECTION) {
+
+    document.getElementById("all")
+        .style.display = "none";
+
+}
+
+
+/* ============================================================
+                       SEARCH
+============================================================ */
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const allGames =
+    document.getElementById("allGames");
+
+const noResults =
+    document.getElementById("noResults");
+
+
+searchInput.addEventListener(
+    "input",
+    function() {
+
+        const query =
+            this.value
+                .trim()
+                .toLowerCase();
+
+
+        let found = 0;
+
+
+        GAMES.forEach(
+            (game, index) => {
+
+                const card =
+                    allGames.children[index];
+
+                if (!card) return;
+
+
+                let text = "";
+
+
+                if (SETTINGS.SEARCH_TITLE) {
+                    text += " " + game.title;
+                }
+
+
+                if (SETTINGS.SEARCH_DESCRIPTION) {
+                    text += " " + game.description;
+                }
+
+
+                if (SETTINGS.SEARCH_CATEGORY) {
+                    text += " " + game.category;
+                }
+
+
+                const match =
+                    text
+                        .toLowerCase()
+                        .includes(query);
+
+
+                card.style.display =
+                    match ? "" : "none";
+
+
+                if (match) {
+                    found++;
+                }
+
+            }
+        );
+
+
+        noResults.style.display =
+            found === 0
+                ? "block"
+                : "none";
+
+    }
+);
+
+
+/* ============================================================
+                    FEATURED SLIDER
+============================================================ */
+
+const featuredPool =
+    GAMES.filter(
+        game => game.featured
+    );
+
+
+let featuredGames = [];
+
+let featuredIndex = 0;
+
+let currentFeaturedGame = null;
+
+
+/* ============================================================
+                   NÁHODNÁ HRA
+============================================================ */
+
+function randomFeaturedGame(
+    exclude = null
+) {
+
+    if (!featuredPool.length) {
+        return null;
+    }
+
+
+    let available =
+        featuredPool;
+
+
+    if (
+        SETTINGS.NO_REPEAT_RANDOM &&
+        exclude &&
+        featuredPool.length > 1
+    ) {
+
+        available =
+            featuredPool.filter(
+                game => game !== exclude
+            );
+
+    }
+
+
+    return available[
+        Math.floor(
+            Math.random() *
+            available.length
+        )
+    ];
+
+}
+
+
+/* ============================================================
+                  PRÍPRAVA SLIDERA
+============================================================ */
+
+function prepareFeatured() {
+
+    if (!featuredPool.length) {
+        return;
+    }
+
+
+    featuredGames = [];
+
+
+    if (SETTINGS.RANDOM_FEATURED) {
+
+        const pool =
+            [...featuredPool];
+
+
+        const amount =
+            Math.min(
+                SETTINGS.FEATURED_WINDOWS,
+                pool.length
+            );
+
+
+        while (
+            featuredGames.length < amount
+        ) {
+
+            const index =
+                Math.floor(
+                    Math.random() *
+                    pool.length
+                );
+
+
+            featuredGames.push(
+                pool.splice(index, 1)[0]
+            );
+
+        }
+
+    } else {
+
+        featuredGames =
+            featuredPool.slice(
+                0,
+                SETTINGS.FEATURED_WINDOWS
+            );
+
+    }
+
+}
+
+
+/* ============================================================
+                  ZOBRAZENIE SLIDERA
+============================================================ */
+
+function showFeatured(index) {
+
+    if (!featuredGames.length) {
+        return;
+    }
+
+
+    featuredIndex =
+        (index + featuredGames.length) %
+        featuredGames.length;
+
+
+    currentFeaturedGame =
+        featuredGames[
+            featuredIndex
+        ];
+
+
+    const image =
+        document.getElementById(
+            "featuredImage"
+        );
+
+    const title =
+        document.getElementById(
+            "featuredTitle"
+        );
+
+    const category =
+        document.getElementById(
+            "featuredCategory"
+        );
+
+    const description =
+        document.getElementById(
+            "featuredDescription"
+        );
+
+
+    image.style.transition =
+        `opacity ${SETTINGS.ANIMATION_SPEED}ms`;
+
+    image.style.opacity = "0";
+
+
+    setTimeout(() => {
+
+        image.src =
+            getGameImage(
+                currentFeaturedGame
+            );
+
+
+        image.alt =
+            currentFeaturedGame.title;
+
+
+        image.onerror = function() {
+
+            this.onerror = null;
+
+            this.src =
+                defaultImage(
+                    "CHYBA OBRÁZKU"
+                );
+
+        };
+
+
+        title.textContent =
+            currentFeaturedGame.title;
+
+
+        category.textContent =
+            currentFeaturedGame.category;
+
+
+        description.textContent =
+            currentFeaturedGame.description;
+
+
+        image.style.opacity = "1";
+
+    }, SETTINGS.ANIMATION_SPEED / 2);
+
+
+    updateDots();
+
+}
+
+
+/* ============================================================
+                         BODKY
+============================================================ */
+
+function createDots() {
+
+    const container =
+        document.getElementById(
+            "sliderDots"
+        );
+
+
+    container.innerHTML = "";
+
+
+    featuredGames.forEach(
+        (game, index) => {
+
+            const dot =
+                document.createElement(
+                    "div"
+                );
+
+
+            dot.className =
+                "slider-dot";
+
+
+            dot.addEventListener(
+                "click",
+                () => {
+
+                    if (
+                        SETTINGS.RANDOM_FEATURED
+                    ) {
+
+                        const newGame =
+                            randomFeaturedGame(
+                                currentFeaturedGame
+                            );
+
+
+                        if (newGame) {
+                            featuredGames[index] =
+                                newGame;
+                        }
+
+                    }
+
+
+                    showFeatured(index);
+
+                }
+            );
+
+
+            container.appendChild(dot);
+
+        }
+    );
+
+}
+
+
+function updateDots() {
+
+    const dots =
+        document.querySelectorAll(
+            ".slider-dot"
+        );
+
+
+    dots.forEach(
+        (dot, index) => {
+
+            dot.classList.toggle(
+                "active",
+                index === featuredIndex
+            );
+
+        }
+    );
+
+}
+
+
+/* ============================================================
+                      NEXT
+============================================================ */
+
+function nextFeatured() {
+
+    if (!featuredGames.length) {
+        return;
+    }
+
+
+    const next =
+        (featuredIndex + 1) %
+        featuredGames.length;
+
+
+    if (SETTINGS.RANDOM_FEATURED) {
+
+        const random =
+            randomFeaturedGame(
+                currentFeaturedGame
+            );
+
+
+        if (random) {
+            featuredGames[next] =
+                random;
+        }
+
+    }
+
+
+    showFeatured(next);
+
+}
+
+
+/* ============================================================
+                      PREVIOUS
+============================================================ */
+
+function previousFeatured() {
+
+    if (!featuredGames.length) {
+        return;
+    }
+
+
+    const previous =
+        (featuredIndex - 1 +
+        featuredGames.length) %
+        featuredGames.length;
+
+
+    if (SETTINGS.RANDOM_FEATURED) {
+
+        const random =
+            randomFeaturedGame(
+                currentFeaturedGame
+            );
+
+
+        if (random) {
+            featuredGames[previous] =
+                random;
+        }
+
+    }
+
+
+    showFeatured(previous);
+
+}
+
+
+/* ============================================================
+                     SLIDER CLICK
+============================================================ */
+
+document
+    .getElementById("featuredSlide")
+    .addEventListener(
+        "click",
+        () => {
+
+            if (currentFeaturedGame) {
+                openGame(
+                    currentFeaturedGame
+                );
+            }
+
+        }
+    );
+
+
+/* ============================================================
+                       BUTTONS
+============================================================ */
+
+document
+    .getElementById("nextButton")
+    .addEventListener(
+        "click",
+        nextFeatured
+    );
+
+
+document
+    .getElementById("prevButton")
+    .addEventListener(
+        "click",
+        previousFeatured
+    );
+
+
+if (!SETTINGS.SHOW_ARROWS) {
+
+    document.getElementById(
+        "nextButton"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "prevButton"
+    ).style.display = "none";
+
+}
+
+
+if (!SETTINGS.SHOW_DOTS) {
+
+    document.getElementById(
+        "sliderDots"
+    ).style.display = "none";
+
+}
+
+
+/* ============================================================
+                      START SLIDER
+============================================================ */
+
+prepareFeatured();
+
+createDots();
+
+showFeatured(0);
+
+
+if (
+    SETTINGS.AUTO_SLIDER &&
+    featuredPool.length > 1
+) {
+
+    setInterval(
+        () => {
+            nextFeatured();
+        },
+        SETTINGS.SLIDER_SPEED
+    );
+
+}
+
+</script>
+
+</body>
+</html>
