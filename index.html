@@ -491,7 +491,7 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
   </style>
-<base target="_blank">
+
 </head>
 <body>
 
@@ -550,11 +550,7 @@
       </div>
     </div>
     <div class="player-frame" id="player-frame">
-      <div class="game-placeholder">
-        <div style="font-size: 5rem;">🎮</div>
-        <h2>Hra sa načítava...</h2>
-        <p>Tu sa zobrazí obsah hry (iframe alebo canvas)</p>
-      </div>
+      <iframe id="game-iframe" title="Herný prehrávač" allow="fullscreen; gamepad; pointer-lock; autoplay" allowfullscreen style="width:100%;height:100%;border:0;background:#000;"></iframe>
     </div>
   </div>
 
@@ -621,173 +617,196 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // ===================== DATA =====================
-    const gamesData = [
-      {
-        id: 'minecraft',
-        name: 'Minecraft',
-        description: '3D adventure sandbox game',
-        longDescription: 'Explore infinite worlds and build everything from the simplest of homes to the grandest of castles. Play in creative mode with unlimited resources or mine deep into the world in survival mode, crafting weapons and armor to fend off dangerous mobs.',
-        genre: 'Adventure',
-        type: '3D',
-        version: '1.20.1',
-        releaseDate: '2011-11-18',
-        author: 'Mojang Studios',
-        thumbnail: 'https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=600&h=400&fit=crop',
-        screenshots: [
-          'https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1627856014759-085229246708?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1612287230217-8c7c6c170b95?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&fit=crop'
-        ],
-        controls: [
-          { key: 'W A S D', description: 'Pohyb' },
-          { key: 'SPACE', description: 'Skok' },
-          { key: 'SHIFT', description: 'Beh' },
-          { key: 'E', description: 'Inventár' },
-          { key: 'ESC', description: 'Menu' },
-          { key: 'LMB', description: 'Búranie blokov' },
-          { key: 'RMB', description: 'Umiestnenie blokov' }
-        ],
-        sysRequirements: { os: 'Windows 10+', cpu: 'Intel i3', ram: '4 GB', gpu: 'Integrated' }
-      },
-      {
-        id: 'cyberpunk',
-        name: 'Cyber Quest',
-        description: 'Futuristic open-world RPG',
-        longDescription: 'Enter a dark future where technology and humanity collide. Make choices that shape the story and the world around you in this immersive cyberpunk experience filled with neon-lit streets and corporate conspiracies.',
-        genre: 'RPG',
-        type: '3D',
-        version: '2.1',
-        releaseDate: '2023-09-15',
-        author: 'Neon Forge',
-        thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop',
-        screenshots: [
-          'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&fit=crop'
-        ],
-        controls: [
-          { key: 'W A S D', description: 'Pohyb' },
-          { key: 'SPACE', description: 'Skok / Lezenie' },
-          { key: 'F', description: 'Interakcia' },
-          { key: 'R', description: 'Prebíjanie' },
-          { key: 'TAB', description: 'Mapa' }
-        ],
-        sysRequirements: { os: 'Windows 11', cpu: 'Intel i7', ram: '16 GB', gpu: 'RTX 3060' }
-      },
-      {
-        id: 'stardew',
-        name: 'Stardew Valley',
-        description: 'Relaxing farming simulator',
-        longDescription: 'You\'ve inherited your grandfather\'s old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?',
-        genre: 'Simulation',
-        type: '2D',
-        version: '1.5.6',
-        releaseDate: '2016-02-26',
-        author: 'ConcernedApe',
-        thumbnail: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=600&h=400&fit=crop',
-        screenshots: [
-          'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&fit=crop'
-        ],
-        controls: [
-          { key: 'W A S D / Arrows', description: 'Pohyb' },
-          { key: 'SPACE / C', description: 'Použitie nástroja' },
-          { key: 'ESC / E', description: 'Inventár / Menu' },
-          { key: 'F', description: 'Denník úloh' }
-        ]
-      },
-      {
-        id: 'hollow',
-        name: 'Hollow Knight',
-        description: 'Challenging 2D action platformer',
-        longDescription: 'Descend into the haunting world of Hallownest. A beautifully hand-drawn adventure awaits as you explore twisted caverns, battle tainted creatures and befriend bizarre bugs in this classic 2D action-adventure.',
-        genre: 'Platformer',
-        type: '2D',
-        version: '1.5.78',
-        releaseDate: '2017-02-24',
-        author: 'Team Cherry',
-        thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&h=400&fit=crop',
-        screenshots: [
-          'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=1200&fit=crop'
-        ],
-        controls: [
-          { key: 'A D', description: 'Pohyb vľavo/vpravo' },
-          { key: 'SPACE', description: 'Skok' },
-          { key: 'Z / J', description: 'Útok' },
-          { key: 'X / K', description: 'Magický útok' },
-          { key: 'ESC', description: 'Menu' }
-        ]
-      },
-      {
-        id: 'racer',
-        name: 'Neon Racer',
-        description: 'High-speed arcade racing',
-        longDescription: 'Feel the adrenaline in this fast-paced arcade racer. Drift through neon-soaked cityscapes, customize your ride, and dominate the leaderboards in both single-player campaigns and online multiplayer.',
-        genre: 'Racing',
-        type: '3D',
-        version: '1.0',
-        releaseDate: '2024-01-10',
-        author: 'Speed Studios',
-        thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop',
-        screenshots: [
-          'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1200&fit=crop'
-        ],
-        controls: [
-          { key: 'W / ↑', description: 'Zrýchlenie' },
-          { key: 'S / ↓', description: 'Brzda / Cúvanie' },
-          { key: 'A D / ← →', description: 'Riadenie' },
-          { key: 'SPACE', description: 'Ručná brzda' },
-          { key: 'SHIFT', description: 'Nitro' }
-        ]
-      },
-      {
-        id: 'puzzle',
-        name: 'Mind Bender',
-        description: 'Brain-twisting puzzle game',
-        longDescription: 'Challenge your intellect with hundreds of handcrafted puzzles. Manipulate gravity, bend light, and rewrite the rules of physics to solve increasingly complex conundrums in this minimalist masterpiece.',
-        genre: 'Puzzle',
-        type: '2D',
-        version: '1.2',
-        releaseDate: '2023-05-20',
-        author: 'Logic Labs',
-        thumbnail: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=600&h=400&fit=crop',
-        screenshots: [
-          'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=1200&fit=crop',
-          'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&fit=crop'
-        ],
-        controls: [
-          { key: 'MYŠ', description: 'Výber a presúvanie' },
-          { key: 'R', description: 'Reset levelu' },
-          { key: 'H', description: 'Nápoveda' },
-          { key: 'ESC', description: 'Pauza' }
-        ]
-      }
-    ];
+    // ============================================================
+    // 🎮 MY STEAM – JEDNODUCHÉ PRIDÁVANIE HIER
+    // ============================================================
+    // Stačí vyplniť 4 veci v addGame():
+    // 1) ID hry – musí byť jedinečné
+    // 2) Názov hry
+    // 3) Krátky popis
+    // 4) Celý HTML/CSS/JS kód hry medzi spätnými apostrofmi `...`
+    //
+    // Ak chceš ďalšiu hru, skopíruj celý SLOT a zmeň tieto 4 údaje.
+    // Nie je limit 10 ani 100 hier.
+    //
+    // ⚠️ Ak v hre používaš <script>, koniec tagu píš ako <\/script>.
+    // ============================================================
 
-    // ===================== STATE =====================
-    const state = {
-      favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
-      recent: JSON.parse(localStorage.getItem('recent') || '[]'),
-      lastPlayed: JSON.parse(localStorage.getItem('lastPlayed') || '[]'),
-      settings: JSON.parse(localStorage.getItem('gameSettings') || '{"volume":80,"music":true,"sfx":true,"quality":"medium","fullscreen":false}'),
-      currentFilter: 'all',
-      searchQuery: '',
-      lightboxIndex: 0,
-      lightboxImages: [],
-      zoom: 1,
-      panX: 0,
-      panY: 0,
-      isDragging: false,
-      dragStartX: 0,
-      dragStartY: 0
-    };
+    const gamesData = [];
+
+    function makeDefaultThumbnail(name) {
+      const safe = String(name || 'GAME').replace(/[&<>"']/g, '');
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="#16202d"/><text x="50%" y="50%" fill="#66c0f4" font-size="42" text-anchor="middle" dominant-baseline="middle" font-family="Arial">${safe}</text></svg>`;
+      return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+    }
+
+    function addGame(id, name, description, html) {
+      // Prázdny slot sa ignoruje – po vyplnení sa automaticky zobrazí.
+      if (!id || !name) return;
+      id = String(id).trim();
+      if (gamesData.some(game => game.id === id)) {
+        console.error('Duplicitné ID hry:', id);
+        return;
+      }
+      gamesData.push({
+        id, name: String(name),
+        description: description || 'Bez popisu.',
+        longDescription: description || 'Bez podrobného popisu.',
+        genre: 'Other', type: '2D', version: '1.0',
+        releaseDate: new Date().toISOString().slice(0, 10),
+        author: 'Neznámy autor',
+        thumbnail: makeDefaultThumbnail(name),
+        screenshots: [], controls: [], sysRequirements: null,
+        html: String(html || '')
+      });
+    }
+
+    // ============================================================
+    // 🟢 SLOT 1 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 1',
+      'Krátky popis hry 1',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 2 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 2',
+      'Krátky popis hry 2',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 3 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 3',
+      'Krátky popis hry 3',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 4 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 4',
+      'Krátky popis hry 4',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 5 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 5',
+      'Krátky popis hry 5',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 6 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 6',
+      'Krátky popis hry 6',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 7 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 7',
+      'Krátky popis hry 7',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 8 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 8',
+      'Krátky popis hry 8',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 9 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 9',
+      'Krátky popis hry 9',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // 🔵 SLOT 10 – VLOŽ HRU SEM
+    // ============================================================
+    // Zmeň iba: ID, názov, popis a HTML kód.
+    // ID nesmie byť rovnaké ako pri inej hre.
+    addGame(
+      '',
+      'Názov hry 10',
+      'Krátky popis hry 10',
+      `
+<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
+      `
+    );
+
+    // ============================================================
+    // ➕ ĎALŠIA HRA
+    // ============================================================
+    // Skopíruj ktorýkoľvek SLOT vyššie, vlož ho pod SLOT 10
+    // a zmeň ID, názov, popis a HTML. Počet hier nie je obmedzený.
+    // ============================================================
 
     // ===================== ROUTER =====================
     const router = {
@@ -1109,14 +1128,17 @@
       const game = gamesData.find(g => g.id === gameId);
       if (!game) return;
 
-      // Update last played
       state.lastPlayed = state.lastPlayed.filter(id => id !== gameId);
       state.lastPlayed.unshift(gameId);
       if (state.lastPlayed.length > 10) state.lastPlayed.pop();
       localStorage.setItem('lastPlayed', JSON.stringify(state.lastPlayed));
 
+      const player = document.getElementById('game-player');
+      const frame = document.getElementById('game-iframe');
       document.getElementById('player-title').textContent = game.name;
-      document.getElementById('game-player').classList.add('active');
+      player.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      frame.srcdoc = game.html;
 
       if (state.settings.fullscreen) {
         setTimeout(() => toggleFullscreen(), 300);
@@ -1125,10 +1147,11 @@
 
     function exitGame() {
       const player = document.getElementById('game-player');
+      const frame = document.getElementById('game-iframe');
       player.classList.remove('active');
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      }
+      document.body.style.overflow = '';
+      frame.srcdoc = '';
+      if (document.fullscreenElement) document.exitFullscreen();
     }
 
     function toggleFullscreen() {
