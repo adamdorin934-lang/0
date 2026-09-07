@@ -1,1 +1,1298 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY STEAM — Herná Platforma</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --bg-primary: #0e141b;
+      --bg-secondary: #1b2838;
+      --bg-card: #16202d;
+      --bg-hover: #1e3a52;
+      --accent: #66c0f4;
+      --accent-hover: #4192c0;
+      --text-primary: #c7d5e0;
+      --text-secondary: #8f98a0;
+      --border: #2a475e;
+      --success: #5c7e10;
+      --success-hover: #76a11e;
+      --danger: #c0392b;
+      --warning: #d2983f;
+      --shadow: rgba(0,0,0,0.6);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Loading Screen */
+    #loading-screen {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--bg-primary);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #loading-screen.hidden { opacity: 0; pointer-events: none; }
+    .loader {
+      width: 60px; height: 60px;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loader-text {
+      margin-top: 20px; color: var(--accent);
+      font-size: 1.2rem; letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: linear-gradient(180deg, #171a21 0%, var(--bg-secondary) 100%);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    .nav-container {
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 24px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .logo {
+      font-size: 1.5rem; font-weight: 800;
+      color: var(--accent); letter-spacing: 1px;
+      text-decoration: none; display: flex; align-items: center; gap: 10px;
+    }
+    .nav-links {
+      display: flex; gap: 8px; list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none;
+      padding: 8px 16px; border-radius: 4px;
+      font-size: 0.9rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      transition: var(--transition);
+      cursor: pointer; border: none; background: none;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text-primary); background: var(--bg-hover);
+    }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .search-box {
+      background: var(--bg-primary); border: 1px solid var(--border);
+      border-radius: 20px; padding: 8px 16px; color: var(--text-primary);
+      width: 200px; outline: none; transition: var(--transition);
+    }
+    .search-box:focus { border-color: var(--accent); width: 260px; }
+    .btn-icon {
+      background: none; border: none; color: var(--text-secondary);
+      font-size: 1.2rem; cursor: pointer; padding: 8px;
+      border-radius: 50%; transition: var(--transition);
+    }
+    .btn-icon:hover { color: var(--accent); background: var(--bg-hover); }
+
+    /* Main Container */
+    .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+    /* Section Headers */
+    .section-title {
+      font-size: 1.4rem; font-weight: 700;
+      margin-bottom: 20px; padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    /* Game Grid */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px; margin-bottom: 40px;
+    }
+
+    /* Game Card */
+    .game-card {
+      background: var(--bg-card);
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+      cursor: pointer; position: relative;
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+    .game-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--accent);
+      box-shadow: 0 12px 40px rgba(102, 192, 244, 0.15);
+    }
+    .card-image-wrap {
+      position: relative; overflow: hidden;
+      aspect-ratio: 16/10;
+    }
+    .card-image {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .game-card:hover .card-image { transform: scale(1.1); }
+    .card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(11, 16, 22, 0.95) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.3s ease;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 16px;
+    }
+    .game-card:hover .card-overlay { opacity: 1; }
+    .card-play-btn {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: var(--success); color: white;
+      border: none; border-radius: 50%;
+      width: 60px; height: 60px;
+      font-size: 1.5rem; cursor: pointer;
+      opacity: 0; transition: all 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .game-card:hover .card-play-btn {
+      opacity: 1; transform: translate(-50%, -50%) scale(1);
+    }
+    .card-play-btn:hover { background: var(--success-hover); transform: translate(-50%, -50%) scale(1.1) !important; }
+    .card-info { padding: 16px; }
+    .card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .card-desc {
+      font-size: 0.85rem; color: var(--text-secondary);
+      line-height: 1.4; margin-bottom: 10px;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-meta {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 0.7rem; padding: 4px 10px;
+      border-radius: 4px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .badge-genre { background: var(--bg-hover); color: var(--accent); }
+    .badge-type { background: rgba(92, 126, 16, 0.2); color: #a4d007; }
+    .badge-fav {
+      position: absolute; top: 10px; right: 10px;
+      background: rgba(192, 57, 43, 0.9); color: white;
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative; border-radius: 16px;
+      overflow: hidden; margin-bottom: 32px;
+      border: 1px solid var(--border);
+      min-height: 400px; display: flex; align-items: flex-end;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      filter: brightness(0.4);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 40px; width: 100%;
+      background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
+    }
+    .hero-title { font-size: 3rem; font-weight: 800; margin-bottom: 12px; text-shadow: 0 4px 20px var(--shadow); }
+    .hero-meta { display: flex; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+    .hero-meta span { color: var(--text-secondary); font-size: 0.9rem; }
+    .hero-meta strong { color: var(--text-primary); }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 28px; border-radius: 8px;
+      border: none; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: var(--transition);
+      display: inline-flex; align-items: center; gap: 8px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--success), var(--success-hover)); color: white; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(92, 126, 16, 0.4); }
+    .btn-secondary { background: var(--bg-hover); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: var(--border); border-color: var(--accent); }
+    .btn-accent { background: var(--accent); color: var(--bg-primary); }
+    .btn-accent:hover { background: var(--accent-hover); }
+    .btn-danger { background: var(--danger); color: white; }
+    .btn-danger:hover { background: #a93226; }
+
+    /* Detail Sections */
+    .detail-grid {
+      display: grid; grid-template-columns: 2fr 1fr; gap: 32px;
+    }
+    .detail-main { line-height: 1.7; color: var(--text-secondary); }
+    .detail-main h3 { color: var(--text-primary); margin: 24px 0 12px; font-size: 1.2rem; }
+    .detail-main p { margin-bottom: 16px; }
+    .detail-sidebar { background: var(--bg-card); border-radius: 12px; padding: 24px; border: 1px solid var(--border); height: fit-content; }
+    .detail-sidebar h4 { color: var(--accent); margin-bottom: 16px; font-size: 1rem; text-transform: uppercase; }
+    .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { color: var(--text-secondary); }
+    .info-value { color: var(--text-primary); font-weight: 600; }
+
+    /* Screenshots */
+    .screenshots { margin-top: 32px; }
+    .screenshot-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px; margin-top: 16px;
+    }
+    .screenshot-thumb {
+      border-radius: 8px; overflow: hidden; cursor: pointer;
+      border: 2px solid transparent; transition: var(--transition);
+      aspect-ratio: 16/10; position: relative;
+    }
+    .screenshot-thumb:hover { border-color: var(--accent); transform: scale(1.03); }
+    .screenshot-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* Controls Section */
+    .controls-list { margin-top: 16px; }
+    .control-item {
+      display: flex; align-items: center; gap: 16px;
+      padding: 12px 16px; background: var(--bg-card);
+      border-radius: 8px; margin-bottom: 8px;
+      border: 1px solid var(--border);
+    }
+    .control-key {
+      background: var(--bg-primary); color: var(--accent);
+      padding: 6px 14px; border-radius: 6px;
+      font-family: monospace; font-weight: 700;
+      font-size: 0.9rem; border: 1px solid var(--border);
+      min-width: 100px; text-align: center;
+    }
+    .control-desc { color: var(--text-secondary); font-size: 0.9rem; }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0,0,0,0.95);
+      display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+    #lightbox.active { display: flex; }
+    .lightbox-container {
+      position: relative; width: 90vw; height: 90vh;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    #lightbox-img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain; transition: transform 0.2s ease;
+      cursor: grab; user-select: none;
+    }
+    #lightbox-img:active { cursor: grabbing; }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 20px;
+      background: rgba(255,255,255,0.1); color: white;
+      border: none; width: 48px; height: 48px;
+      border-radius: 50%; font-size: 1.5rem;
+      cursor: pointer; z-index: 10; transition: var(--transition);
+    }
+    .lightbox-close:hover { background: var(--danger); }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.1); color: white;
+      border: none; width: 50px; height: 80px;
+      font-size: 2rem; cursor: pointer; border-radius: 8px;
+      transition: var(--transition);
+    }
+    .lightbox-nav:hover { background: var(--accent); color: var(--bg-primary); }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    .lightbox-zoom {
+      position: absolute; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8); border: 1px solid var(--border);
+      border-radius: 30px; padding: 8px 20px;
+      display: flex; align-items: center; gap: 12px;
+      color: white; font-size: 0.9rem;
+    }
+    .lightbox-zoom button {
+      background: none; border: none; color: white;
+      font-size: 1.2rem; cursor: pointer; padding: 4px 8px;
+    }
+    .lightbox-zoom button:hover { color: var(--accent); }
+
+    /* Game Player */
+    #game-player {
+      position: fixed; inset: 0; z-index: 500;
+      background: var(--bg-primary);
+      display: none; flex-direction: column;
+    }
+    #game-player.active { display: flex; }
+    .player-toolbar {
+      height: 56px; background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      justify-content: space-between; padding: 0 24px;
+    }
+    .player-title { font-weight: 700; font-size: 1.1rem; }
+    .player-actions { display: flex; gap: 10px; }
+    .player-frame {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      background: #000; position: relative; overflow: hidden;
+    }
+    .player-frame iframe, .player-frame .game-placeholder {
+      width: 100%; height: 100%; border: none;
+      max-width: 100%; max-height: 100%;
+    }
+    .game-placeholder {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: var(--text-secondary); gap: 20px;
+    }
+
+    /* Settings Modal */
+    #settings-modal {
+      position: fixed; inset: 0; z-index: 600;
+      background: rgba(0,0,0,0.8);
+      display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+    #settings-modal.active { display: flex; }
+    .settings-panel {
+      background: var(--bg-secondary); border-radius: 16px;
+      border: 1px solid var(--border); width: 90%; max-width: 500px;
+      max-height: 80vh; overflow-y: auto;
+      box-shadow: 0 20px 60px var(--shadow);
+    }
+    .settings-header {
+      padding: 24px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .settings-header h2 { font-size: 1.3rem; }
+    .settings-body { padding: 24px; }
+    .setting-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; border-bottom: 1px solid var(--border);
+    }
+    .setting-row:last-child { border-bottom: none; }
+    .setting-label { display: flex; flex-direction: column; }
+    .setting-label strong { color: var(--text-primary); margin-bottom: 4px; }
+    .setting-label small { color: var(--text-secondary); font-size: 0.8rem; }
+    input[type="range"] {
+      width: 120px; accent-color: var(--accent);
+    }
+    .toggle {
+      width: 48px; height: 26px; background: var(--border);
+      border-radius: 13px; position: relative; cursor: pointer;
+      transition: var(--transition);
+    }
+    .toggle.active { background: var(--accent); }
+    .toggle::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 20px; height: 20px; background: white;
+      border-radius: 50%; transition: var(--transition);
+    }
+    .toggle.active::after { left: 25px; }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--text-secondary);
+    }
+    .empty-state-icon { font-size: 4rem; margin-bottom: 20px; opacity: 0.5; }
+
+    /* Filters */
+    .filters {
+      display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 16px; background: var(--bg-card);
+      border: 1px solid var(--border); color: var(--text-secondary);
+      border-radius: 20px; cursor: pointer; transition: var(--transition);
+      font-size: 0.85rem;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--accent); color: var(--bg-primary);
+      border-color: var(--accent); font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 2rem; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .search-box { width: 140px; }
+      .search-box:focus { width: 180px; }
+      .game-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+      .hero { min-height: 300px; }
+      .hero-content { padding: 24px; }
+      .hero-title { font-size: 1.5rem; }
+      .lightbox-nav { width: 40px; height: 60px; font-size: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 16px; }
+      .game-grid { grid-template-columns: 1fr; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--bg-hover); }
+
+    /* Animations */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.5s ease forwards; }
+
+    /* Continue Section */
+    .continue-grid { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 16px; }
+    .continue-card {
+      min-width: 280px; background: var(--bg-card);
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); cursor: pointer;
+      transition: var(--transition); position: relative;
+    }
+    .continue-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+    .continue-card img { width: 100%; height: 140px; object-fit: cover; }
+    .continue-info { padding: 12px 16px; }
+    .continue-time { font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* Trailer placeholder */
+    .trailer-box {
+      background: var(--bg-card); border-radius: 12px;
+      border: 2px dashed var(--border); aspect-ratio: 16/9;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: var(--text-secondary); gap: 12px; margin-top: 16px;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; right: 30px; z-index: 2000;
+      background: var(--bg-secondary); color: var(--text-primary);
+      padding: 16px 24px; border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 40px var(--shadow);
+      transform: translateY(100px); opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loader"></div>
+    <div class="loader-text">Načítavam platformu...</div>
+  </div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a class="logo" onclick="router.navigate('home')">🎮 MY STEAM</a>
+      <ul class="nav-links">
+        <li><a onclick="router.navigate('home')" id="nav-home" class="active">Home</a></li>
+        <li><a onclick="router.navigate('games')" id="nav-games">Games</a></li>
+        <li><a onclick="router.navigate('favorites')" id="nav-favorites">Favorites</a></li>
+        <li><a onclick="router.navigate('recent')" id="nav-recent">Recent</a></li>
+      </ul>
+      <div class="nav-right">
+        <input type="text" class="search-box" placeholder="🔍 Hľadať hry..." id="global-search" oninput="handleSearch(this.value)">
+        <button class="btn-icon" onclick="toggleSettings()" title="Nastavenia">⚙</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container" id="app">
+    <!-- Content injected by JS -->
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightboxOnBg(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1)">‹</button>
+    <button class="lightbox-nav lightbox-next" onclick="changeImage(1)">›</button>
+    <div class="lightbox-container" id="lightbox-container">
+      <img id="lightbox-img" src="" alt="Screenshot" onmousedown="startDrag(event)">
+    </div>
+    <div class="lightbox-zoom">
+      <button onclick="adjustZoom(-0.25)">−</button>
+      <span id="zoom-level">100%</span>
+      <button onclick="adjustZoom(0.25)">+</button>
+      <button onclick="resetZoom()" style="margin-left:8px; font-size:0.8rem;">Reset</button>
+    </div>
+  </div>
+
+  <!-- Game Player -->
+  <div id="game-player">
+    <div class="player-toolbar">
+      <div class="player-title" id="player-title">Hra</div>
+      <div class="player-actions">
+        <button class="btn btn-secondary" onclick="toggleGameSettings()">⚙ Nastavenia</button>
+        <button class="btn btn-accent" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+        <button class="btn btn-danger" onclick="exitGame()">✕ Exit Game</button>
+      </div>
+    </div>
+    <div class="player-frame" id="player-frame">
+      <div class="game-placeholder">
+        <div style="font-size: 5rem;">🎮</div>
+        <h2>Hra sa načítava...</h2>
+        <p>Tu sa zobrazí obsah hry (iframe alebo canvas)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" onclick="closeSettingsOnBg(event)">
+    <div class="settings-panel">
+      <div class="settings-header">
+        <h2>⚙ Nastavenia</h2>
+        <button class="btn-icon" onclick="toggleSettings()">✕</button>
+      </div>
+      <div class="settings-body">
+        <div class="setting-row">
+          <div class="setting-label">
+            <strong>Hlasitosť</strong>
+            <small>Celková hlasitosť platformy</small>
+          </div>
+          <input type="range" min="0" max="100" value="80" id="set-volume" oninput="saveSetting('volume', this.value)">
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">
+            <strong>Hudba</strong>
+            <small>Hudba v pozadí</small>
+          </div>
+          <div class="toggle active" id="toggle-music" onclick="toggleBoolSetting('music')"></div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">
+            <strong>Zvukové efekty</strong>
+            <small>UI a herné efekty</small>
+          </div>
+          <div class="toggle active" id="toggle-sfx" onclick="toggleBoolSetting('sfx')"></div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">
+            <strong>Kvalita grafiky</strong>
+            <small>Vykresľovanie hier</small>
+          </div>
+          <select id="set-quality" onchange="saveSetting('quality', this.value)" style="background:var(--bg-primary); color:var(--text-primary); border:1px solid var(--border); padding:6px 12px; border-radius:6px;">
+            <option value="low">Nízka</option>
+            <option value="medium" selected>Stredná</option>
+            <option value="high">Vysoká</option>
+            <option value="ultra">Ultra</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">
+            <strong>Fullscreen</strong>
+            <small>Automaticky pri spustení hry</small>
+          </div>
+          <div class="toggle" id="toggle-fullscreen" onclick="toggleBoolSetting('fullscreen')"></div>
+        </div>
+        <div class="setting-row">
+          <div class="setting-label">
+            <strong>Resetovať hru</strong>
+            <small>Vymazať všetky uložené dáta</small>
+          </div>
+          <button class="btn btn-danger" style="padding:8px 16px; font-size:0.8rem;" onclick="resetAllData()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ===================== DATA =====================
+    const gamesData = [
+      {
+        id: 'minecraft',
+        name: 'Minecraft',
+        description: '3D adventure sandbox game',
+        longDescription: 'Explore infinite worlds and build everything from the simplest of homes to the grandest of castles. Play in creative mode with unlimited resources or mine deep into the world in survival mode, crafting weapons and armor to fend off dangerous mobs.',
+        genre: 'Adventure',
+        type: '3D',
+        version: '1.20.1',
+        releaseDate: '2011-11-18',
+        author: 'Mojang Studios',
+        thumbnail: 'https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=600&h=400&fit=crop',
+        screenshots: [
+          'https://images.unsplash.com/photo-1587573089734-09cb69c0f2b4?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1627856014759-085229246708?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1612287230217-8c7c6c170b95?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&fit=crop'
+        ],
+        controls: [
+          { key: 'W A S D', description: 'Pohyb' },
+          { key: 'SPACE', description: 'Skok' },
+          { key: 'SHIFT', description: 'Beh' },
+          { key: 'E', description: 'Inventár' },
+          { key: 'ESC', description: 'Menu' },
+          { key: 'LMB', description: 'Búranie blokov' },
+          { key: 'RMB', description: 'Umiestnenie blokov' }
+        ],
+        sysRequirements: { os: 'Windows 10+', cpu: 'Intel i3', ram: '4 GB', gpu: 'Integrated' }
+      },
+      {
+        id: 'cyberpunk',
+        name: 'Cyber Quest',
+        description: 'Futuristic open-world RPG',
+        longDescription: 'Enter a dark future where technology and humanity collide. Make choices that shape the story and the world around you in this immersive cyberpunk experience filled with neon-lit streets and corporate conspiracies.',
+        genre: 'RPG',
+        type: '3D',
+        version: '2.1',
+        releaseDate: '2023-09-15',
+        author: 'Neon Forge',
+        thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=600&h=400&fit=crop',
+        screenshots: [
+          'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&fit=crop'
+        ],
+        controls: [
+          { key: 'W A S D', description: 'Pohyb' },
+          { key: 'SPACE', description: 'Skok / Lezenie' },
+          { key: 'F', description: 'Interakcia' },
+          { key: 'R', description: 'Prebíjanie' },
+          { key: 'TAB', description: 'Mapa' }
+        ],
+        sysRequirements: { os: 'Windows 11', cpu: 'Intel i7', ram: '16 GB', gpu: 'RTX 3060' }
+      },
+      {
+        id: 'stardew',
+        name: 'Stardew Valley',
+        description: 'Relaxing farming simulator',
+        longDescription: 'You\'ve inherited your grandfather\'s old farm plot in Stardew Valley. Armed with hand-me-down tools and a few coins, you set out to begin your new life. Can you learn to live off the land and turn these overgrown fields into a thriving home?',
+        genre: 'Simulation',
+        type: '2D',
+        version: '1.5.6',
+        releaseDate: '2016-02-26',
+        author: 'ConcernedApe',
+        thumbnail: 'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=600&h=400&fit=crop',
+        screenshots: [
+          'https://images.unsplash.com/photo-1500964757637-c85e8a162699?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&fit=crop'
+        ],
+        controls: [
+          { key: 'W A S D / Arrows', description: 'Pohyb' },
+          { key: 'SPACE / C', description: 'Použitie nástroja' },
+          { key: 'ESC / E', description: 'Inventár / Menu' },
+          { key: 'F', description: 'Denník úloh' }
+        ]
+      },
+      {
+        id: 'hollow',
+        name: 'Hollow Knight',
+        description: 'Challenging 2D action platformer',
+        longDescription: 'Descend into the haunting world of Hallownest. A beautifully hand-drawn adventure awaits as you explore twisted caverns, battle tainted creatures and befriend bizarre bugs in this classic 2D action-adventure.',
+        genre: 'Platformer',
+        type: '2D',
+        version: '1.5.78',
+        releaseDate: '2017-02-24',
+        author: 'Team Cherry',
+        thumbnail: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&h=400&fit=crop',
+        screenshots: [
+          'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1535905557558-afc4877a26fc?w=1200&fit=crop'
+        ],
+        controls: [
+          { key: 'A D', description: 'Pohyb vľavo/vpravo' },
+          { key: 'SPACE', description: 'Skok' },
+          { key: 'Z / J', description: 'Útok' },
+          { key: 'X / K', description: 'Magický útok' },
+          { key: 'ESC', description: 'Menu' }
+        ]
+      },
+      {
+        id: 'racer',
+        name: 'Neon Racer',
+        description: 'High-speed arcade racing',
+        longDescription: 'Feel the adrenaline in this fast-paced arcade racer. Drift through neon-soaked cityscapes, customize your ride, and dominate the leaderboards in both single-player campaigns and online multiplayer.',
+        genre: 'Racing',
+        type: '3D',
+        version: '1.0',
+        releaseDate: '2024-01-10',
+        author: 'Speed Studios',
+        thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=600&h=400&fit=crop',
+        screenshots: [
+          'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1200&fit=crop'
+        ],
+        controls: [
+          { key: 'W / ↑', description: 'Zrýchlenie' },
+          { key: 'S / ↓', description: 'Brzda / Cúvanie' },
+          { key: 'A D / ← →', description: 'Riadenie' },
+          { key: 'SPACE', description: 'Ručná brzda' },
+          { key: 'SHIFT', description: 'Nitro' }
+        ]
+      },
+      {
+        id: 'puzzle',
+        name: 'Mind Bender',
+        description: 'Brain-twisting puzzle game',
+        longDescription: 'Challenge your intellect with hundreds of handcrafted puzzles. Manipulate gravity, bend light, and rewrite the rules of physics to solve increasingly complex conundrums in this minimalist masterpiece.',
+        genre: 'Puzzle',
+        type: '2D',
+        version: '1.2',
+        releaseDate: '2023-05-20',
+        author: 'Logic Labs',
+        thumbnail: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=600&h=400&fit=crop',
+        screenshots: [
+          'https://images.unsplash.com/photo-1606167668584-78701c57f13d?w=1200&fit=crop',
+          'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1200&fit=crop'
+        ],
+        controls: [
+          { key: 'MYŠ', description: 'Výber a presúvanie' },
+          { key: 'R', description: 'Reset levelu' },
+          { key: 'H', description: 'Nápoveda' },
+          { key: 'ESC', description: 'Pauza' }
+        ]
+      }
+    ];
+
+    // ===================== STATE =====================
+    const state = {
+      favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+      recent: JSON.parse(localStorage.getItem('recent') || '[]'),
+      lastPlayed: JSON.parse(localStorage.getItem('lastPlayed') || '[]'),
+      settings: JSON.parse(localStorage.getItem('gameSettings') || '{"volume":80,"music":true,"sfx":true,"quality":"medium","fullscreen":false}'),
+      currentFilter: 'all',
+      searchQuery: '',
+      lightboxIndex: 0,
+      lightboxImages: [],
+      zoom: 1,
+      panX: 0,
+      panY: 0,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0
+    };
+
+    // ===================== ROUTER =====================
+    const router = {
+      current: 'home',
+      navigate(page, params = '') {
+        this.current = page;
+        window.location.hash = params ? `${page}/${params}` : page;
+        this.updateNav();
+        this.render();
+        window.scrollTo(0, 0);
+      },
+      updateNav() {
+        document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+        const active = document.getElementById(`nav-${this.current}`);
+        if (active) active.classList.add('active');
+      },
+      render() {
+        const hash = window.location.hash.slice(1) || 'home';
+        const [page, param] = hash.split('/');
+        const app = document.getElementById('app');
+
+        switch(page) {
+          case 'home': app.innerHTML = renderHome(); break;
+          case 'games': app.innerHTML = renderGames(); break;
+          case 'detail': app.innerHTML = renderDetail(param); break;
+          case 'favorites': app.innerHTML = renderFavorites(); break;
+          case 'recent': app.innerHTML = renderRecent(); break;
+          default: app.innerHTML = renderHome();
+        }
+      }
+    };
+
+    // ===================== RENDERERS =====================
+    function renderHome() {
+      const continueGames = state.lastPlayed.slice(0, 4).map(id => gamesData.find(g => g.id === id)).filter(Boolean);
+      const featured = gamesData.slice(0, 3);
+
+      return `
+        ${continueGames.length ? `
+        <section class="fade-in" style="margin-bottom:40px;">
+          <h2 class="section-title">▶ Pokračovať v hre</h2>
+          <div class="continue-grid">
+            ${continueGames.map(g => `
+              <div class="continue-card" onclick="router.navigate('detail','${g.id}')">
+                <img src="${g.thumbnail}" alt="${g.name}">
+                <div class="continue-info">
+                  <div style="font-weight:700;">${g.name}</div>
+                  <div class="continue-time">Naposledy hrané</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>` : ''}
+
+        <section class="fade-in">
+          <h2 class="section-title">⭐ Odporúčané hry</h2>
+          <div class="game-grid">
+            ${featured.map(g => renderGameCard(g)).join('')}
+          </div>
+        </section>
+
+        <section class="fade-in">
+          <h2 class="section-title">🎮 Všetky hry</h2>
+          <div class="game-grid">
+            ${gamesData.slice(0, 6).map(g => renderGameCard(g)).join('')}
+          </div>
+          <div style="text-align:center; margin-top:20px;">
+            <button class="btn btn-secondary" onclick="router.navigate('games')">Zobraziť všetky hry →</button>
+          </div>
+        </section>
+      `;
+    }
+
+    function renderGames() {
+      const genres = ['all', ...new Set(gamesData.map(g => g.genre))];
+      const filtered = filterGames();
+
+      return `
+        <div class="fade-in">
+          <h2 class="section-title">🎮 Všetky hry</h2>
+          <div class="filters">
+            ${genres.map(g => `
+              <button class="filter-btn ${state.currentFilter === g ? 'active' : ''}" 
+                onclick="setFilter('${g}')">${g === 'all' ? 'Všetky' : g}</button>
+            `).join('')}
+          </div>
+          ${filtered.length ? `
+            <div class="game-grid">
+              ${filtered.map(g => renderGameCard(g)).join('')}
+            </div>
+          ` : `
+            <div class="empty-state">
+              <div class="empty-state-icon">🔍</div>
+              <h3>Žiadne hry neboli nájdené</h3>
+              <p>Skúste zmeniť filter alebo vyhľadávací dotaz</p>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function renderFavorites() {
+      const favGames = gamesData.filter(g => state.favorites.includes(g.id));
+      return `
+        <div class="fade-in">
+          <h2 class="section-title">❤ Obľúbené</h2>
+          ${favGames.length ? `
+            <div class="game-grid">
+              ${favGames.map(g => renderGameCard(g)).join('')}
+            </div>
+          ` : `
+            <div class="empty-state">
+              <div class="empty-state-icon">💔</div>
+              <h3>Zatiaľ nemáte žiadne obľúbené hry</h3>
+              <p>Kliknite na srdce pri hre a pridajte ju sem</p>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function renderRecent() {
+      const recentGames = state.recent.map(id => gamesData.find(g => g.id === id)).filter(Boolean);
+      return `
+        <div class="fade-in">
+          <h2 class="section-title">🕐 Nedávno hrané</h2>
+          ${recentGames.length ? `
+            <div class="game-grid">
+              ${recentGames.map(g => renderGameCard(g)).join('')}
+            </div>
+          ` : `
+            <div class="empty-state">
+              <div class="empty-state-icon">🎮</div>
+              <h3>Zatiaľ ste nehrali žiadne hry</h3>
+              <p>Spustite hru a objaví sa tu</p>
+            </div>
+          `}
+        </div>
+      `;
+    }
+
+    function renderGameCard(game) {
+      const isFav = state.favorites.includes(game.id);
+      return `
+        <div class="game-card" onclick="router.navigate('detail','${game.id}')">
+          ${isFav ? '<div class="badge-fav">♥</div>' : ''}
+          <div class="card-image-wrap">
+            <img class="card-image" src="${game.thumbnail}" alt="${game.name}" loading="lazy">
+            <button class="card-play-btn" onclick="event.stopPropagation(); launchGame('${game.id}')">▶</button>
+            <div class="card-overlay">
+              <div style="color:var(--text-secondary); font-size:0.85rem;">${game.description}</div>
+            </div>
+          </div>
+          <div class="card-info">
+            <div class="card-title">${game.name}</div>
+            <div class="card-desc">${game.longDescription}</div>
+            <div class="card-meta">
+              <span class="badge badge-genre">${game.genre}</span>
+              <span class="badge badge-type">${game.type}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDetail(gameId) {
+      const game = gamesData.find(g => g.id === gameId);
+      if (!game) return `<div class="fade-in"><h2>Hra nenájdená</h2></div>`;
+
+      addRecent(gameId);
+
+      const isFav = state.favorites.includes(gameId);
+
+      return `
+        <div class="fade-in">
+          <div class="hero">
+            <div class="hero-bg" style="background-image:url('${game.thumbnail}')"></div>
+            <div class="hero-content">
+              <div class="hero-title">${game.name}</div>
+              <div class="hero-meta">
+                <span>Žáner: <strong>${game.genre}</strong></span>
+                <span>Typ: <strong>${game.type}</strong></span>
+                <span>Verzia: <strong>${game.version}</strong></span>
+                <span>Vydanie: <strong>${game.releaseDate}</strong></span>
+                <span>Autor: <strong>${game.author}</strong></span>
+              </div>
+              <div class="hero-actions">
+                <button class="btn btn-primary" onclick="launchGame('${game.id}')">▶ PLAY</button>
+                <button class="btn ${isFav ? 'btn-danger' : 'btn-secondary'}" onclick="toggleFavorite('${game.id}')">
+                  ${isFav ? '♥ FAVORITE' : '♡ FAVORITE'}
+                </button>
+                <button class="btn btn-secondary" onclick="router.navigate('games')">← BACK</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            <div class="detail-main">
+              <h3>O hre</h3>
+              <p>${game.longDescription}</p>
+              <p>${game.description}</p>
+
+              <div class="screenshots">
+                <h3>📸 Screenshoty</h3>
+                <div class="screenshot-grid">
+                  ${game.screenshots.map((src, i) => `
+                    <div class="screenshot-thumb" onclick="openLightbox('${game.id}', ${i})">
+                      <img src="${src}" alt="Screenshot ${i+1}" loading="lazy">
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <div class="trailer-box">
+                <div style="font-size:3rem;">▶</div>
+                <div>Video trailer (placeholder)</div>
+              </div>
+
+              <h3 style="margin-top:32px;">🎮 Ovládanie</h3>
+              <div class="controls-list">
+                ${game.controls.map(c => `
+                  <div class="control-item">
+                    <div class="control-key">${c.key}</div>
+                    <div class="control-desc">${c.description}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="detail-sidebar">
+              <h4>Informácie</h4>
+              <div class="info-row">
+                <span class="info-label">Názov</span>
+                <span class="info-value">${game.name}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Žáner</span>
+                <span class="info-value">${game.genre}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Typ</span>
+                <span class="info-value">${game.type}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Verzia</span>
+                <span class="info-value">${game.version}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Dátum vydania</span>
+                <span class="info-value">${game.releaseDate}</span>
+              </div>
+              <div class="info-row">
+                <span class="info-label">Autor</span>
+                <span class="info-value">${game.author}</span>
+              </div>
+
+              ${game.sysRequirements ? `
+                <h4 style="margin-top:24px;">Systémové požiadavky</h4>
+                <div class="info-row"><span class="info-label">OS</span><span class="info-value">${game.sysRequirements.os}</span></div>
+                <div class="info-row"><span class="info-label">CPU</span><span class="info-value">${game.sysRequirements.cpu}</span></div>
+                <div class="info-row"><span class="info-label">RAM</span><span class="info-value">${game.sysRequirements.ram}</span></div>
+                <div class="info-row"><span class="info-label">GPU</span><span class="info-value">${game.sysRequirements.gpu}</span></div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // ===================== ACTIONS =====================
+    function filterGames() {
+      let result = gamesData;
+      if (state.currentFilter !== 'all') {
+        result = result.filter(g => g.genre === state.currentFilter);
+      }
+      if (state.searchQuery) {
+        const q = state.searchQuery.toLowerCase();
+        result = result.filter(g => 
+          g.name.toLowerCase().includes(q) || 
+          g.genre.toLowerCase().includes(q) ||
+          g.description.toLowerCase().includes(q)
+        );
+      }
+      return result;
+    }
+
+    function setFilter(genre) {
+      state.currentFilter = genre;
+      router.render();
+    }
+
+    function handleSearch(query) {
+      state.searchQuery = query;
+      if (router.current !== 'games') router.navigate('games');
+      else router.render();
+    }
+
+    function toggleFavorite(gameId) {
+      const idx = state.favorites.indexOf(gameId);
+      if (idx > -1) {
+        state.favorites.splice(idx, 1);
+        showToast('Odstránené z obľúbených');
+      } else {
+        state.favorites.push(gameId);
+        showToast('Pridané do obľúbených');
+      }
+      localStorage.setItem('favorites', JSON.stringify(state.favorites));
+      router.render();
+    }
+
+    function addRecent(gameId) {
+      state.recent = state.recent.filter(id => id !== gameId);
+      state.recent.unshift(gameId);
+      if (state.recent.length > 10) state.recent.pop();
+      localStorage.setItem('recent', JSON.stringify(state.recent));
+    }
+
+    function launchGame(gameId) {
+      const game = gamesData.find(g => g.id === gameId);
+      if (!game) return;
+
+      // Update last played
+      state.lastPlayed = state.lastPlayed.filter(id => id !== gameId);
+      state.lastPlayed.unshift(gameId);
+      if (state.lastPlayed.length > 10) state.lastPlayed.pop();
+      localStorage.setItem('lastPlayed', JSON.stringify(state.lastPlayed));
+
+      document.getElementById('player-title').textContent = game.name;
+      document.getElementById('game-player').classList.add('active');
+
+      if (state.settings.fullscreen) {
+        setTimeout(() => toggleFullscreen(), 300);
+      }
+    }
+
+    function exitGame() {
+      const player = document.getElementById('game-player');
+      player.classList.remove('active');
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      }
+    }
+
+    function toggleFullscreen() {
+      const player = document.getElementById('game-player');
+      if (!document.fullscreenElement) {
+        player.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // ===================== LIGHTBOX =====================
+    function openLightbox(gameId, index) {
+      const game = gamesData.find(g => g.id === gameId);
+      if (!game) return;
+      state.lightboxImages = game.screenshots;
+      state.lightboxIndex = index;
+      state.zoom = 1;
+      state.panX = 0;
+      state.panY = 0;
+      updateLightboxImage();
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function closeLightboxOnBg(e) {
+      if (e.target.id === 'lightbox') closeLightbox();
+    }
+
+    function changeImage(dir) {
+      state.lightboxIndex += dir;
+      if (state.lightboxIndex < 0) state.lightboxIndex = state.lightboxImages.length - 1;
+      if (state.lightboxIndex >= state.lightboxImages.length) state.lightboxIndex = 0;
+      state.zoom = 1;
+      state.panX = 0;
+      state.panY = 0;
+      updateLightboxImage();
+    }
+
+    function updateLightboxImage() {
+      const img = document.getElementById('lightbox-img');
+      img.src = state.lightboxImages[state.lightboxIndex];
+      applyTransform();
+    }
+
+    function adjustZoom(delta) {
+      state.zoom = Math.max(0.5, Math.min(4, state.zoom + delta));
+      applyTransform();
+    }
+
+    function resetZoom() {
+      state.zoom = 1;
+      state.panX = 0;
+      state.panY = 0;
+      applyTransform();
+    }
+
+    function applyTransform() {
+      const img = document.getElementById('lightbox-img');
+      img.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.zoom})`;
+      document.getElementById('zoom-level').textContent = Math.round(state.zoom * 100) + '%';
+    }
+
+    function startDrag(e) {
+      state.isDragging = true;
+      state.dragStartX = e.clientX - state.panX;
+      state.dragStartY = e.clientY - state.panY;
+      document.getElementById('lightbox-img').style.cursor = 'grabbing';
+    }
+
+    document.addEventListener('mousemove', (e) => {
+      if (!state.isDragging) return;
+      state.panX = e.clientX - state.dragStartX;
+      state.panY = e.clientY - state.dragStartY;
+      applyTransform();
+    });
+
+    document.addEventListener('mouseup', () => {
+      state.isDragging = false;
+      const img = document.getElementById('lightbox-img');
+      if (img) img.style.cursor = 'grab';
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('lightbox').classList.contains('active')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') changeImage(-1);
+      if (e.key === 'ArrowRight') changeImage(1);
+      if (e.key === '+' || e.key === '=') adjustZoom(0.25);
+      if (e.key === '-') adjustZoom(-0.25);
+    });
+
+    // ===================== SETTINGS =====================
+    function toggleSettings() {
+      const modal = document.getElementById('settings-modal');
+      modal.classList.toggle('active');
+      loadSettingsUI();
+    }
+
+    function closeSettingsOnBg(e) {
+      if (e.target.id === 'settings-modal') toggleSettings();
+    }
+
+    function toggleGameSettings() {
+      toggleSettings();
+    }
+
+    function loadSettingsUI() {
+      const s = state.settings;
+      document.getElementById('set-volume').value = s.volume || 80;
+      document.getElementById('set-quality').value = s.quality || 'medium';
+      document.getElementById('toggle-music').classList.toggle('active', s.music !== false);
+      document.getElementById('toggle-sfx').classList.toggle('active', s.sfx !== false);
+      document.getElementById('toggle-fullscreen').classList.toggle('active', s.fullscreen === true);
+    }
+
+    function saveSetting(key, value) {
+      state.settings[key] = value;
+      localStorage.setItem('gameSettings', JSON.stringify(state.settings));
+    }
+
+    function toggleBoolSetting(key) {
+      state.settings[key] = !state.settings[key];
+      localStorage.setItem('gameSettings', JSON.stringify(state.settings));
+      loadSettingsUI();
+    }
+
+    function resetAllData() {
+      if (confirm('Naozaj chcete vymazať všetky uložené dáta?')) {
+        localStorage.removeItem('favorites');
+        localStorage.removeItem('recent');
+        localStorage.removeItem('lastPlayed');
+        localStorage.removeItem('gameSettings');
+        state.favorites = [];
+        state.recent = [];
+        state.lastPlayed = [];
+        state.settings = { volume: 80, music: true, sfx: true, quality: 'medium', fullscreen: false };
+        showToast('Všetky dáta boli resetované');
+        router.render();
+      }
+    }
+
+    // ===================== TOAST =====================
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // ===================== INIT =====================
+    window.addEventListener('hashchange', () => router.render());
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loading-screen').classList.add('hidden');
+      }, 800);
+      router.render();
+      loadSettingsUI();
+    });
+  </script>
+</body>
+</html>
