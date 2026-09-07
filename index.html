@@ -491,7 +491,7 @@
     }
     .toast.show { transform: translateY(0); opacity: 1; }
   </style>
-
+<base target="_blank">
 </head>
 <body>
 
@@ -550,7 +550,7 @@
       </div>
     </div>
     <div class="player-frame" id="player-frame">
-      <iframe id="game-iframe" title="Herný prehrávač" allow="fullscreen; gamepad; pointer-lock; autoplay" allowfullscreen style="width:100%;height:100%;border:0;background:#000;"></iframe>
+      <iframe id="game-iframe" title="Herný prehrávač" allow="fullscreen; gamepad; pointer-lock; autoplay" allowfullscreen></iframe>
     </div>
   </div>
 
@@ -617,22 +617,32 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // ============================================================
-    // 🎮 MY STEAM – JEDNODUCHÉ PRIDÁVANIE HIER
-    // ============================================================
-    // Stačí vyplniť 4 veci v addGame():
-    // 1) ID hry – musí byť jedinečné
-    // 2) Názov hry
-    // 3) Krátky popis
-    // 4) Celý HTML/CSS/JS kód hry medzi spätnými apostrofmi `...`
-    //
-    // Ak chceš ďalšiu hru, skopíruj celý SLOT a zmeň tieto 4 údaje.
-    // Nie je limit 10 ani 100 hier.
-    //
-    // ⚠️ Ak v hre používaš <script>, koniec tagu píš ako <\/script>.
-    // ============================================================
+    // ===================== HRY =====================
+    // Pridávaj hry pomocou addGame({...}). Nie je tu limit 100 hier.
+    // html = kompletný HTML/CSS/JS kód tvojej hry.
 
     const gamesData = [];
+
+    function addGame(game) {
+      if (!game || !game.id || !game.name) {
+        console.error('Hra musí mať minimálne id a name.');
+        return;
+      }
+      gamesData.push({
+        id: String(game.id), name: game.name,
+        description: game.description || 'Bez popisu',
+        longDescription: game.longDescription || game.description || 'Bez podrobného popisu.',
+        genre: game.genre || 'Other', type: game.type || '2D',
+        version: game.version || '1.0',
+        releaseDate: game.releaseDate || new Date().toISOString().slice(0,10),
+        author: game.author || 'Neznámy autor',
+        thumbnail: game.thumbnail || makeDefaultThumbnail(game.name),
+        screenshots: Array.isArray(game.screenshots) ? game.screenshots : [],
+        controls: Array.isArray(game.controls) ? game.controls : [],
+        sysRequirements: game.sysRequirements || null,
+        html: String(game.html || '')
+      });
+    }
 
     function makeDefaultThumbnail(name) {
       const safe = String(name || 'GAME').replace(/[&<>"']/g, '');
@@ -640,173 +650,350 @@
       return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
     }
 
-    function addGame(id, name, description, html) {
-      // Prázdny slot sa ignoruje – po vyplnení sa automaticky zobrazí.
-      if (!id || !name) return;
-      id = String(id).trim();
-      if (gamesData.some(game => game.id === id)) {
-        console.error('Duplicitné ID hry:', id);
-        return;
-      }
-      gamesData.push({
-        id, name: String(name),
-        description: description || 'Bez popisu.',
-        longDescription: description || 'Bez podrobného popisu.',
-        genre: 'Other', type: '2D', version: '1.0',
-        releaseDate: new Date().toISOString().slice(0, 10),
-        author: 'Neznámy autor',
-        thumbnail: makeDefaultThumbnail(name),
-        screenshots: [], controls: [], sysRequirements: null,
-        html: String(html || '')
-      });
-    }
+    // ===================== HRY / 10 PRIPRAVENÝCH SLOTOV =====================
+    //
+    // MINI TUTORIAL – AKO PRIDAŤ HRU:
+    // 1. Vyber si jeden SLOT nižšie.
+    // 2. Zmeň údaje id, name, description, longDescription, genre, type,
+    //    version, releaseDate, author, thumbnail, screenshots a controls.
+    // 3. Do html: `...` vlož KOMPLETNÝ HTML KÓD HRY vrátane CSS a JavaScriptu.
+    // 4. Hra sa automaticky zobrazí v MY STEAM a spustí sa v hernom prehrávači.
+    // 5. Každá hra musí mať vlastné jedinečné id.
+    // 6. Ďalšie hry môžeš pridať skopírovaním ľubovoľného slotu.
+    // 7. Neexistuje limit 10/100 hier – týchto 10 slotov je len pripravených dopredu.
+    //
+    // DÔLEŽITÉ:
+    // Ak v html šablóne používaš JavaScript <script>, zapíš koniec tagu ako
+    // <\/script>, aby sa neukončil hlavný script MY STEAM.
+    // ============================================================
 
     // ============================================================
-    // 🟢 SLOT 1 – VLOŽ HRU SEM
+    // 🟢 SLOT 1 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 1',
-      'Krátky popis hry 1',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-1',
+      name: 'Moja prvá hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Arcade', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Pohyb' }, { key: 'SPACE', description: 'Akcia' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Moja prvá hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 MOJA PRVÁ HRA</h1><p>SEM VLOŽ SVOJU HRU.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 2 – VLOŽ HRU SEM
+    // 🟢 SLOT 2 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 2',
-      'Krátky popis hry 2',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-2',
+      name: 'SLOT 2 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 2 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 2</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 3 – VLOŽ HRU SEM
+    // 🟢 SLOT 3 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 3',
-      'Krátky popis hry 3',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-3',
+      name: 'SLOT 3 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 3 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 3</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 4 – VLOŽ HRU SEM
+    // 🟢 SLOT 4 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 4',
-      'Krátky popis hry 4',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-4',
+      name: 'SLOT 4 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 4 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 4</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 5 – VLOŽ HRU SEM
+    // 🟢 SLOT 5 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 5',
-      'Krátky popis hry 5',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-5',
+      name: 'SLOT 5 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 5 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 5</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 6 – VLOŽ HRU SEM
+    // 🟢 SLOT 6 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 6',
-      'Krátky popis hry 6',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-6',
+      name: 'SLOT 6 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 6 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 6</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 7 – VLOŽ HRU SEM
+    // 🟢 SLOT 7 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 7',
-      'Krátky popis hry 7',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-7',
+      name: 'SLOT 7 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 7 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 7</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 8 – VLOŽ HRU SEM
+    // 🟢 SLOT 8 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 8',
-      'Krátky popis hry 8',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-8',
+      name: 'SLOT 8 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 8 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 8</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 9 – VLOŽ HRU SEM
+    // 🟢 SLOT 9 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 9',
-      'Krátky popis hry 9',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-9',
+      name: 'SLOT 9 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 9 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 9</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
     // ============================================================
-    // 🔵 SLOT 10 – VLOŽ HRU SEM
+    // 🟢 SLOT 10 – SEM PRIDAJ / UPRAV SVOJU HRU
     // ============================================================
-    // Zmeň iba: ID, názov, popis a HTML kód.
-    // ID nesmie byť rovnaké ako pri inej hre.
-    addGame(
-      '',
-      'Názov hry 10',
-      'Krátky popis hry 10',
-      `
-<!-- SEM VLOŽ CELÝ HTML KÓD HRY -->
-      `
-    );
+    // Zmeň hlavne: id, name, description, longDescription, genre,
+    // type, version, releaseDate, author, thumbnail, screenshots,
+    // controls a hlavne html = CELÝ KÓD TVOJEJ HRY.
+    //
+    // MINI TUTORIAL:
+    // 1. Skopíruj tento celý addGame blok.
+    // 2. Zmeň id na jedinečné ID (napr. 'moja-hra-11').
+    // 3. Zmeň name a ostatné informácie o hre.
+    // 4. Do html: `...` vlož celý HTML/CSS/JS kód hry.
+    // 5. Ak má hra vlastný <script>, vo vnútri tejto šablóny píš </script> ako <\/script>.
+    // 6. Pre ďalšiu hru vlož nový blok pod posledný slot.
+    // 7. Počet hier nie je obmedzený na 10 – môžeš pridať ďalšie.
+    //
+    // TIP: Ak nemáš thumbnail, nechaj thumbnail: ''. Systém vytvorí obrázok automaticky.
+    // ============================================================
+    addGame({
+      id: 'moja-hra-10',
+      name: 'SLOT 10 – moja hra',
+      description: 'Krátky popis hry.',
+      longDescription: 'Sem napíš dlhý popis hry.',
+      genre: 'Other', type: '2D', version: '1.0',
+      releaseDate: '2026-09-07', author: 'Tvoje meno',
+      thumbnail: '',
+      screenshots: [],
+      controls: [{ key: 'W A S D', description: 'Ovládanie' }],
+      html: `<!DOCTYPE html><html lang="sk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>SLOT 10 – moja hra</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;color:white;font-family:Arial}body{display:grid;place-items:center;text-align:center}.box{padding:30px}</style></head><body><div class="box"><h1>🎮 SLOT 10</h1><p>Tento slot je pripravený. Nahraď tento HTML kód svojou hrou.</p></div></body></html>`
+    });
 
-    // ============================================================
-    // ➕ ĎALŠIA HRA
-    // ============================================================
-    // Skopíruj ktorýkoľvek SLOT vyššie, vlož ho pod SLOT 10
-    // a zmeň ID, názov, popis a HTML. Počet hier nie je obmedzený.
-    // ============================================================
+    // ===================== STATE =====================
+    const state = {
+      favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+      recent: JSON.parse(localStorage.getItem('recent') || '[]'),
+      lastPlayed: JSON.parse(localStorage.getItem('lastPlayed') || '[]'),
+      settings: JSON.parse(localStorage.getItem('gameSettings') || '{"volume":80,"music":true,"sfx":true,"quality":"medium","fullscreen":false}'),
+      currentFilter: 'all',
+      searchQuery: '',
+      lightboxIndex: 0,
+      lightboxImages: [],
+      zoom: 1,
+      panX: 0,
+      panY: 0,
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0
+    };
 
     // ===================== ROUTER =====================
     const router = {
@@ -1138,6 +1325,8 @@
       document.getElementById('player-title').textContent = game.name;
       player.classList.add('active');
       document.body.style.overflow = 'hidden';
+
+      // Spustí HTML/CSS/JS hry priamo v izolovanom iframe.
       frame.srcdoc = game.html;
 
       if (state.settings.fullscreen) {
