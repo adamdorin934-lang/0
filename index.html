@@ -1,6069 +1,2069 @@
 <!DOCTYPE html>
 <html lang="sk">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>GAME HUB</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Hub</title>
 
 <style>
+:root {
+    --games-per-row: 5;
+    --card-gap: 12px;
+    --featured-height: 430px;
 
-/* =========================================================
-   GAME HUB
-   HRY + APLIKÁCIE + NÁSTROJE + INÉ
-   ========================================================= */
-
-
-/* =========================================================
-   ⚙️ HLAVNÉ NASTAVENIA
-   ========================================================= */
-
-:root{
-
-    --games-per-row:4;
-
-    --card-gap:18px;
-
-    --featured-height:380px;
-
-    --bg:#171a21;
-
-    --bg-dark:#10151b;
-
-    --panel:#1f2b38;
-
-    --panel-hover:#26394d;
-
-    --border:#34475a;
-
-    --text:#ffffff;
-
-    --muted:#a8b4c2;
-
-    --blue:#66c0f4;
-
-    --blue2:#1a9fff;
-
-    --green:#75b022;
-
+    --bg: #1b2838;
+    --panel: #16202d;
+    --panel2: #223448;
+    --blue: #1a9fff;
+    --text: #d6d7d8;
+    --white: #fff;
 }
 
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-*{
-    box-sizing:border-box;
+* {
+    box-sizing: border-box;
 }
 
-
-html{
-    scroll-behavior:smooth;
-}
-
-
-body{
-
-    margin:0;
-
+body {
+    margin: 0;
     background:
-        radial-gradient(
-            circle at top,
-            #1e2d3d 0%,
-            #171a21 45%
-        );
-
-    color:var(--text);
-
-    font-family:
-
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    min-height:100vh;
-
+        radial-gradient(circle at top, #223b52, #1b2838 45%, #101820);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
+/* HEADER */
 
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-header{
-
-    height:70px;
-
-    background:#171d25;
-
-    border-bottom:
-
-        1px solid #2d3a48;
-
-    display:flex;
-
-    align-items:center;
-
-    padding:
-
-        0 30px;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:1000;
-
-    box-shadow:
-
-        0 2px 12px #0008;
-
+.header {
+    height: 70px;
+    background: linear-gradient(#1b2838, #171d25);
+    border-bottom: 1px solid #000;
+    box-shadow: 0 2px 10px #000;
+    display: flex;
+    align-items: center;
+    padding: 0 25px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-
-.logo{
-
-    font-size:26px;
-
-    font-weight:bold;
-
-    color:var(--blue);
-
-    margin-right:45px;
-
-    letter-spacing:1px;
-
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    color: white;
+    margin-right: 35px;
 }
 
-
-nav{
-
-    display:flex;
-
-    gap:28px;
-
+.logo span {
+    color: var(--blue);
 }
 
-
-nav a{
-
-    color:#d6d7d8;
-
-    text-decoration:none;
-
-    font-size:15px;
-
-    transition:.2s;
-
+.nav {
+    display: flex;
+    gap: 25px;
 }
 
-
-nav a:hover{
-
-    color:white;
-
+.nav a {
+    color: #d6d7d8;
+    text-decoration: none;
+    font-size: 14px;
 }
 
-
-.header-right{
-
-    margin-left:auto;
-
+.nav a:hover {
+    color: white;
 }
 
-
-.status{
-
-    color:#75b022;
-
-    font-size:13px;
-
+.spacer {
+    flex: 1;
 }
 
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-main{
-
-    max-width:1500px;
-
-    margin:auto;
-
-    padding:30px;
-
+.status {
+    color: #66c0f4;
+    font-size: 12px;
 }
 
+/* MAIN */
 
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero{
-
-    height:var(--featured-height);
-
-    background:#1b2838;
-
-    border-radius:6px;
-
-    overflow:hidden;
-
-    position:relative;
-
-    box-shadow:
-
-        0 8px 35px #0009;
-
-    border:
-
-        1px solid #34475a;
-
+.container {
+    width: 94%;
+    max-width: 1400px;
+    margin: 25px auto 60px;
 }
 
-
-.hero-image{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
+.section-title {
+    color: white;
+    font-size: 22px;
+    font-weight: normal;
+    margin: 30px 0 14px;
 }
 
+/* FEATURED */
 
-.hero-overlay{
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            #000e 0%,
-
-            #000b 35%,
-
-            #0005 60%,
-
-            transparent 100%
-
-        );
-
+.featured {
+    height: var(--featured-height);
+    position: relative;
+    overflow: hidden;
+    background: #0d141c;
+    border: 1px solid #000;
+    box-shadow: 0 5px 20px rgba(0,0,0,.6);
 }
 
-
-.hero-content{
-
-    position:absolute;
-
-    left:50px;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:550px;
-
-    max-width:70%;
-
+.featured-slide {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 }
 
-
-.hero-type{
-
-    display:inline-block;
-
-    background:var(--blue2);
-
-    padding:7px 12px;
-
-    border-radius:3px;
-
-    font-size:12px;
-
-    font-weight:bold;
-
-    margin-bottom:14px;
-
+.featured-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
-
-.hero-title{
-
-    font-size:44px;
-
-    margin:0 0 14px;
-
-    text-shadow:
-
-        0 3px 10px #000;
-
+.featured-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 90px 35px 30px;
+    background: linear-gradient(
+        transparent,
+        rgba(0,0,0,.95)
+    );
 }
 
-
-.hero-description{
-
-    color:#ddd;
-
-    line-height:1.55;
-
-    font-size:15px;
-
+.featured-category {
+    color: var(--blue);
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-
-.hero-buttons{
-
-    display:flex;
-
-    gap:10px;
-
-    margin-top:22px;
-
+.featured-title {
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 7px 0;
 }
 
-
-.button{
-
-    border:0;
-
-    border-radius:3px;
-
-    padding:
-
-        12px 22px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-    font-size:14px;
-
-    transition:.2s;
-
+.featured-description {
+    max-width: 750px;
+    font-size: 15px;
 }
 
-
-.button:hover{
-
-    filter:brightness(1.15);
-
-    transform:translateY(-1px);
-
+.play-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 9px 22px;
+    background: linear-gradient(#75b022, #588a16);
+    color: white;
+    font-weight: bold;
 }
 
+/* ARROWS */
 
-.play-button{
-
-    background:var(--green);
-
-    color:white;
-
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 90px;
+    border: 0;
+    background: rgba(0,0,0,.45);
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 5;
 }
 
-
-.next-button{
-
-    background:#3c5065;
-
-    color:white;
-
+.slider-arrow:hover {
+    background: rgba(26,159,255,.65);
 }
 
-
-/* =========================================================
-   HERO ARROWS
-   ========================================================= */
-
-.hero-arrow{
-
-    position:absolute;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:45px;
-
-    height:80px;
-
-    border:0;
-
-    background:#0009;
-
-    color:white;
-
-    font-size:35px;
-
-    cursor:pointer;
-
-    z-index:10;
-
+.slider-prev {
+    left: 0;
 }
 
-
-.hero-arrow:hover{
-
-    background:#000d;
-
+.slider-next {
+    right: 0;
 }
 
+/* DOTS */
 
-.hero-left{
-
-    left:0;
-
+.slider-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+    z-index: 10;
 }
 
-
-.hero-right{
-
-    right:0;
-
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    background: #555;
+    border-radius: 50%;
+    cursor: pointer;
 }
 
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-.search-area{
-
-    margin:
-
-        30px 0;
-
+.slider-dot.active {
+    background: var(--blue);
 }
 
+/* SEARCH */
 
-.search{
-
-    width:100%;
-
-    height:52px;
-
-    padding:
-
-        0 18px;
-
-    background:#101820;
-
-    border:
-
-        1px solid #405468;
-
-    border-radius:4px;
-
-    color:white;
-
-    font-size:16px;
-
-    outline:none;
-
+.search-box {
+    margin: 25px 0;
+    background: #0d151e;
+    border: 1px solid #000;
+    padding: 5px;
 }
 
-
-.search::placeholder{
-
-    color:#8796a5;
-
+.search-box input {
+    width: 100%;
+    padding: 14px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 16px;
 }
 
-
-.search:focus{
-
-    border-color:var(--blue);
-
-    box-shadow:
-
-        0 0 0 2px #66c0f422;
-
+.search-box input::placeholder {
+    color: #71808f;
 }
 
+/* GAMES */
 
-/* =========================================================
-   SECTION
-   ========================================================= */
-
-.section{
-
-    margin-top:38px;
-
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--games-per-row), minmax(0,1fr));
+    gap: var(--card-gap);
 }
 
-
-.section-title{
-
-    font-size:23px;
-
-    font-weight:bold;
-
-    margin-bottom:16px;
-
-    color:#eee;
-
+.game-card {
+    background: linear-gradient(#223448, #182533);
+    border: 1px solid #0a1016;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .18s;
 }
 
-
-.section-subtitle{
-
-    color:var(--muted);
-
-    font-size:13px;
-
-    margin-top:-8px;
-
-    margin-bottom:16px;
-
+.game-card:hover {
+    transform: translateY(-3px);
+    background: #263b50;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
 }
 
-
-/* =========================================================
-   GAME GRID
-   ========================================================= */
-
-.game-grid{
-
-    display:grid;
-
-    grid-template-columns:
-
-        repeat(
-
-            var(--games-per-row),
-
-            minmax(0,1fr)
-
-        );
-
-    gap:var(--card-gap);
-
+.game-image-wrap {
+    aspect-ratio: 16/9;
+    background: #101820;
+    overflow: hidden;
 }
 
-
-/* =========================================================
-   CARD
-   ========================================================= */
-
-.game-card{
-
-    background:
-
-        linear-gradient(
-
-            180deg,
-
-            #223142,
-
-            #1c2733
-
-        );
-
-    border:
-
-        1px solid var(--border);
-
-    border-radius:4px;
-
-    overflow:hidden;
-
-    cursor:pointer;
-
-    transition:
-
-        transform .18s,
-
-        border-color .18s,
-
-        box-shadow .18s;
-
+.game-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-
-.game-card:hover{
-
-    transform:
-
-        translateY(-5px);
-
-    border-color:
-
-        var(--blue);
-
-    box-shadow:
-
-        0 10px 28px #0009;
-
+.game-info {
+    padding: 11px;
 }
 
-
-.card-image{
-
-    width:100%;
-
-    height:185px;
-
-    object-fit:cover;
-
-    display:block;
-
-    background:#26394d;
-
+.game-title {
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-
-.card-content{
-
-    padding:15px;
-
+.game-category {
+    color: var(--blue);
+    font-size: 11px;
+    margin-top: 5px;
+    text-transform: uppercase;
 }
 
-
-.card-type{
-
-    display:inline-block;
-
-    background:#334b61;
-
-    color:#c9e7fa;
-
-    border-radius:2px;
-
-    padding:
-
-        4px 7px;
-
-    font-size:10px;
-
-    font-weight:bold;
-
-    margin-bottom:9px;
-
+.game-description {
+    color: #9ca6ae;
+    font-size: 12px;
+    line-height: 1.4;
+    margin-top: 6px;
+    min-height: 34px;
 }
 
-
-.card-title{
-
-    font-size:18px;
-
-    font-weight:bold;
-
-    margin-bottom:7px;
-
+.game-play {
+    display: inline-block;
+    margin-top: 9px;
+    padding: 7px 12px;
+    background: linear-gradient(#75b022, #588a16);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
 }
 
-
-.card-description{
-
-    color:var(--muted);
-
-    font-size:13px;
-
-    line-height:1.45;
-
-    min-height:38px;
-
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 40px;
+    background: var(--panel);
 }
 
-
-.card-category{
-
-    color:var(--blue);
-
-    font-size:12px;
-
-    margin-top:11px;
-
+.footer {
+    text-align: center;
+    color: #66727e;
+    padding: 30px;
+    border-top: 1px solid #172331;
+    font-size: 12px;
 }
 
+/* MOBILE */
 
-/* =========================================================
-   EMPTY
-   ========================================================= */
-
-.empty{
-
-    grid-column:
-
-        1 / -1;
-
-    padding:35px;
-
-    text-align:center;
-
-    background:#1f2b38;
-
-    border:
-
-        1px solid var(--border);
-
-    color:var(--muted);
-
+@media(max-width:1100px) {
+    :root {
+        --games-per-row: 4;
+    }
 }
 
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-footer{
-
-    margin-top:60px;
-
-    padding:30px;
-
-    text-align:center;
-
-    color:#718091;
-
-    border-top:
-
-        1px solid #293746;
-
-    font-size:13px;
-
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media(max-width:1100px){
-
-    :root{
-
-        --games-per-row:3;
-
+@media(max-width:800px) {
+    :root {
+        --games-per-row: 3;
     }
 
+    .nav {
+        display: none;
+    }
 }
 
-
-@media(max-width:800px){
-
-    :root{
-
-        --games-per-row:2;
-
+@media(max-width:600px) {
+    :root {
+        --games-per-row: 2;
     }
 
-    header{
-
-        padding:
-
-            0 15px;
-
+    .featured {
+        height: 330px;
     }
 
-    nav{
-
-        display:none;
-
+    .featured-title {
+        font-size: 23px;
     }
 
-    main{
-
-        padding:15px;
-
+    .featured-overlay {
+        padding: 50px 18px 20px;
     }
-
-    .hero{
-
-        height:420px;
-
-    }
-
-    .hero-content{
-
-        left:30px;
-
-        width:auto;
-
-        max-width:75%;
-
-    }
-
-    .hero-title{
-
-        font-size:32px;
-
-    }
-
 }
 
-
-@media(max-width:520px){
-
-    :root{
-
-        --games-per-row:1;
-
+@media(max-width:400px) {
+    :root {
+        --games-per-row: 1;
     }
-
-    .hero-content{
-
-        left:20px;
-
-        max-width:80%;
-
-    }
-
-    .hero-title{
-
-        font-size:27px;
-
-    }
-
-    .hero-description{
-
-        font-size:13px;
-
-    }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =========================================================
-     HEADER
-     ========================================================= -->
-
-<header>
-
+<header class="header">
 
     <div class="logo">
-
-        GAME HUB
-
+        GAME<span>HUB</span>
     </div>
 
-
-    <nav>
-
-        <a href="#home">
-            DOMOV
-        </a>
-
-        <a href="#best">
-            NAJLEPŠIE
-        </a>
-
-        <a href="#newest">
-            NAJNOVŠIE
-        </a>
-
-        <a href="#all">
-            KNIŽNICA
-        </a>
-
+    <nav class="nav">
+        <a href="#home">OBCHOD</a>
+        <a href="#best">NAJLEPŠIE HRY</a>
+        <a href="#newest">NAJNOVŠIE</a>
+        <a href="#all">VŠETKY HRY</a>
     </nav>
 
+    <div class="spacer"></div>
 
-    <div class="header-right">
-
-        <div class="status">
-
-            ● ONLINE
-
-        </div>
-
+    <div class="status">
+        CLASSIC MODE
     </div>
-
 
 </header>
 
 
+<main class="container" id="home">
 
-<!-- =========================================================
-     MAIN
-     ========================================================= -->
+    <h2 class="section-title">
+        Odporúčané hry
+    </h2>
 
-<main id="home">
+    <div class="featured">
 
-
-<!-- =========================================================
-     FEATURED
-     ========================================================= -->
-
-<section class="hero">
-
-
-    <img
-        id="heroImage"
-        class="hero-image"
-        src=""
-        alt=""
-    >
-
-
-    <div class="hero-overlay"></div>
-
-
-    <button
-        class="hero-arrow hero-left"
-        onclick="previousHero()"
-        aria-label="Predchádzajúca položka"
-    >
-
-        ‹
-
-    </button>
-
-
-    <button
-        class="hero-arrow hero-right"
-        onclick="nextHero()"
-        aria-label="Ďalšia položka"
-    >
-
-        ›
-
-    </button>
-
-
-    <div class="hero-content">
-
+        <button
+            class="slider-arrow slider-prev"
+            id="prevButton">
+            ‹
+        </button>
 
         <div
-            id="heroType"
-            class="hero-type"
-        >
+            class="featured-slide"
+            id="featuredSlide">
 
-            🎮 HRA
+            <img
+                id="featuredImage"
+                alt="Featured game">
 
+            <div class="featured-overlay">
+
+                <div
+                    class="featured-category"
+                    id="featuredCategory">
+                </div>
+
+                <div
+                    class="featured-title"
+                    id="featuredTitle">
+                </div>
+
+                <div
+                    class="featured-description"
+                    id="featuredDescription">
+                </div>
+
+                <div class="play-button">
+                    HRAŤ
+                </div>
+
+            </div>
         </div>
 
+        <button
+            class="slider-arrow slider-next"
+            id="nextButton">
+            ›
+        </button>
 
-        <h1
-            id="heroTitle"
-            class="hero-title"
-        >
-
-            GAME HUB
-
-        </h1>
-
-
-        <p
-            id="heroDescription"
-            class="hero-description"
-        >
-
-            Tvoja platforma pre hry,
-            aplikácie a nástroje.
-
-        </p>
-
-
-        <div class="hero-buttons">
-
-
-            <button
-                class="button play-button"
-                onclick="openHero()"
-            >
-
-                ▶ SPUSTIŤ
-
-            </button>
-
-
-            <button
-                class="button next-button"
-                onclick="nextHero()"
-            >
-
-                ĎALŠIE
-
-            </button>
-
-
+        <div
+            class="slider-dots"
+            id="sliderDots">
         </div>
 
+    </div>
+
+
+    <div class="search-box">
+
+        <input
+            id="searchInput"
+            type="text"
+            placeholder="Hľadať hry..."
+            autocomplete="off">
 
     </div>
 
 
-</section>
+    <section id="best">
+
+        <h2 class="section-title">
+            Najlepšie hry
+        </h2>
+
+        <div
+            class="game-grid"
+            id="bestGames">
+        </div>
+
+    </section>
 
 
+    <section id="newest">
 
-<!-- =========================================================
-     SEARCH
-     ========================================================= -->
+        <h2 class="section-title">
+            Najnovšie hry
+        </h2>
 
-<div class="search-area">
+        <div
+            class="game-grid"
+            id="newestGames">
+        </div>
 
-
-    <input
-        id="search"
-        class="search"
-        type="text"
-        placeholder="🔎 Hľadaj hry, aplikácie, nástroje..."
-        autocomplete="off"
-        oninput="searchGames()"
-    >
+    </section>
 
 
-</div>
+    <section id="all">
 
+        <h2 class="section-title">
+            Všetky hry
+        </h2>
 
+        <div
+            class="game-grid"
+            id="allGames">
+        </div>
 
-<!-- =========================================================
-     NAJLEPŠIE
-     ========================================================= -->
+        <div
+            class="no-results"
+            id="noResults">
+            Žiadna hra nebola nájdená.
+        </div>
 
-<section
-    id="best"
-    class="section"
->
-
-
-    <div class="section-title">
-
-        ⭐ Najlepšie
-
-    </div>
-
-
-    <div
-        id="bestGames"
-        class="game-grid"
-    ></div>
-
-
-</section>
-
-
-
-<!-- =========================================================
-     NAJNOVŠIE
-     ========================================================= -->
-
-<section
-    id="newest"
-    class="section"
->
-
-
-    <div class="section-title">
-
-        🆕 Najnovšie
-
-    </div>
-
-
-    <div
-        id="newestGames"
-        class="game-grid"
-    ></div>
-
-
-</section>
-
-
-
-<!-- =========================================================
-     VŠETKY
-     ========================================================= -->
-
-<section
-    id="all"
-    class="section"
->
-
-
-    <div class="section-title">
-
-        📚 Všetky hry, aplikácie a nástroje
-
-    </div>
-
-
-    <div
-        class="section-subtitle"
-    >
-
-        Na jednom mieste môžeš mať hry,
-        aplikácie, nástroje aj ďalší obsah.
-
-    </div>
-
-
-    <div
-        id="allGames"
-        class="game-grid"
-    ></div>
-
-
-</section>
-
+    </section>
 
 </main>
 
 
-
-<footer>
-
-    GAME HUB © 2026
-
+<footer class="footer">
+    GAME HUB • CLASSIC EDITION
 </footer>
-
 
 
 <script>
 
+/* ============================================================
+                        ⚙️ SETTINGS
+============================================================ */
 
-/* =========================================================
-   ⚙️ NASTAVENIA
-   ========================================================= */
+const SETTINGS = {
 
-
-/*
--------------------------------------------------------------
-POČET KARIET V RIADKU
-
-4 = štyri karty
-5 = päť kariet
-6 = šesť kariet
-
--------------------------------------------------------------
-*/
-
-const GAMES_PER_ROW = 6;
+    GAMES_PER_ROW: 5,
+    // Počet hier v jednom riadku.
+    // Odporúčané: 3-6
 
 
-/*
--------------------------------------------------------------
-POČET POLOŽIEK V NAJLEPŠIE
-
--------------------------------------------------------------
-*/
-
-const BEST_GAMES_COUNT = 6;
+    BEST_GAMES_COUNT: 10,
+    // Počet hier v "Najlepšie hry".
+    // 0-200
 
 
-/*
--------------------------------------------------------------
-POČET POLOŽIEK V NAJNOVŠIE
-
--------------------------------------------------------------
-*/
-
-const NEWEST_GAMES_COUNT = 6;
+    NEWEST_GAMES_COUNT: 10,
+    // Počet hier v "Najnovšie hry".
+    // 0-200
 
 
-/*
--------------------------------------------------------------
-AUTOMATICKÝ FEATURED SLIDER
-
-true = automaticky sa mení
-false = iba šípky
-
--------------------------------------------------------------
-*/
-
-const AUTO_SLIDER = true;
+    AUTO_SLIDER: true,
+    // true = slider sa automaticky mení
+    // false = slider stojí
 
 
-/*
--------------------------------------------------------------
-RÝCHLOSŤ SLIDERA
-
-5000 = 5 sekúnd
-3000 = 3 sekundy
-10000 = 10 sekúnd
-
--------------------------------------------------------------
-*/
-
-const SLIDER_SPEED = 5000;
+    SLIDER_SPEED: 5000,
+    // Čas medzi zmenami.
+    // 3000 = 3 sekundy
+    // 5000 = 5 sekúnd
+    // 10000 = 10 sekúnd
 
 
-/*
--------------------------------------------------------------
-NÁHODNÝ FEATURED
-
-true = náhodné poradie
-false = poradie zo slotov
-
--------------------------------------------------------------
-*/
-
-const RANDOM_FEATURED = true;
+    ANIMATION_SPEED: 400,
+    // Rýchlosť animácie.
+    // Odporúčané: 100-1500
 
 
-/*
--------------------------------------------------------------
-DÔLEŽITÉ!
-
-TOTO JE NOVÁ VERZIA OTVÁRANIA ODKAZOV.
-
-NEPOUŽÍVA:
-
-window.open()
-
-ALE:
-
-window.location.href
-
-Takže funguje podobne ako normálny:
-
-<a href="...">
-
--------------------------------------------------------------
-*/
-
-const OPEN_LINK_DIRECTLY = true;
+    RANDOM_FEATURED: true,
+    // true = náhodné featured hry
+    // false = hry idú podľa poradia
 
 
+    NO_REPEAT_RANDOM: true,
+    // true = tá istá hra sa nezopakuje
+    // false = môže sa zopakovať
 
-/* =========================================================
-   🎮📱🧰📦
-   200 SLOTOV
-   ========================================================= */
 
+    FEATURED_WINDOWS: 6,
+    // Počet hier v slideri.
+    // Odporúčané: 3-20
+
+
+    SHOW_ARROWS: true,
+    // true = zobrazí šípky
+    // false = skryje šípky
+
+
+    SHOW_DOTS: true,
+    // true = zobrazí bodky
+    // false = skryje bodky
+
+
+    FEATURED_HEIGHT: 430,
+    // Výška veľkého slidera.
+    // Odporúčané: 300-700
+
+
+    CARD_GAP: 12,
+    // Medzera medzi kartami.
+    // Odporúčané: 5-30
+
+
+    OPEN_GAME_IN_NEW_TAB: false,
+    // true = hra sa otvorí v novej karte
+    // false = hra sa otvorí v rovnakej karte
+
+
+    SEARCH_TITLE: true,
+    // Vyhľadávať v názve
+
+
+    SEARCH_DESCRIPTION: true,
+    // Vyhľadávať v popise
+
+
+    SEARCH_CATEGORY: true,
+    // Vyhľadávať v kategórii
+
+
+    SHOW_BEST_SECTION: true,
+    // true = zobrazí Najlepšie hry
+
+
+    SHOW_NEWEST_SECTION: true,
+    // true = zobrazí Najnovšie hry
+
+
+    SHOW_ALL_SECTION: true
+    // true = zobrazí Všetky hry
+
+};
+
+
+/* ============================================================
+                     🎮 GAME SLOTS
+============================================================ */
 
 /*
-=============================================================
-TYPY:
 
-game = 🎮 HRA
+==============================================================
+                 AKO PRIDAŤ OBRÁZOK
+==============================================================
 
-app = 📱 APLIKÁCIA
+Stačí:
 
-tool = 🧰 NÁSTROJ
+imageURL: "https://mojweb.sk/obrazok.jpg"
 
-other = 📦 INÉ
+Môžeš použiť:
 
+.jpg
+.png
+.webp
+.gif
 
--------------------------------------------------------------
+alebo lokálny súbor:
 
-OBRÁZOK:
+imageURL: "images/hra1.jpg"
 
-imageURL: "https://tvoj-web.sk/obrazok.jpg"
+==============================================================
 
-ALEBO:
+AK NEMÁŠ OBRÁZOK:
 
-imageURL: "images/hra.jpg"
+imageURL: ""
 
+Stránka automaticky použije vlastný tmavý obrázok
+"BEZ OBRÁZKU".
 
--------------------------------------------------------------
+==============================================================
 
-ODKAZ:
+GAME URL:
 
-gameURL: "https://tvoja-stranka.github.io/hra/"
+gameURL: "games/hra1/index.html"
 
-ALEBO LOKÁLNE:
+alebo napríklad:
 
-gameURL: "games/hra/index.html"
+gameURL: "https://mojweb.sk/hra.html"
 
--------------------------------------------------------------
+==============================================================
 
 featured:
-
-true = zobrazí sa vo Featured
-
-false = nezobrazí
-
+true = hra môže byť vo veľkom slideri
+false = nebude tam
 
 best:
-
-true = Najlepšie
-
-false = nie
-
+true = Najlepšie hry
+false = nebude tam
 
 newest:
+true = Najnovšie hry
+false = nebude tam
 
-true = Najnovšie
-
-false = nie
-
-=============================================================
+==============================================================
 */
 
 
 const GAMES = [
 
-
-/* =========================================================
-   SLOT 1
-   ========================================================= */
+/* ================= HRA 1 ================= */
 
 {
-    title:"Moja prvá hra",
-
-    description:"Moja prvá HTML hra.",
-
-    category:"Arcade",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"<!DOCTYPE html>
-<html lang="sk">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>GAME HUB</title>
-
-
-<style>
-
-/* =========================================================
-   GAME HUB
-   HRY + APLIKÁCIE + NÁSTROJE + INÉ
-   ========================================================= */
-
-
-/* =========================================================
-   ⚙️ HLAVNÉ NASTAVENIA
-   ========================================================= */
-
-:root{
-
-    --games-per-row:4;
-
-    --card-gap:18px;
-
-    --featured-height:380px;
-
-    --bg:#171a21;
-
-    --bg-dark:#10151b;
-
-    --panel:#1f2b38;
-
-    --panel-hover:#26394d;
-
-    --border:#34475a;
-
-    --text:#ffffff;
-
-    --muted:#a8b4c2;
-
-    --blue:#66c0f4;
-
-    --blue2:#1a9fff;
-
-    --green:#75b022;
-
-}
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-*{
-    box-sizing:border-box;
-}
-
-
-html{
-    scroll-behavior:smooth;
-}
-
-
-body{
-
-    margin:0;
-
-    background:
-        radial-gradient(
-            circle at top,
-            #1e2d3d 0%,
-            #171a21 45%
-        );
-
-    color:var(--text);
-
-    font-family:
-
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    min-height:100vh;
-
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-header{
-
-    height:70px;
-
-    background:#171d25;
-
-    border-bottom:
-
-        1px solid #2d3a48;
-
-    display:flex;
-
-    align-items:center;
-
-    padding:
-
-        0 30px;
-
-    position:sticky;
-
-    top:0;
-
-    z-index:1000;
-
-    box-shadow:
-
-        0 2px 12px #0008;
-
-}
-
-
-.logo{
-
-    font-size:26px;
-
-    font-weight:bold;
-
-    color:var(--blue);
-
-    margin-right:45px;
-
-    letter-spacing:1px;
-
-}
-
-
-nav{
-
-    display:flex;
-
-    gap:28px;
-
-}
-
-
-nav a{
-
-    color:#d6d7d8;
-
-    text-decoration:none;
-
-    font-size:15px;
-
-    transition:.2s;
-
-}
-
-
-nav a:hover{
-
-    color:white;
-
-}
-
-
-.header-right{
-
-    margin-left:auto;
-
-}
-
-
-.status{
-
-    color:#75b022;
-
-    font-size:13px;
-
-}
-
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-main{
-
-    max-width:1500px;
-
-    margin:auto;
-
-    padding:30px;
-
-}
-
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.hero{
-
-    height:var(--featured-height);
-
-    background:#1b2838;
-
-    border-radius:6px;
-
-    overflow:hidden;
-
-    position:relative;
-
-    box-shadow:
-
-        0 8px 35px #0009;
-
-    border:
-
-        1px solid #34475a;
-
-}
-
-
-.hero-image{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-}
-
-
-.hero-overlay{
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-
-        linear-gradient(
-
-            90deg,
-
-            #000e 0%,
-
-            #000b 35%,
-
-            #0005 60%,
-
-            transparent 100%
-
-        );
-
-}
-
-
-.hero-content{
-
-    position:absolute;
-
-    left:50px;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:550px;
-
-    max-width:70%;
-
-}
-
-
-.hero-type{
-
-    display:inline-block;
-
-    background:var(--blue2);
-
-    padding:7px 12px;
-
-    border-radius:3px;
-
-    font-size:12px;
-
-    font-weight:bold;
-
-    margin-bottom:14px;
-
-}
-
-
-.hero-title{
-
-    font-size:44px;
-
-    margin:0 0 14px;
-
-    text-shadow:
-
-        0 3px 10px #000;
-
-}
-
-
-.hero-description{
-
-    color:#ddd;
-
-    line-height:1.55;
-
-    font-size:15px;
-
-}
-
-
-.hero-buttons{
-
-    display:flex;
-
-    gap:10px;
-
-    margin-top:22px;
-
-}
-
-
-.button{
-
-    border:0;
-
-    border-radius:3px;
-
-    padding:
-
-        12px 22px;
-
-    cursor:pointer;
-
-    font-weight:bold;
-
-    font-size:14px;
-
-    transition:.2s;
-
-}
-
-
-.button:hover{
-
-    filter:brightness(1.15);
-
-    transform:translateY(-1px);
-
-}
-
-
-.play-button{
-
-    background:var(--green);
-
-    color:white;
-
-}
-
-
-.next-button{
-
-    background:#3c5065;
-
-    color:white;
-
-}
-
-
-/* =========================================================
-   HERO ARROWS
-   ========================================================= */
-
-.hero-arrow{
-
-    position:absolute;
-
-    top:50%;
-
-    transform:translateY(-50%);
-
-    width:45px;
-
-    height:80px;
-
-    border:0;
-
-    background:#0009;
-
-    color:white;
-
-    font-size:35px;
-
-    cursor:pointer;
-
-    z-index:10;
-
-}
-
-
-.hero-arrow:hover{
-
-    background:#000d;
-
-}
-
-
-.hero-left{
-
-    left:0;
-
-}
-
-
-.hero-right{
-
-    right:0;
-
-}
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-.search-area{
-
-    margin:
-
-        30px 0;
-
-}
-
-
-.search{
-
-    width:100%;
-
-    height:52px;
-
-    padding:
-
-        0 18px;
-
-    background:#101820;
-
-    border:
-
-        1px solid #405468;
-
-    border-radius:4px;
-
-    color:white;
-
-    font-size:16px;
-
-    outline:none;
-
-}
-
-
-.search::placeholder{
-
-    color:#8796a5;
-
-}
-
-
-.search:focus{
-
-    border-color:var(--blue);
-
-    box-shadow:
-
-        0 0 0 2px #66c0f422;
-
-}
-
-
-/* =========================================================
-   SECTION
-   ========================================================= */
-
-.section{
-
-    margin-top:38px;
-
-}
-
-
-.section-title{
-
-    font-size:23px;
-
-    font-weight:bold;
-
-    margin-bottom:16px;
-
-    color:#eee;
-
-}
-
-
-.section-subtitle{
-
-    color:var(--muted);
-
-    font-size:13px;
-
-    margin-top:-8px;
-
-    margin-bottom:16px;
-
-}
-
-
-/* =========================================================
-   GAME GRID
-   ========================================================= */
-
-.game-grid{
-
-    display:grid;
-
-    grid-template-columns:
-
-        repeat(
-
-            var(--games-per-row),
-
-            minmax(0,1fr)
-
-        );
-
-    gap:var(--card-gap);
-
-}
-
-
-/* =========================================================
-   CARD
-   ========================================================= */
-
-.game-card{
-
-    background:
-
-        linear-gradient(
-
-            180deg,
-
-            #223142,
-
-            #1c2733
-
-        );
-
-    border:
-
-        1px solid var(--border);
-
-    border-radius:4px;
-
-    overflow:hidden;
-
-    cursor:pointer;
-
-    transition:
-
-        transform .18s,
-
-        border-color .18s,
-
-        box-shadow .18s;
-
-}
-
-
-.game-card:hover{
-
-    transform:
-
-        translateY(-5px);
-
-    border-color:
-
-        var(--blue);
-
-    box-shadow:
-
-        0 10px 28px #0009;
-
-}
-
-
-.card-image{
-
-    width:100%;
-
-    height:185px;
-
-    object-fit:cover;
-
-    display:block;
-
-    background:#26394d;
-
-}
-
-
-.card-content{
-
-    padding:15px;
-
-}
-
-
-.card-type{
-
-    display:inline-block;
-
-    background:#334b61;
-
-    color:#c9e7fa;
-
-    border-radius:2px;
-
-    padding:
-
-        4px 7px;
-
-    font-size:10px;
-
-    font-weight:bold;
-
-    margin-bottom:9px;
-
-}
-
-
-.card-title{
-
-    font-size:18px;
-
-    font-weight:bold;
-
-    margin-bottom:7px;
-
-}
-
-
-.card-description{
-
-    color:var(--muted);
-
-    font-size:13px;
-
-    line-height:1.45;
-
-    min-height:38px;
-
-}
-
-
-.card-category{
-
-    color:var(--blue);
-
-    font-size:12px;
-
-    margin-top:11px;
-
-}
-
-
-/* =========================================================
-   EMPTY
-   ========================================================= */
-
-.empty{
-
-    grid-column:
-
-        1 / -1;
-
-    padding:35px;
-
-    text-align:center;
-
-    background:#1f2b38;
-
-    border:
-
-        1px solid var(--border);
-
-    color:var(--muted);
-
-}
-
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-footer{
-
-    margin-top:60px;
-
-    padding:30px;
-
-    text-align:center;
-
-    color:#718091;
-
-    border-top:
-
-        1px solid #293746;
-
-    font-size:13px;
-
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media(max-width:1100px){
-
-    :root{
-
-        --games-per-row:3;
-
-    }
-
-}
-
-
-@media(max-width:800px){
-
-    :root{
-
-        --games-per-row:2;
-
-    }
-
-    header{
-
-        padding:
-
-            0 15px;
-
-    }
-
-    nav{
-
-        display:none;
-
-    }
-
-    main{
-
-        padding:15px;
-
-    }
-
-    .hero{
-
-        height:420px;
-
-    }
-
-    .hero-content{
-
-        left:30px;
-
-        width:auto;
-
-        max-width:75%;
-
-    }
-
-    .hero-title{
-
-        font-size:32px;
-
-    }
-
-}
-
-
-@media(max-width:520px){
-
-    :root{
-
-        --games-per-row:1;
-
-    }
-
-    .hero-content{
-
-        left:20px;
-
-        max-width:80%;
-
-    }
-
-    .hero-title{
-
-        font-size:27px;
-
-    }
-
-    .hero-description{
-
-        font-size:13px;
-
-    }
-
-}
-
-</style>
-
-</head>
-
-
-<body>
-
-
-<!-- =========================================================
-     HEADER
-     ========================================================= -->
-
-<header>
-
-
-    <div class="logo">
-
-        GAME HUB
-
-    </div>
-
-
-    <nav>
-
-        <a href="#home">
-            DOMOV
-        </a>
-
-        <a href="#best">
-            NAJLEPŠIE
-        </a>
-
-        <a href="#newest">
-            NAJNOVŠIE
-        </a>
-
-        <a href="#all">
-            KNIŽNICA
-        </a>
-
-    </nav>
-
-
-    <div class="header-right">
-
-        <div class="status">
-
-            ● ONLINE
-
-        </div>
-
-    </div>
-
-
-</header>
-
-
-
-<!-- =========================================================
-     MAIN
-     ========================================================= -->
-
-<main id="home">
-
-
-<!-- =========================================================
-     FEATURED
-     ========================================================= -->
-
-<section class="hero">
-
-
-    <img
-        id="heroImage"
-        class="hero-image"
-        src=""
-        alt=""
-    >
-
-
-    <div class="hero-overlay"></div>
-
-
-    <button
-        class="hero-arrow hero-left"
-        onclick="previousHero()"
-        aria-label="Predchádzajúca položka"
-    >
-
-        ‹
-
-    </button>
-
-
-    <button
-        class="hero-arrow hero-right"
-        onclick="nextHero()"
-        aria-label="Ďalšia položka"
-    >
-
-        ›
-
-    </button>
-
-
-    <div class="hero-content">
-
-
-        <div
-            id="heroType"
-            class="hero-type"
-        >
-
-            🎮 HRA
-
-        </div>
-
-
-        <h1
-            id="heroTitle"
-            class="hero-title"
-        >
-
-            GAME HUB
-
-        </h1>
-
-
-        <p
-            id="heroDescription"
-            class="hero-description"
-        >
-
-            Tvoja platforma pre hry,
-            aplikácie a nástroje.
-
-        </p>
-
-
-        <div class="hero-buttons">
-
-
-            <button
-                class="button play-button"
-                onclick="openHero()"
-            >
-
-                ▶ SPUSTIŤ
-
-            </button>
-
-
-            <button
-                class="button next-button"
-                onclick="nextHero()"
-            >
-
-                ĎALŠIE
-
-            </button>
-
-
-        </div>
-
-
-    </div>
-
-
-</section>
-
-
-
-<!-- =========================================================
-     SEARCH
-     ========================================================= -->
-
-<div class="search-area">
-
-
-    <input
-        id="search"
-        class="search"
-        type="text"
-        placeholder="🔎 Hľadaj hry, aplikácie, nástroje..."
-        autocomplete="off"
-        oninput="searchGames()"
-    >
-
-
-</div>
-
-
-
-<!-- =========================================================
-     NAJLEPŠIE
-     ========================================================= -->
-
-<section
-    id="best"
-    class="section"
->
-
-
-    <div class="section-title">
-
-        ⭐ Najlepšie
-
-    </div>
-
-
-    <div
-        id="bestGames"
-        class="game-grid"
-    ></div>
-
-
-</section>
-
-
-
-<!-- =========================================================
-     NAJNOVŠIE
-     ========================================================= -->
-
-<section
-    id="newest"
-    class="section"
->
-
-
-    <div class="section-title">
-
-        🆕 Najnovšie
-
-    </div>
-
-
-    <div
-        id="newestGames"
-        class="game-grid"
-    ></div>
-
-
-</section>
-
-
-
-<!-- =========================================================
-     VŠETKY
-     ========================================================= -->
-
-<section
-    id="all"
-    class="section"
->
-
-
-    <div class="section-title">
-
-        📚 Všetky hry, aplikácie a nástroje
-
-    </div>
-
-
-    <div
-        class="section-subtitle"
-    >
-
-        Na jednom mieste môžeš mať hry,
-        aplikácie, nástroje aj ďalší obsah.
-
-    </div>
-
-
-    <div
-        id="allGames"
-        class="game-grid"
-    ></div>
-
-
-</section>
-
-
-</main>
-
-
-
-<footer>
-
-    GAME HUB © 2026
-
-</footer>
-
-
-
-<script>
-
-
-/* =========================================================
-   ⚙️ NASTAVENIA
-   ========================================================= */
-
+    title: "Hra 1",
+    description: "Moja prvá hra.",
+    category: "Akčná",
+    imageURL: "",
+    gameURL: "games/hra1/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 2 ================= */
+
+{
+    title: "Hra 2",
+    description: "Moja druhá hra.",
+    category: "Puzzle",
+    imageURL: "",
+    gameURL: "games/hra2/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 3 ================= */
+
+{
+    title: "Hra 3",
+    description: "Moja tretia hra.",
+    category: "Arcade",
+    imageURL: "",
+    gameURL: "games/hra3/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 4 ================= */
+
+{
+    title: "Hra 4",
+    description: "Moja štvrtá hra.",
+    category: "Závodná",
+    imageURL: "",
+    gameURL: "games/hra4/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 5 ================= */
+
+{
+    title: "Hra 5",
+    description: "Moja piata hra.",
+    category: "Strategická",
+    imageURL: "",
+    gameURL: "games/hra5/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 6 ================= */
+
+{
+    title: "Hra 6",
+    description: "Moja šiesta hra.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra6/index.html",
+    featured: true,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 7 ================= */
+
+{
+    title: "Hra 7",
+    description: "Popis hry 7.",
+    category: "Akčná",
+    imageURL: "",
+    gameURL: "games/hra7/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 8 ================= */
+
+{
+    title: "Hra 8",
+    description: "Popis hry 8.",
+    category: "Puzzle",
+    imageURL: "",
+    gameURL: "games/hra8/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 9 ================= */
+
+{
+    title: "Hra 9",
+    description: "Popis hry 9.",
+    category: "Arcade",
+    imageURL: "",
+    gameURL: "games/hra9/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ================= HRA 10 ================= */
+
+{
+    title: "Hra 10",
+    description: "Popis hry 10.",
+    category: "RPG",
+    imageURL: "",
+    gameURL: "games/hra10/index.html",
+    featured: false,
+    best: true,
+    newest: true
+},
+
+/* ==========================================================
+                     HRY 11-200
+========================================================== */
+
+/* HRA 11 */
+{
+    title: "Hra 11",
+    description: "Popis hry 11.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra11/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 12 */
+{
+    title: "Hra 12",
+    description: "Popis hry 12.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra12/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 13 */
+{
+    title: "Hra 13",
+    description: "Popis hry 13.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra13/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 14 */
+{
+    title: "Hra 14",
+    description: "Popis hry 14.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra14/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 15 */
+{
+    title: "Hra 15",
+    description: "Popis hry 15.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra15/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 16 */
+{
+    title: "Hra 16",
+    description: "Popis hry 16.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra16/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 17 */
+{
+    title: "Hra 17",
+    description: "Popis hry 17.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra17/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 18 */
+{
+    title: "Hra 18",
+    description: "Popis hry 18.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra18/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 19 */
+{
+    title: "Hra 19",
+    description: "Popis hry 19.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra19/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
+
+/* HRA 20 */
+{
+    title: "Hra 20",
+    description: "Popis hry 20.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra20/index.html",
+    featured: false,
+    best: false,
+    newest: true
+},
 
 /*
--------------------------------------------------------------
-POČET KARIET V RIADKU
+==============================================================
+                    HRY 21-200
+==============================================================
 
-4 = štyri karty
-5 = päť kariet
-6 = šesť kariet
+Dôležité:
+Tieto sloty sú pripravené ako samostatné hry.
+Ak ich chceš používať, zmeň iba údaje.
 
--------------------------------------------------------------
+==============================================================
 */
 
-const GAMES_PER_ROW = 4;
+{
+    title: "Hra 21",
+    description: "Popis hry 21.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra21/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
 
+{
+    title: "Hra 22",
+    description: "Popis hry 22.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra22/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 23",
+    description: "Popis hry 23.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra23/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 24",
+    description: "Popis hry 24.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra24/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 25",
+    description: "Popis hry 25.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra25/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 26",
+    description: "Popis hry 26.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra26/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 27",
+    description: "Popis hry 27.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra27/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 28",
+    description: "Popis hry 28.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra28/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 29",
+    description: "Popis hry 29.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra29/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 30",
+    description: "Popis hry 30.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra30/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 31",
+    description: "Popis hry 31.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra31/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 32",
+    description: "Popis hry 32.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra32/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 33",
+    description: "Popis hry 33.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra33/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 34",
+    description: "Popis hry 34.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra34/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 35",
+    description: "Popis hry 35.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra35/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 36",
+    description: "Popis hry 36.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra36/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 37",
+    description: "Popis hry 37.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra37/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 38",
+    description: "Popis hry 38.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra38/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 39",
+    description: "Popis hry 39.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra39/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
+
+{
+    title: "Hra 40",
+    description: "Popis hry 40.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra40/index.html",
+    featured: false,
+    best: false,
+    newest: false
+},
 
 /*
--------------------------------------------------------------
-POČET POLOŽIEK V NAJLEPŠIE
-
--------------------------------------------------------------
+--------------------------------------------------------------
+Od tejto chvíle môžeš používať ďalšie sloty.
+--------------------------------------------------------------
 */
 
-const BEST_GAMES_COUNT = 6;
-
-
-/*
--------------------------------------------------------------
-POČET POLOŽIEK V NAJNOVŠIE
-
--------------------------------------------------------------
-*/
-
-const NEWEST_GAMES_COUNT = 6;
-
-
-/*
--------------------------------------------------------------
-AUTOMATICKÝ FEATURED SLIDER
-
-true = automaticky sa mení
-false = iba šípky
-
--------------------------------------------------------------
-*/
-
-const AUTO_SLIDER = true;
-
-
-/*
--------------------------------------------------------------
-RÝCHLOSŤ SLIDERA
-
-5000 = 5 sekúnd
-3000 = 3 sekundy
-10000 = 10 sekúnd
-
--------------------------------------------------------------
-*/
-
-const SLIDER_SPEED = 5000;
-
-
-/*
--------------------------------------------------------------
-NÁHODNÝ FEATURED
-
-true = náhodné poradie
-false = poradie zo slotov
-
--------------------------------------------------------------
-*/
-
-const RANDOM_FEATURED = true;
-
-
-/*
--------------------------------------------------------------
-DÔLEŽITÉ!
-
-TOTO JE NOVÁ VERZIA OTVÁRANIA ODKAZOV.
-
-NEPOUŽÍVA:
-
-window.open()
-
-ALE:
-
-window.location.href
-
-Takže funguje podobne ako normálny:
-
-<a href="...">
-
--------------------------------------------------------------
-*/
-
-const OPEN_LINK_DIRECTLY = true;
-
-
-
-/* =========================================================
-   🎮📱🧰📦
-   200 SLOTOV
-   ========================================================= */
-
-
-/*
-=============================================================
-TYPY:
-
-game = 🎮 HRA
-
-app = 📱 APLIKÁCIA
-
-tool = 🧰 NÁSTROJ
-
-other = 📦 INÉ
-
-
--------------------------------------------------------------
-
-OBRÁZOK:
-
-imageURL: "https://tvoj-web.sk/obrazok.jpg"
-
-ALEBO:
-
-imageURL: "images/hra.jpg"
-
-
--------------------------------------------------------------
-
-ODKAZ:
-
-gameURL: "https://tvoja-stranka.github.io/hra/"
-
-ALEBO LOKÁLNE:
-
-gameURL: "games/hra/index.html"
-
--------------------------------------------------------------
-
-featured:
-
-true = zobrazí sa vo Featured
-
-false = nezobrazí
-
-
-best:
-
-true = Najlepšie
-
-false = nie
-
-
-newest:
-
-true = Najnovšie
-
-false = nie
-
-=============================================================
-*/
-
-
-const GAMES = [
-
-
-/* =========================================================
-   SLOT 1
-   ========================================================= */
-
 {
-    title:"hraaaa",
-
-    description:"Moja prvá HTML hra.",
-
-    category:"Arcade",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/hra1/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 2
-   ========================================================= */
-
-{
-    title:"Moja aplikácia",
-
-    description:"Moja prvá webová aplikácia.",
-
-    category:"Produktivita",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/aplikacia/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 3
-   ========================================================= */
-
-{
-    title:"Pixel Editor",
-
-    description:"Jednoduchý pixelový editor.",
-
-    category:"Nástroj",
-
-    type:"tool",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/pixel-editor/",
-
-    featured:true,
-
-    best:true,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 4
-   ========================================================= */
-
-{
-    title:"Racing",
-
-    description:"Závodná HTML hra.",
-
-    category:"Racing",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/racing/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 5
-   ========================================================= */
-
-{
-    title:"Calculator",
-
-    description:"Jednoduchá kalkulačka.",
-
-    category:"Produktivita",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/calculator/",
-
-    featured:false,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 6
-   ========================================================= */
-
-{
-    title:"Snake",
-
-    description:"Klasická hra Snake.",
-
-    category:"Arcade",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/snake/",
-
-    featured:true,
-
-    best:true,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 7
-   ========================================================= */
-
-{
-    title:"Clock",
-
-    description:"Jednoduché digitálne hodiny.",
-
-    category:"Nástroj",
-
-    type:"tool",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/clock/",
-
-    featured:false,
-
-    best:false,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 8
-   ========================================================= */
-
-{
-    title:"Space Shooter",
-
-    description:"Malá vesmírna strieľačka.",
-
-    category:"Shooter",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/space-shooter/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 9
-   ========================================================= */
-
-{
-    title:"Music Player",
-
-    description:"Jednoduchý prehrávač hudby.",
-
-    category:"Multimédiá",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/music/",
-
-    featured:false,
-
-    best:false,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 10
-   ========================================================= */
-
-{
-    title:"To Do",
-
-    description:"Zoznam úloh.",
-
-    category:"Produktivita",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/todo/",
-
-    featured:false,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 11
-   ========================================================= */
-
-{
-    title:"Slot 11",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot11/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 12
-   ========================================================= */
-
-{
-    title:"Slot 12",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot12/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 13
-   ========================================================= */
-
-{
-    title:"Slot 13",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot13/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 14
-   ========================================================= */
-
-{
-    title:"Slot 14",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot14/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 15
-   ========================================================= */
-
-{
-    title:"Slot 15",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot15/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOTY 16 - 200
-   ========================================================= */
-
-
-/*
--------------------------------------------------------------
-
-OD TOHTO MIESTA MÔŽEŠ PRIDÁVAŤ ĎALŠIE SLOTY.
-
-KAŽDÝ SLOT JE SAMOSTATNÝ.
-
-PRÍKLAD:
-
-{
-    title:"Moja hra",
-
-    description:"Popis hry.",
-
-    category:"Arcade",
-
-    type:"game",
-
-    imageURL:"https://example.com/obrazok.jpg",
-
-    gameURL:"https://moja-stranka.github.io/hra/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
--------------------------------------------------------------
-*/
-
-
-{
-    title:"Slot 16",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot16/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 41",
+    description: "Popis hry 41.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra41/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 17",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot17/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 42",
+    description: "Popis hry 42.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra42/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 18",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot18/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 43",
+    description: "Popis hry 43.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra43/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 19",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot19/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 44",
+    description: "Popis hry 44.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra44/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 20",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot20/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-
-
-/*
-=============================================================
-SLOT 21 - 200
-
-Použi rovnaký formát.
-
-Napríklad:
-
-{
-    title:"Moja aplikácia 21",
-    description:"Popis.",
-    category:"Aplikácie",
-    type:"app",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/app21/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-=============================================================
-*/
-
-
-{
-    title:"Slot 21",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot21/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 45",
+    description: "Popis hry 45.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra45/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 22",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot22/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 46",
+    description: "Popis hry 46.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra46/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 23",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot23/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 47",
+    description: "Popis hry 47.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra47/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 24",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot24/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 48",
+    description: "Popis hry 48.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra48/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 25",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot25/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 49",
+    description: "Popis hry 49.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra49/index.html",
+    featured: false,
+    best: false,
+    newest: false
 },
 
 {
-    title:"Slot 26",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot26/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 27",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot27/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 28",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot28/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 29",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot29/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 30",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot30/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-
-
-/*
-=============================================================
-ODTERAZ SI MÔŽEŠ VYTVORIŤ SLOTY AŽ PO 200.
-
-TENTO FORMÁT JE ZÁMERNE JEDNODUCHÝ.
-
-=============================================================
-
-{
-    title:"Slot 31",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot31/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-=============================================================
-*/
-
-
-{
-    title:"Slot 31",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot31/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 32",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot32/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 33",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot33/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 34",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot34/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 35",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot35/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 36",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot36/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 37",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot37/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 38",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot38/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 39",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot39/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 40",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot40/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 41",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot41/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 42",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot42/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 43",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot43/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 44",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot44/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 45",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot45/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 46",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot46/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 47",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot47/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 48",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot48/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 49",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot49/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 50",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot50/",
-    featured:false,
-    best:false,
-    newest:false
+    title: "Hra 50",
+    description: "Popis hry 50.",
+    category: "Indie",
+    imageURL: "",
+    gameURL: "games/hra50/index.html",
+    featured: false,
+    best: false,
+    newest: false
 }
-
-
-/*
-=============================================================
-POZOR
-
-AK CHCEŠ SKUTOČNE 200 SAMOSTATNÝCH SLOTOV,
-MÔŽEM ICH DOPLNIŤ V ROVNAKOM FORMÁTE AŽ PO SLOT 200.
-
-=============================================================
-*/
-
 
 ];
 
 
+/* ============================================================
+                  VÝCHOZÍ OBRÁZOK
+============================================================ */
 
-/* =========================================================
-   TYP
-   ========================================================= */
-
-function getTypeName(type){
-
-
-    if(type === "game"){
-
-        return "🎮 HRA";
-
-    }
-
-
-    if(type === "app"){
-
-        return "📱 APLIKÁCIA";
-
-    }
-
-
-    if(type === "tool"){
-
-        return "🧰 NÁSTROJ";
-
-    }
-
-
-    return "📦 INÉ";
-
-}
-
-
-
-/* =========================================================
-   DEFAULT IMAGE
-   ========================================================= */
-
-function defaultImage(text){
-
+function defaultImage(text) {
 
     const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg"
+         width="800"
+         height="450">
 
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="800"
-        height="450"
-    >
+        <rect width="100%"
+              height="100%"
+              fill="#1b2838"/>
 
-        <rect
-            width="100%"
-            height="100%"
-            fill="#26394d"
-        />
-
-        <text
-            x="50%"
-            y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            fill="#66c0f4"
-            font-size="40"
-            font-family="Arial"
-        >
-
+        <text x="50%"
+              y="50%"
+              text-anchor="middle"
+              dominant-baseline="middle"
+              fill="#66c0f4"
+              font-size="32"
+              font-family="Arial">
             ${text}
-
         </text>
 
     </svg>
-
     `;
 
-
-    return "data:image/svg+xml;charset=UTF-8,"
-        +
+    return "data:image/svg+xml;charset=UTF-8," +
         encodeURIComponent(svg);
-
 }
 
 
+function getGameImage(game) {
 
-/* =========================================================
-   IMAGE
-   ========================================================= */
-
-function getImage(game){
-
-
-    if(
-
-        game.imageURL
-        &&
+    if (
+        game.imageURL &&
         game.imageURL.trim() !== ""
-
-    ){
-
+    ) {
         return game.imageURL;
-
     }
 
-
-    return defaultImage(
-
-        getTypeName(game.type)
-
-    );
-
+    return defaultImage("BEZ OBRÁZKU");
 }
 
 
+/* ============================================================
+                      OTVORENIE HRY
+============================================================ */
 
-/* =========================================================
-   🔗 OTVORENIE ODKAZU
-   ========================================================= */
+function openGame(game) {
 
+    if (
+        !game.gameURL ||
+        game.gameURL === "#"
+    ) {
+        alert("Táto hra ešte nemá nastavený gameURL.");
+        return;
+    }
 
-/*
-=============================================================
-TOTO JE NAJDÔLEŽITEJŠIA OPRAVA.
+    if (SETTINGS.OPEN_GAME_IN_NEW_TAB) {
 
-POUŽÍVA SA:
-
-window.location.href
-
-ČIŽE SPRÁVANIE AKO:
-
-<a href="https://...">
-
-ŽIADNE:
-
-window.open()
-
-ŽIADNE:
-
-"_blank"
-
-ŽIADNE:
-
-nastavenia
-
-AK DÁŠ:
-
-gameURL:
-"https://tvoja-stranka.github.io/hra/"
-
-PREHLIADAČ TAM PRIAMO PREJDE.
-
-=============================================================
-*/
-
-function openGame(game){
-
-
-    if(
-
-        !game.gameURL
-        ||
-        game.gameURL.trim() === ""
-
-    ){
-
-        alert(
-
-            "Táto položka ešte nemá nastavený odkaz."
-
+        window.open(
+            game.gameURL,
+            "_blank"
         );
 
-        return;
+    } else {
+
+        window.location.href =
+            game.gameURL;
 
     }
-
-
-    window.location.href =
-
-        game.gameURL.trim();
-
 }
 
 
+/* ============================================================
+                       KARTY HIER
+============================================================ */
 
-/* =========================================================
-   CARD
-   ========================================================= */
-
-function createCard(game){
-
+function createGameCard(game) {
 
     const card =
-
         document.createElement("div");
 
-
     card.className =
-
         "game-card";
-
-
-    card.addEventListener(
-
-        "click",
-
-        function(){
-
-            openGame(game);
-
-        }
-
-    );
 
 
     card.innerHTML = `
 
-        <img
+        <div class="game-image-wrap">
 
-            class="card-image"
+            <img
+                class="game-image"
+                src="${getGameImage(game)}"
+                alt="${game.title}">
 
-            src="${getImage(game)}"
+        </div>
 
-            alt=""
+        <div class="game-info">
 
-            loading="lazy"
-
-        >
-
-
-        <div class="card-content">
-
-
-            <div class="card-type">
-
-                ${getTypeName(game.type)}
-
+            <div class="game-title">
+                ${game.title}
             </div>
 
-
-            <div class="card-title">
-
-                ${escapeHTML(game.title)}
-
+            <div class="game-category">
+                ${game.category}
             </div>
 
-
-            <div class="card-description">
-
-                ${escapeHTML(game.description)}
-
+            <div class="game-description">
+                ${game.description}
             </div>
 
-
-            <div class="card-category">
-
-                ${escapeHTML(game.category)}
-
+            <div class="game-play">
+                HRAŤ
             </div>
-
 
         </div>
 
     `;
 
 
-    return card;
+    const image =
+        card.querySelector(".game-image");
 
-}
 
+    image.onerror = function() {
 
+        this.onerror = null;
 
-/* =========================================================
-   OCHRANA TEXTU
-   ========================================================= */
+        this.src =
+            defaultImage("CHYBA OBRÁZKU");
 
-function escapeHTML(text){
-
-
-    return String(text)
-
-        .replace(/&/g,"&amp;")
-
-        .replace(/</g,"&lt;")
-
-        .replace(/>/g,"&gt;")
-
-        .replace(/"/g,"&quot;")
-
-        .replace(/'/g,"&#039;");
-
-}
-
-
-
-/* =========================================================
-   RENDER LIST
-   ========================================================= */
-
-function renderList(elementID,games){
-
-
-    const element =
-
-        document.getElementById(elementID);
-
-
-    element.innerHTML = "";
-
-
-    if(games.length === 0){
-
-
-        element.innerHTML = `
-
-            <div class="empty">
-
-                Nič sa nenašlo.
-
-            </div>
-
-        `;
-
-
-        return;
-
-    }
-
-
-    games.forEach(
-
-        function(game){
-
-            element.appendChild(
-
-                createCard(game)
-
-            );
-
-        }
-
-    );
-
-}
-
-
-
-/* =========================================================
-   RENDER VŠETKÉHO
-   ========================================================= */
-
-function renderAll(){
-
-
-    const best =
-
-        GAMES
-
-            .filter(
-
-                game => game.best
-
-            )
-
-            .slice(
-
-                0,
-
-                BEST_GAMES_COUNT
-
-            );
-
-
-    const newest =
-
-        GAMES
-
-            .filter(
-
-                game => game.newest
-
-            )
-
-            .slice(
-
-                0,
-
-                NEWEST_GAMES_COUNT
-
-            );
-
-
-    renderList(
-
-        "bestGames",
-
-        best
-
-    );
-
-
-    renderList(
-
-        "newestGames",
-
-        newest
-
-    );
-
-
-    renderList(
-
-        "allGames",
-
-        GAMES
-
-    );
-
-}
-
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-function searchGames(){
-
-
-    const input =
-
-        document.getElementById(
-
-            "search"
-
-        );
-
-
-    const query =
-
-        input.value
-
-            .toLowerCase()
-
-            .trim();
-
-
-    if(!query){
-
-        renderAll();
-
-        return;
-
-    }
-
-
-    const results =
-
-        GAMES.filter(
-
-            function(game){
-
-
-                return (
-
-                    String(game.title)
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                    ||
-
-                    String(game.description)
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                    ||
-
-                    String(game.category)
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                    ||
-
-                    String(getTypeName(game.type))
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                );
-
-            }
-
-        );
-
-
-    renderList(
-
-        "bestGames",
-
-        []
-
-    );
-
-
-    renderList(
-
-        "newestGames",
-
-        []
-
-    );
-
-
-    renderList(
-
-        "allGames",
-
-        results
-
-    );
-
-}
-
-
-
-/* =========================================================
-   FEATURED
-   ========================================================= */
-
-let featuredGames = [];
-
-
-let currentHero = 0;
-
-
-
-/* =========================================================
-   PRÍPRAVA FEATURED
-   ========================================================= */
-
-function prepareHero(){
-
-
-    featuredGames =
-
-        GAMES.filter(
-
-            game => game.featured
-
-        );
-
-
-    if(
-
-        RANDOM_FEATURED
-
-        &&
-
-        featuredGames.length > 1
-
-    ){
-
-        featuredGames =
-
-            [...featuredGames]
-
-                .sort(
-
-                    () => Math.random() - 0.5
-
-                );
-
-    }
-
-
-    currentHero = 0;
-
-}
-
-
-
-/* =========================================================
-   ZOBRAZIŤ HERO
-   ========================================================= */
-
-function showHero(){
-
-
-    if(featuredGames.length === 0){
-
-
-        document
-
-            .getElementById("heroTitle")
-
-            .textContent =
-
-                "GAME HUB";
-
-
-        document
-
-            .getElementById("heroDescription")
-
-            .textContent =
-
-                "Pridaj položku s featured: true.";
-
-
-        return;
-
-    }
-
-
-    const game =
-
-        featuredGames[currentHero];
-
-
-    document
-
-        .getElementById("heroImage")
-
-        .src =
-
-            getImage(game);
-
-
-    document
-
-        .getElementById("heroType")
-
-        .textContent =
-
-            getTypeName(game.type);
-
-
-    document
-
-        .getElementById("heroTitle")
-
-        .textContent =
-
-            game.title;
-
-
-    document
-
-        .getElementById("heroDescription")
-
-        .textContent =
-
-            game.description;
-
-}
-
-
-
-/* =========================================================
-   NEXT
-   ========================================================= */
-
-function nextHero(){
-
-
-    if(featuredGames.length === 0){
-
-        return;
-
-    }
-
-
-    currentHero++;
-
-
-    if(
-
-        currentHero >=
-
-        featuredGames.length
-
-    ){
-
-        currentHero = 0;
-
-    }
-
-
-    showHero();
-
-}
-
-
-
-/* =========================================================
-   PREVIOUS
-   ========================================================= */
-
-function previousHero(){
-
-
-    if(featuredGames.length === 0){
-
-        return;
-
-    }
-
-
-    currentHero--;
-
-
-    if(currentHero < 0){
-
-        currentHero =
-
-            featuredGames.length - 1;
-
-    }
-
-
-    showHero();
-
-}
-
-
-
-/* =========================================================
-   OPEN HERO
-   ========================================================= */
-
-function openHero(){
-
-
-    if(featuredGames.length === 0){
-
-        return;
-
-    }
-
-
-    openGame(
-
-        featuredGames[currentHero]
-
-    );
-
-}
-
-
-
-/* =========================================================
-   CSS POČET KARIET
-   ========================================================= */
-
-document.documentElement.style
-
-    .setProperty(
-
-        "--games-per-row",
-
-        GAMES_PER_ROW
-
-    );
-
-
-
-/* =========================================================
-   SPUSTENIE
-   ========================================================= */
-
-prepareHero();
-
-renderAll();
-
-showHero();
-
-
-
-/* =========================================================
-   AUTOMATICKÝ SLIDER
-   ========================================================= */
-
-if(AUTO_SLIDER){
-
-
-    setInterval(
-
-        nextHero,
-
-        SLIDER_SPEED
-
-    );
-
-}
-
-
-
-</script>
-
-
-</body>
-
-</html>",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 2
-   ========================================================= */
-
-{
-    title:"Moja aplikácia",
-
-    description:"Moja prvá webová aplikácia.",
-
-    category:"Produktivita",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/aplikacia/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 3
-   ========================================================= */
-
-{
-    title:"Pixel Editor",
-
-    description:"Jednoduchý pixelový editor.",
-
-    category:"Nástroj",
-
-    type:"tool",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/pixel-editor/",
-
-    featured:true,
-
-    best:true,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 4
-   ========================================================= */
-
-{
-    title:"Racing",
-
-    description:"Závodná HTML hra.",
-
-    category:"Racing",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/racing/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 5
-   ========================================================= */
-
-{
-    title:"Calculator",
-
-    description:"Jednoduchá kalkulačka.",
-
-    category:"Produktivita",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/calculator/",
-
-    featured:false,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 6
-   ========================================================= */
-
-{
-    title:"Snake",
-
-    description:"Klasická hra Snake.",
-
-    category:"Arcade",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/snake/",
-
-    featured:true,
-
-    best:true,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 7
-   ========================================================= */
-
-{
-    title:"Clock",
-
-    description:"Jednoduché digitálne hodiny.",
-
-    category:"Nástroj",
-
-    type:"tool",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/clock/",
-
-    featured:false,
-
-    best:false,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 8
-   ========================================================= */
-
-{
-    title:"Space Shooter",
-
-    description:"Malá vesmírna strieľačka.",
-
-    category:"Shooter",
-
-    type:"game",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/space-shooter/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 9
-   ========================================================= */
-
-{
-    title:"Music Player",
-
-    description:"Jednoduchý prehrávač hudby.",
-
-    category:"Multimédiá",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/music/",
-
-    featured:false,
-
-    best:false,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 10
-   ========================================================= */
-
-{
-    title:"To Do",
-
-    description:"Zoznam úloh.",
-
-    category:"Produktivita",
-
-    type:"app",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/todo/",
-
-    featured:false,
-
-    best:true,
-
-    newest:true
-},
-
-
-
-/* =========================================================
-   SLOT 11
-   ========================================================= */
-
-{
-    title:"Slot 11",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot11/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 12
-   ========================================================= */
-
-{
-    title:"Slot 12",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot12/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 13
-   ========================================================= */
-
-{
-    title:"Slot 13",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot13/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 14
-   ========================================================= */
-
-{
-    title:"Slot 14",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot14/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOT 15
-   ========================================================= */
-
-{
-    title:"Slot 15",
-
-    description:"Voľný slot.",
-
-    category:"Iné",
-
-    type:"other",
-
-    imageURL:"",
-
-    gameURL:"https://tvoja-stranka.github.io/slot15/",
-
-    featured:false,
-
-    best:false,
-
-    newest:false
-},
-
-
-
-/* =========================================================
-   SLOTY 16 - 200
-   ========================================================= */
-
-
-/*
--------------------------------------------------------------
-
-OD TOHTO MIESTA MÔŽEŠ PRIDÁVAŤ ĎALŠIE SLOTY.
-
-KAŽDÝ SLOT JE SAMOSTATNÝ.
-
-PRÍKLAD:
-
-{
-    title:"Moja hra",
-
-    description:"Popis hry.",
-
-    category:"Arcade",
-
-    type:"game",
-
-    imageURL:"https://example.com/obrazok.jpg",
-
-    gameURL:"https://moja-stranka.github.io/hra/",
-
-    featured:true,
-
-    best:true,
-
-    newest:true
-},
-
--------------------------------------------------------------
-*/
-
-
-{
-    title:"Slot 16",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot16/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 17",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot17/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 18",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot18/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 19",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot19/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 20",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot20/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-
-
-/*
-=============================================================
-SLOT 21 - 200
-
-Použi rovnaký formát.
-
-Napríklad:
-
-{
-    title:"Moja aplikácia 21",
-    description:"Popis.",
-    category:"Aplikácie",
-    type:"app",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/app21/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-=============================================================
-*/
-
-
-{
-    title:"Slot 21",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot21/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 22",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot22/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 23",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot23/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 24",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot24/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 25",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot25/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 26",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot26/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 27",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot27/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 28",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot28/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 29",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot29/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 30",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot30/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-
-
-/*
-=============================================================
-ODTERAZ SI MÔŽEŠ VYTVORIŤ SLOTY AŽ PO 200.
-
-TENTO FORMÁT JE ZÁMERNE JEDNODUCHÝ.
-
-=============================================================
-
-{
-    title:"Slot 31",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot31/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-=============================================================
-*/
-
-
-{
-    title:"Slot 31",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot31/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 32",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot32/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 33",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot33/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 34",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot34/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 35",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot35/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 36",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot36/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 37",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot37/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 38",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot38/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 39",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot39/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 40",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot40/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 41",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot41/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 42",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot42/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 43",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot43/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 44",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot44/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 45",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot45/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 46",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot46/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 47",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot47/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 48",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot48/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 49",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot49/",
-    featured:false,
-    best:false,
-    newest:false
-},
-
-{
-    title:"Slot 50",
-    description:"Voľný slot.",
-    category:"Iné",
-    type:"other",
-    imageURL:"",
-    gameURL:"https://tvoja-stranka.github.io/slot50/",
-    featured:false,
-    best:false,
-    newest:false
-}
-
-
-/*
-=============================================================
-POZOR
-
-AK CHCEŠ SKUTOČNE 200 SAMOSTATNÝCH SLOTOV,
-MÔŽEM ICH DOPLNIŤ V ROVNAKOM FORMÁTE AŽ PO SLOT 200.
-
-=============================================================
-*/
-
-
-];
-
-
-
-/* =========================================================
-   TYP
-   ========================================================= */
-
-function getTypeName(type){
-
-
-    if(type === "game"){
-
-        return "🎮 HRA";
-
-    }
-
-
-    if(type === "app"){
-
-        return "📱 APLIKÁCIA";
-
-    }
-
-
-    if(type === "tool"){
-
-        return "🧰 NÁSTROJ";
-
-    }
-
-
-    return "📦 INÉ";
-
-}
-
-
-
-/* =========================================================
-   DEFAULT IMAGE
-   ========================================================= */
-
-function defaultImage(text){
-
-
-    const svg = `
-
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="800"
-        height="450"
-    >
-
-        <rect
-            width="100%"
-            height="100%"
-            fill="#26394d"
-        />
-
-        <text
-            x="50%"
-            y="50%"
-            text-anchor="middle"
-            dominant-baseline="middle"
-            fill="#66c0f4"
-            font-size="40"
-            font-family="Arial"
-        >
-
-            ${text}
-
-        </text>
-
-    </svg>
-
-    `;
-
-
-    return "data:image/svg+xml;charset=UTF-8,"
-        +
-        encodeURIComponent(svg);
-
-}
-
-
-
-/* =========================================================
-   IMAGE
-   ========================================================= */
-
-function getImage(game){
-
-
-    if(
-
-        game.imageURL
-        &&
-        game.imageURL.trim() !== ""
-
-    ){
-
-        return game.imageURL;
-
-    }
-
-
-    return defaultImage(
-
-        getTypeName(game.type)
-
-    );
-
-}
-
-
-
-/* =========================================================
-   🔗 OTVORENIE ODKAZU
-   ========================================================= */
-
-
-/*
-=============================================================
-TOTO JE NAJDÔLEŽITEJŠIA OPRAVA.
-
-POUŽÍVA SA:
-
-window.location.href
-
-ČIŽE SPRÁVANIE AKO:
-
-<a href="https://...">
-
-ŽIADNE:
-
-window.open()
-
-ŽIADNE:
-
-"_blank"
-
-ŽIADNE:
-
-nastavenia
-
-AK DÁŠ:
-
-gameURL:
-"https://tvoja-stranka.github.io/hra/"
-
-PREHLIADAČ TAM PRIAMO PREJDE.
-
-=============================================================
-*/
-
-function openGame(game){
-
-
-    if(
-
-        !game.gameURL
-        ||
-        game.gameURL.trim() === ""
-
-    ){
-
-        alert(
-
-            "Táto položka ešte nemá nastavený odkaz."
-
-        );
-
-        return;
-
-    }
-
-
-    window.location.href =
-
-        game.gameURL.trim();
-
-}
-
-
-
-/* =========================================================
-   CARD
-   ========================================================= */
-
-function createCard(game){
-
-
-    const card =
-
-        document.createElement("div");
-
-
-    card.className =
-
-        "game-card";
+    };
 
 
     card.addEventListener(
-
         "click",
-
-        function(){
-
-            openGame(game);
-
-        }
-
+        () => openGame(game)
     );
-
-
-    card.innerHTML = `
-
-        <img
-
-            class="card-image"
-
-            src="${getImage(game)}"
-
-            alt=""
-
-            loading="lazy"
-
-        >
-
-
-        <div class="card-content">
-
-
-            <div class="card-type">
-
-                ${getTypeName(game.type)}
-
-            </div>
-
-
-            <div class="card-title">
-
-                ${escapeHTML(game.title)}
-
-            </div>
-
-
-            <div class="card-description">
-
-                ${escapeHTML(game.description)}
-
-            </div>
-
-
-            <div class="card-category">
-
-                ${escapeHTML(game.category)}
-
-            </div>
-
-
-        </div>
-
-    `;
 
 
     return card;
+}
+
+
+/* ============================================================
+                     VYKRESLENIE HIER
+============================================================ */
+
+function renderGames() {
+
+    const best =
+        document.getElementById("bestGames");
+
+    const newest =
+        document.getElementById("newestGames");
+
+    const all =
+        document.getElementById("allGames");
+
+
+    best.innerHTML = "";
+    newest.innerHTML = "";
+    all.innerHTML = "";
+
+
+    GAMES
+        .filter(game => game.best)
+        .slice(0, SETTINGS.BEST_GAMES_COUNT)
+        .forEach(game => {
+
+            best.appendChild(
+                createGameCard(game)
+            );
+
+        });
+
+
+    GAMES
+        .filter(game => game.newest)
+        .slice(0, SETTINGS.NEWEST_GAMES_COUNT)
+        .forEach(game => {
+
+            newest.appendChild(
+                createGameCard(game)
+            );
+
+        });
+
+
+    GAMES.forEach(game => {
+
+        all.appendChild(
+            createGameCard(game)
+        );
+
+    });
 
 }
 
 
-
-/* =========================================================
-   OCHRANA TEXTU
-   ========================================================= */
-
-function escapeHTML(text){
+renderGames();
 
 
-    return String(text)
+/* ============================================================
+                     SKRYTIE SEKCÍ
+============================================================ */
 
-        .replace(/&/g,"&amp;")
+if (!SETTINGS.SHOW_BEST_SECTION) {
 
-        .replace(/</g,"&lt;")
+    document.getElementById("best")
+        .style.display = "none";
 
-        .replace(/>/g,"&gt;")
+}
 
-        .replace(/"/g,"&quot;")
+if (!SETTINGS.SHOW_NEWEST_SECTION) {
 
-        .replace(/'/g,"&#039;");
+    document.getElementById("newest")
+        .style.display = "none";
+
+}
+
+if (!SETTINGS.SHOW_ALL_SECTION) {
+
+    document.getElementById("all")
+        .style.display = "none";
 
 }
 
 
+/* ============================================================
+                       SEARCH
+============================================================ */
 
-/* =========================================================
-   RENDER LIST
-   ========================================================= */
+const searchInput =
+    document.getElementById("searchInput");
 
-function renderList(elementID,games){
+const allGames =
+    document.getElementById("allGames");
 
-
-    const element =
-
-        document.getElementById(elementID);
-
-
-    element.innerHTML = "";
+const noResults =
+    document.getElementById("noResults");
 
 
-    if(games.length === 0){
+searchInput.addEventListener(
+    "input",
+    function() {
+
+        const query =
+            this.value
+                .trim()
+                .toLowerCase();
 
 
-        element.innerHTML = `
-
-            <div class="empty">
-
-                Nič sa nenašlo.
-
-            </div>
-
-        `;
+        let found = 0;
 
 
-        return;
+        GAMES.forEach(
+            (game, index) => {
+
+                const card =
+                    allGames.children[index];
+
+                if (!card) return;
+
+
+                let text = "";
+
+
+                if (SETTINGS.SEARCH_TITLE) {
+                    text += " " + game.title;
+                }
+
+
+                if (SETTINGS.SEARCH_DESCRIPTION) {
+                    text += " " + game.description;
+                }
+
+
+                if (SETTINGS.SEARCH_CATEGORY) {
+                    text += " " + game.category;
+                }
+
+
+                const match =
+                    text
+                        .toLowerCase()
+                        .includes(query);
+
+
+                card.style.display =
+                    match ? "" : "none";
+
+
+                if (match) {
+                    found++;
+                }
+
+            }
+        );
+
+
+        noResults.style.display =
+            found === 0
+                ? "block"
+                : "none";
+
+    }
+);
+
+
+/* ============================================================
+                    FEATURED SLIDER
+============================================================ */
+
+const featuredPool =
+    GAMES.filter(
+        game => game.featured
+    );
+
+
+let featuredGames = [];
+
+let featuredIndex = 0;
+
+let currentFeaturedGame = null;
+
+
+/* ============================================================
+                   NÁHODNÁ HRA
+============================================================ */
+
+function randomFeaturedGame(
+    exclude = null
+) {
+
+    if (!featuredPool.length) {
+        return null;
+    }
+
+
+    let available =
+        featuredPool;
+
+
+    if (
+        SETTINGS.NO_REPEAT_RANDOM &&
+        exclude &&
+        featuredPool.length > 1
+    ) {
+
+        available =
+            featuredPool.filter(
+                game => game !== exclude
+            );
 
     }
 
 
-    games.forEach(
+    return available[
+        Math.floor(
+            Math.random() *
+            available.length
+        )
+    ];
 
-        function(game){
+}
 
-            element.appendChild(
 
-                createCard(game)
+/* ============================================================
+                  PRÍPRAVA SLIDERA
+============================================================ */
 
+function prepareFeatured() {
+
+    if (!featuredPool.length) {
+        return;
+    }
+
+
+    featuredGames = [];
+
+
+    if (SETTINGS.RANDOM_FEATURED) {
+
+        const pool =
+            [...featuredPool];
+
+
+        const amount =
+            Math.min(
+                SETTINGS.FEATURED_WINDOWS,
+                pool.length
+            );
+
+
+        while (
+            featuredGames.length < amount
+        ) {
+
+            const index =
+                Math.floor(
+                    Math.random() *
+                    pool.length
+                );
+
+
+            featuredGames.push(
+                pool.splice(index, 1)[0]
             );
 
         }
 
-    );
-
-}
-
-
-
-/* =========================================================
-   RENDER VŠETKÉHO
-   ========================================================= */
-
-function renderAll(){
-
-
-    const best =
-
-        GAMES
-
-            .filter(
-
-                game => game.best
-
-            )
-
-            .slice(
-
-                0,
-
-                BEST_GAMES_COUNT
-
-            );
-
-
-    const newest =
-
-        GAMES
-
-            .filter(
-
-                game => game.newest
-
-            )
-
-            .slice(
-
-                0,
-
-                NEWEST_GAMES_COUNT
-
-            );
-
-
-    renderList(
-
-        "bestGames",
-
-        best
-
-    );
-
-
-    renderList(
-
-        "newestGames",
-
-        newest
-
-    );
-
-
-    renderList(
-
-        "allGames",
-
-        GAMES
-
-    );
-
-}
-
-
-
-/* =========================================================
-   SEARCH
-   ========================================================= */
-
-function searchGames(){
-
-
-    const input =
-
-        document.getElementById(
-
-            "search"
-
-        );
-
-
-    const query =
-
-        input.value
-
-            .toLowerCase()
-
-            .trim();
-
-
-    if(!query){
-
-        renderAll();
-
-        return;
-
-    }
-
-
-    const results =
-
-        GAMES.filter(
-
-            function(game){
-
-
-                return (
-
-                    String(game.title)
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                    ||
-
-                    String(game.description)
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                    ||
-
-                    String(game.category)
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                    ||
-
-                    String(getTypeName(game.type))
-
-                        .toLowerCase()
-
-                        .includes(query)
-
-                );
-
-            }
-
-        );
-
-
-    renderList(
-
-        "bestGames",
-
-        []
-
-    );
-
-
-    renderList(
-
-        "newestGames",
-
-        []
-
-    );
-
-
-    renderList(
-
-        "allGames",
-
-        results
-
-    );
-
-}
-
-
-
-/* =========================================================
-   FEATURED
-   ========================================================= */
-
-let featuredGames = [];
-
-
-let currentHero = 0;
-
-
-
-/* =========================================================
-   PRÍPRAVA FEATURED
-   ========================================================= */
-
-function prepareHero(){
-
-
-    featuredGames =
-
-        GAMES.filter(
-
-            game => game.featured
-
-        );
-
-
-    if(
-
-        RANDOM_FEATURED
-
-        &&
-
-        featuredGames.length > 1
-
-    ){
+    } else {
 
         featuredGames =
+            featuredPool.slice(
+                0,
+                SETTINGS.FEATURED_WINDOWS
+            );
 
-            [...featuredGames]
+    }
 
-                .sort(
+}
 
-                    () => Math.random() - 0.5
 
+/* ============================================================
+                  ZOBRAZENIE SLIDERA
+============================================================ */
+
+function showFeatured(index) {
+
+    if (!featuredGames.length) {
+        return;
+    }
+
+
+    featuredIndex =
+        (index + featuredGames.length) %
+        featuredGames.length;
+
+
+    currentFeaturedGame =
+        featuredGames[
+            featuredIndex
+        ];
+
+
+    const image =
+        document.getElementById(
+            "featuredImage"
+        );
+
+    const title =
+        document.getElementById(
+            "featuredTitle"
+        );
+
+    const category =
+        document.getElementById(
+            "featuredCategory"
+        );
+
+    const description =
+        document.getElementById(
+            "featuredDescription"
+        );
+
+
+    image.style.transition =
+        `opacity ${SETTINGS.ANIMATION_SPEED}ms`;
+
+    image.style.opacity = "0";
+
+
+    setTimeout(() => {
+
+        image.src =
+            getGameImage(
+                currentFeaturedGame
+            );
+
+
+        image.alt =
+            currentFeaturedGame.title;
+
+
+        image.onerror = function() {
+
+            this.onerror = null;
+
+            this.src =
+                defaultImage(
+                    "CHYBA OBRÁZKU"
                 );
 
-    }
+        };
 
 
-    currentHero = 0;
-
-}
-
+        title.textContent =
+            currentFeaturedGame.title;
 
 
-/* =========================================================
-   ZOBRAZIŤ HERO
-   ========================================================= */
-
-function showHero(){
+        category.textContent =
+            currentFeaturedGame.category;
 
 
-    if(featuredGames.length === 0){
+        description.textContent =
+            currentFeaturedGame.description;
 
 
-        document
+        image.style.opacity = "1";
 
-            .getElementById("heroTitle")
-
-            .textContent =
-
-                "GAME HUB";
+    }, SETTINGS.ANIMATION_SPEED / 2);
 
 
-        document
-
-            .getElementById("heroDescription")
-
-            .textContent =
-
-                "Pridaj položku s featured: true.";
-
-
-        return;
-
-    }
-
-
-    const game =
-
-        featuredGames[currentHero];
-
-
-    document
-
-        .getElementById("heroImage")
-
-        .src =
-
-            getImage(game);
-
-
-    document
-
-        .getElementById("heroType")
-
-        .textContent =
-
-            getTypeName(game.type);
-
-
-    document
-
-        .getElementById("heroTitle")
-
-        .textContent =
-
-            game.title;
-
-
-    document
-
-        .getElementById("heroDescription")
-
-        .textContent =
-
-            game.description;
+    updateDots();
 
 }
 
 
+/* ============================================================
+                         BODKY
+============================================================ */
 
-/* =========================================================
-   NEXT
-   ========================================================= */
+function createDots() {
 
-function nextHero(){
-
-
-    if(featuredGames.length === 0){
-
-        return;
-
-    }
+    const container =
+        document.getElementById(
+            "sliderDots"
+        );
 
 
-    currentHero++;
+    container.innerHTML = "";
 
 
-    if(
+    featuredGames.forEach(
+        (game, index) => {
 
-        currentHero >=
-
-        featuredGames.length
-
-    ){
-
-        currentHero = 0;
-
-    }
+            const dot =
+                document.createElement(
+                    "div"
+                );
 
 
-    showHero();
-
-}
-
+            dot.className =
+                "slider-dot";
 
 
-/* =========================================================
-   PREVIOUS
-   ========================================================= */
+            dot.addEventListener(
+                "click",
+                () => {
 
-function previousHero(){
+                    if (
+                        SETTINGS.RANDOM_FEATURED
+                    ) {
 
-
-    if(featuredGames.length === 0){
-
-        return;
-
-    }
-
-
-    currentHero--;
+                        const newGame =
+                            randomFeaturedGame(
+                                currentFeaturedGame
+                            );
 
 
-    if(currentHero < 0){
+                        if (newGame) {
+                            featuredGames[index] =
+                                newGame;
+                        }
 
-        currentHero =
-
-            featuredGames.length - 1;
-
-    }
-
-
-    showHero();
-
-}
+                    }
 
 
+                    showFeatured(index);
 
-/* =========================================================
-   OPEN HERO
-   ========================================================= */
-
-function openHero(){
+                }
+            );
 
 
-    if(featuredGames.length === 0){
+            container.appendChild(dot);
 
-        return;
-
-    }
-
-
-    openGame(
-
-        featuredGames[currentHero]
-
+        }
     );
 
 }
 
 
+function updateDots() {
 
-/* =========================================================
-   CSS POČET KARIET
-   ========================================================= */
+    const dots =
+        document.querySelectorAll(
+            ".slider-dot"
+        );
 
-document.documentElement.style
 
-    .setProperty(
+    dots.forEach(
+        (dot, index) => {
 
-        "--games-per-row",
+            dot.classList.toggle(
+                "active",
+                index === featuredIndex
+            );
 
-        GAMES_PER_ROW
+        }
+    );
 
+}
+
+
+/* ============================================================
+                      NEXT
+============================================================ */
+
+function nextFeatured() {
+
+    if (!featuredGames.length) {
+        return;
+    }
+
+
+    const next =
+        (featuredIndex + 1) %
+        featuredGames.length;
+
+
+    if (SETTINGS.RANDOM_FEATURED) {
+
+        const random =
+            randomFeaturedGame(
+                currentFeaturedGame
+            );
+
+
+        if (random) {
+            featuredGames[next] =
+                random;
+        }
+
+    }
+
+
+    showFeatured(next);
+
+}
+
+
+/* ============================================================
+                      PREVIOUS
+============================================================ */
+
+function previousFeatured() {
+
+    if (!featuredGames.length) {
+        return;
+    }
+
+
+    const previous =
+        (featuredIndex - 1 +
+        featuredGames.length) %
+        featuredGames.length;
+
+
+    if (SETTINGS.RANDOM_FEATURED) {
+
+        const random =
+            randomFeaturedGame(
+                currentFeaturedGame
+            );
+
+
+        if (random) {
+            featuredGames[previous] =
+                random;
+        }
+
+    }
+
+
+    showFeatured(previous);
+
+}
+
+
+/* ============================================================
+                     SLIDER CLICK
+============================================================ */
+
+document
+    .getElementById("featuredSlide")
+    .addEventListener(
+        "click",
+        () => {
+
+            if (currentFeaturedGame) {
+                openGame(
+                    currentFeaturedGame
+                );
+            }
+
+        }
     );
 
 
+/* ============================================================
+                       BUTTONS
+============================================================ */
 
-/* =========================================================
-   SPUSTENIE
-   ========================================================= */
-
-prepareHero();
-
-renderAll();
-
-showHero();
+document
+    .getElementById("nextButton")
+    .addEventListener(
+        "click",
+        nextFeatured
+    );
 
 
+document
+    .getElementById("prevButton")
+    .addEventListener(
+        "click",
+        previousFeatured
+    );
 
-/* =========================================================
-   AUTOMATICKÝ SLIDER
-   ========================================================= */
 
-if(AUTO_SLIDER){
+if (!SETTINGS.SHOW_ARROWS) {
 
+    document.getElementById(
+        "nextButton"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "prevButton"
+    ).style.display = "none";
+
+}
+
+
+if (!SETTINGS.SHOW_DOTS) {
+
+    document.getElementById(
+        "sliderDots"
+    ).style.display = "none";
+
+}
+
+
+/* ============================================================
+                      START SLIDER
+============================================================ */
+
+prepareFeatured();
+
+createDots();
+
+showFeatured(0);
+
+
+if (
+    SETTINGS.AUTO_SLIDER &&
+    featuredPool.length > 1
+) {
 
     setInterval(
-
-        nextHero,
-
-        SLIDER_SPEED
-
+        () => {
+            nextFeatured();
+        },
+        SETTINGS.SLIDER_SPEED
     );
 
 }
-
-
 
 </script>
 
-
 </body>
-
 </html>
