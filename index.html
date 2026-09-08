@@ -1341,29 +1341,20 @@ function getGameImage(game) {
                       OTVORENIE HRY
 ============================================================ */
 
-function openGame(game) {
+function normalizeGameURL(url) {
+    if (!url) return "";
+    url = String(url).trim();
+    if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(url)) return "https://" + url;
+    return url;
+}
 
-    if (
-        !game.gameURL ||
-        game.gameURL === "#"
-    ) {
-        alert("Táto hra ešte nemá nastavený gameURL.");
+function openGame(game) {
+    const url = normalizeGameURL(game.gameURL);
+    if (!url || url === "#") {
+        alert("Táto karta ešte nemá nastavenú adresu stránky.");
         return;
     }
-
-    if (SETTINGS.OPEN_GAME_IN_NEW_TAB) {
-
-        window.open(
-            game.gameURL,
-            "_blank"
-        );
-
-    } else {
-
-        window.location.href =
-            game.gameURL;
-
-    }
+    window.location.assign(url);
 }
 
 
